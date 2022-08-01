@@ -15,3 +15,8 @@ class GetElement:
         return WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((el_type, element))
         )
+
+    def wait_and_returns(self, element, el_type=By.ID):
+        return WebDriverWait(self.driver, 60).until(
+            EC.presence_of_all_elements_located((el_type, element))
+        )
