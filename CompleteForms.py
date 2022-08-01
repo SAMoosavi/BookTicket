@@ -45,8 +45,8 @@ class CompleteForms(GetElement):
         inputForm.send_keys(value)
 
     def completeRadio(self, value, element, el_type=By.ID):
-        radoiForm = self.wait_and_returns(element, el_type)
-        radoiForm[value].click()
+        radioForm = self.wait_and_returns(element, el_type)
+        radioForm[value].click()
 
     def completeCheckBox(self, element, el_type=By.ID):
         checkBoxForm = self.wait_and_return(element, el_type)
