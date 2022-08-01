@@ -72,9 +72,9 @@ class AliBabaBookTicket(BookTicket, CompleteForms):
         self.__sex(data['sex'])
         self.__from(data['from'])
         self.__to(data['to'])
-        self.__fromD(data['fromd'])
+        self.__date(data['fromd'])
         if data['groupWay'] == 1:
-            self.__toD(data['tod'])
+            self.__date(data['tod'])
         self.__setDate()
         self.__traveler(data['adult'], data['child'], data['infant'])
 
@@ -99,14 +99,7 @@ class AliBabaBookTicket(BookTicket, CompleteForms):
             "//form/div[2]/div[2]/div/div[2]/div/div[3]/button",
             By.XPATH)
 
-    def __toD(self, data: str):
-        date = data.split('/')
-        self.clickBtn(
-            "//form/div[2]/div[2]/div/div[2]/div/div[2]/div/div/div[2]/div[1]/div/span[" +
-            str(int(date[2]) + 7) + "]",
-            By.XPATH)
-
-    def __fromD(self, data):
+    def __date(self, data):
         date = data.split('/')
         self.clickBtn(
             "//form/div[2]/div[2]/div/div[2]/div/div[2]/div/div/div[2]/div[1]/div/span[" +
