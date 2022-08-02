@@ -33,13 +33,14 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
 
     # Login
     def login(self, data):
-        self.__goToLoginForm()
-        self.completeInputForm(data['username'], "phonenumber")
-        self.clickBtn("login-btn-step1")
-        self.completeInputForm(data['password'], "//input[@type='password']", By.XPATH)
-        self.clickBtn("//form/div[4]/button[2]", By.XPATH)
+        # self.__goToLoginForm()
+        # self.completeInputForm(data['username'], "phonenumber")
+        # self.clickBtn("login-btn-step1")
+        # self.completeInputForm(data['password'], "//input[@type='password']", By.XPATH)
+        # self.clickBtn("//form/div[4]/button[2]", By.XPATH)
         try:
-            self.__closeLoginForm()
+            pass
+            # self.__closeLoginForm()
         except:
             pass
 
@@ -54,14 +55,62 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
     __toTime: str = ""
 
     def search(self, data):
-        pass
+        if data['groupWay'] == 1:
+            self.__hasTo = True
+        self.__completeFormSearch(data)
+        self.__btnSearch()
+        self.__setTrain()
+        self.__btnVerify()
 
-    def search(self, data, listId):
+    def searchS(self, data, listId):
         if data['groupWay'] == 1:
             self.__hasTo = True
         self.__firstSearch(data, listId)
         self.__completeFormSearch(data)
         self.__btnSearch()
+        self.__setTrain()
+        self.__btnVerify()
+
+    def __btnVerify(self):
+        r = self.wait_and_return("/html/body/div/div/div/div[2]/div[2]/div[2]/div/div[8]/button[2]", By.XPATH)
+        r.location_once_scrolled_into_view
+        time.sleep(0.5)
+        r.click()
+
+    def __setTrain(self):
+        self.__minTrain()
+
+        if self.__hasTo:
+            self.__minTrain()
+            self.__clickTicket(self.__fromTime)
+            if self.__toTime != "":
+                self.__clickTicket(self.__toTime)
+
+    def __clickTicket(self, dataTime: str):
+        num = 1
+        if dataTime != "":
+            r = self.wait_and_returns("/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/*", By.XPATH)
+            for i in range(1, len(r) + 1):
+                try:
+                    a = self.wait_and_return(
+                        "/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/div["
+                        + str(i) +
+                        "]/div/section[1]/div[1]/section/div[1]/div[1]",
+                        By.XPATH)
+                    if a.text in dataTime:
+                        num = i
+                        break
+                except:
+                    continue
+        self.clickBtn(
+            "/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/div["
+            + str(num) +
+            "]/div/section[2]/div[2]/button", By.XPATH)
+
+    def __minTrain(self):
+        self.clickBtn("/html/body/div/div/div/div[2]/div[3]/aside/div/div[4]/div[1]/div/div[2]/div[1]/div/label[2]",
+                      By.XPATH)
+        time.sleep(1)
 
     def __btnSearch(self):
         self.clickBtn(
@@ -159,16 +208,16 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
 
     def __firstSearch(self, data, listId):
         findFrom: bool = False
-        while findFrom:
+        while not findFrom:
             query: str = self.__getQuery(data, True)
             response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2?" + query).text
-            findFrom = self.__getTrain(response, listId, True)
+            findFrom = self.__getTrain(response, listId[0], True)
         if self.__hasTo:
             findFrom: bool = False
-            while findFrom:
+            while not findFrom:
                 query: str = self.__getQuery(data, False)
                 response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2?" + query).text
-                findFrom = self.__getTrain(response, listId, False)
+                findFrom = self.__getTrain(response, listId[1], False)
 
     def __getTrain(self, data, listId, isFrom: bool) -> bool:
         unavailables: list = []
@@ -212,3 +261,11 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
     def __jToG(self, date: str, spliter='/') -> str:
         splitDate: list[str] = date.split(spliter)
         return str(jdatetime.date(day=int(splitDate[2]), month=int(splitDate[1]), year=int(splitDate[0])).togregorian())
+
+    # setUsers
+    def setUsers(self, dataUsers):
+        pass
+
+    # buy
+    def buy(self):
+        pass
