@@ -262,7 +262,89 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
 
     # setUsers
     def setUsers(self, dataUsers):
-        pass
+        hasService: bool = True
+        for i in range(1, len(dataUsers) + 1):
+            hasService = self.__setUser(i, dataUsers[i - 1], hasService)
+        self.__setUsersBtn()
+
+    def __setUsersBtn(self):
+        r = self.wait_and_return('form-next-button')
+        r.location_once_scrolled_into_view
+        time.sleep(0.5)
+        r.click()
+
+    def __setUser(self, i, data, hasService):
+        baseLocation = "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[2]/div[" + str(i) + "]"
+        self.wait_and_return(baseLocation, By.XPATH).location_once_scrolled_into_view
+        time.sleep(0.5)
+        self.__setFName(baseLocation, data['FName'])
+        self.__setLName(baseLocation, data['LName'])
+        self.__setSex(baseLocation, data['sex'])
+        self.__setId(baseLocation, data['id'])
+        self.__setBirthday(baseLocation, data['birthday'])
+        try:
+            if hasService:
+                self.__setService(baseLocation, data['service'])
+                return True
+        except:
+            return False
+
+    def __setService(self, baseLocation, data):
+        if data is None or data == "":
+            r = self.wait_and_return(baseLocation + "/div/form/span/div/div[1]/div[2]/label", By.XPATH)
+            r.click()
+        else:
+            self.completeInputForm(data, baseLocation + "/div/form/span/div/div[1]/div[2]/label/input", By.XPATH)
+        time.sleep(1)
+        self.clickBtn(baseLocation + "/div/form/span/div/div[2]/div/div/div[2]/div[1]", By.XPATH)
+
+    def __setBirthday(self, baseLocation, data):
+        self.__setDay(baseLocation, data['day'])
+        self.__setMonth(baseLocation, data['month'])
+        self.__setYear(baseLocation, data['year'])
+
+    def __setYear(self, baseLocation, data):
+        data = "13" + data
+        self.completeInputForm(data,
+                               baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[3]/div[1]/div[2]/label/input",
+                               By.XPATH)
+        time.sleep(1)
+        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[3]/div[2]/div/div/div[2]/div", By.XPATH)
+
+    def __setMonth(self, baseLocation, data):
+        if data[0] == "0":
+            data = data[1:]
+        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[2]/div/div[2]/label", By.XPATH)
+        self.clickBtn(
+            baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[2]/div[2]/div/div/div[2]/div["
+            + data +
+            "]",
+            By.XPATH)
+
+    def __setDay(self, baseLocation, data):
+        if data[0] == "0":
+            data = data[1:]
+        self.completeInputForm(data,
+                               baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[1]/div[2]/label/input",
+                               By.XPATH)
+        time.sleep(1)
+        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
+
+    def __setId(self, baseLocation, data):
+        self.completeInputForm(data, baseLocation + "/div/form/div[4]/div[2]/label/input", By.XPATH)
+
+    def __setLName(self, baseLocation, data):
+        self.completeInputForm(data, baseLocation + "/div/form/div[3]/div[2]/label/input", By.XPATH)
+
+    def __setFName(self, baseLocation, data):
+        self.completeInputForm(data, baseLocation + "/div/form/div[2]/div[2]/label/input", By.XPATH)
+
+    def __setSex(self, baseLocation, data):
+        location = (baseLocation + "/div/form/div[1]/span[1]/div/div[1]/div")
+        if data == "2" or data == 2:
+            self.clickBtn(location + "/label[1]", By.XPATH)
+        elif data == "1" or data == 1:
+            self.clickBtn(location + "/label[2]", By.XPATH)
 
     # buy
     def buy(self):
