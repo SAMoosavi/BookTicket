@@ -33,14 +33,13 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
 
     # Login
     def login(self, data):
-        # self.__goToLoginForm()
-        # self.completeInputForm(data['username'], "phonenumber")
-        # self.clickBtn("login-btn-step1")
-        # self.completeInputForm(data['password'], "//input[@type='password']", By.XPATH)
-        # self.clickBtn("//form/div[4]/button[2]", By.XPATH)
+        self.__goToLoginForm()
+        self.completeInputForm(data['username'], "phonenumber")
+        self.clickBtn("login-btn-step1")
+        self.completeInputForm(data['password'], "//input[@type='password']", By.XPATH)
+        self.clickBtn("//form/div[4]/button[2]", By.XPATH)
         try:
-            pass
-            # self.__closeLoginForm()
+            self.__closeLoginForm()
         except:
             pass
 
@@ -79,12 +78,10 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
 
     def __setTrain(self):
         self.__minTrain()
-
+        self.__clickTicket(self.__fromTime)
         if self.__hasTo:
             self.__minTrain()
-            self.__clickTicket(self.__fromTime)
-            if self.__toTime != "":
-                self.__clickTicket(self.__toTime)
+            self.__clickTicket(self.__toTime)
 
     def __clickTicket(self, dataTime: str):
         num = 1
@@ -105,7 +102,8 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
         self.clickBtn(
             "/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/div["
             + str(num) +
-            "]/div/section[2]/div[2]/button", By.XPATH)
+            "]/div/section[2]/div[2]/button",
+            By.XPATH)
 
     def __minTrain(self):
         self.clickBtn("/html/body/div/div/div/div[2]/div[3]/aside/div/div[4]/div[1]/div/div[2]/div[1]/div/label[2]",
@@ -176,7 +174,7 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
         self.completeInputForm(city,
                                "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[2]/div/div/div[1]/div/label/input",
                                By.XPATH)
-        time.sleep(0.5)
+        time.sleep(1)
         self.clickBtn(
             "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[2]/div/div/div[2]/div/div/div[2]/div",
             By.XPATH)
@@ -188,7 +186,7 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
             By.XPATH)
         inp.location_once_scrolled_into_view
         inp.send_keys(city)
-        time.sleep(0.5)
+        time.sleep(1)
         self.clickBtn(
             "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div",
             By.XPATH)
