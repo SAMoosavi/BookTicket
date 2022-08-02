@@ -348,4 +348,14 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
 
     # buy
     def buy(self):
-        pass
+        self.__credentials()
+        self.__clickBuy()
+
+    def __credentials(self):
+        r = self.wait_and_return("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[3]/label", By.XPATH)
+        r.location_once_scrolled_into_view
+        time.sleep(0.5)
+        r.click()
+
+    def __clickBuy(self):
+        self.clickBtn("btnAccept")
