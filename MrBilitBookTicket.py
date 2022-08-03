@@ -107,7 +107,6 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
             "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[4]/button", By.XPATH)
 
     def __completeFormSearch(self, data):
-        time.sleep(1)
         self.__wagon(data['wagon'])
         self.__groupWay(data['groupWay'])
         self.__from(data['from'])
@@ -212,8 +211,10 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
     def __getTrain(self, data, listId, isFrom: bool) -> bool:
         unavailables: list = []
         availables: list = []
-        # TODO:CHECK
-        trains = json.loads(data)['Trains']
+        enCodedData = json.loads(data)
+        if not 'Trains' in enCodedData:
+            return False
+        trains = enCodedData['Trains']
         LogTrain().write(trains)
         for train in trains:
             capacity: int = 0
@@ -353,3 +354,4 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
 
     def __clickBuy(self):
         self.clickBtn("btnAccept")
+        time.sleep(30)
