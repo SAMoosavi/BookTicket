@@ -6,15 +6,7 @@ from BookTicket import BookTicket
 from CompleteForms import CompleteForms
 from selenium.webdriver.common.by import By
 from globalVariable import cities
-
-
-class LogTrain:
-    __unavailable: list
-    __available: list
-
-    def __init__(self, unavailable, available):
-        self.__unavailable = unavailable
-        self.__available = available
+from LogTrain import LogTrain
 
 
 # CompleteForms
