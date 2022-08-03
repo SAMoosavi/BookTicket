@@ -212,16 +212,18 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
     def __getTrain(self, data, listId, isFrom: bool) -> bool:
         unavailables: list = []
         availables: list = []
-        for a in json.loads(data)['Trains']:
+        # TODO:CHECK
+        trains = json.loads(data)['Trains']
+        LogTrain().write(trains)
+        for train in trains:
             capacity: int = 0
-            for b in a['Prices'][0]['Classes']:
+            for b in train['Prices'][0]['Classes']:
                 capacity += b['Capacity']
 
             if not capacity == 0:
-                availables.append(a)
+                availables.append(train)
             else:
-                unavailables.append(a)
-        LogTrain(unavailables, availables)
+                unavailables.append(train)
         for Id in listId:
             if Id == 0:
                 break
