@@ -2,13 +2,14 @@ import time
 from BookTicket import BookTicket
 from CompleteForms import CompleteForms
 from selenium.webdriver.common.by import By
-from globalVariable import cities
+from globalVariable import cities, months
 
 
 class AliBabaBookTicket(BookTicket, CompleteForms):
     __URL: str = "https://www.alibaba.ir/"
 
     __cities: dict = cities
+    __months: dict = months
 
     def __init__(self):
         CompleteForms.__init__(self, self.__URL)
@@ -101,10 +102,13 @@ class AliBabaBookTicket(BookTicket, CompleteForms):
 
     def __date(self, data):
         date = data.split('/')
-        self.clickBtn(
-            "//form/div[2]/div[2]/div/div[2]/div/div[2]/div/div/div[2]/div[1]/div/span[" +
-            str(int(date[2]) + 7) + "]",
-            By.XPATH)
+        day: str = date[2] if not date[2][0] == "0" else date[2][1]
+        index = "1" if self.__months[date[1]] in self.wait_and_return(
+            "/html/body/div/div[1]/main/div/div[2]/div[1]/div[2]/div/form/div[2]/div[2]/div/div[2]/div/div[2]/div/div/div[2]/div[1]/h5",
+            By.XPATH).text else "2"
+        self.wait_and_returns(
+            "//form/div[2]/div[2]/div/div[2]/div/div[2]/div/div/div[2]/div[" + index + "]/div/span[contains(@class, 'calendar-cell')]",
+            By.XPATH)[int(day) - 1].click()
 
     def __to(self, data):
         city = self.__getCity(data)
