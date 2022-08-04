@@ -5,7 +5,7 @@ import jdatetime
 from BookTicket import BookTicket
 from CompleteForms import CompleteForms
 from selenium.webdriver.common.by import By
-from globalVariable import cities
+from globalVariable import cities, months
 from LogTrain import LogTrain
 
 
@@ -14,6 +14,7 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
     __URL: str = "https://mrbilit.com/train-ticket"
 
     __cities: dict = cities
+    __month: dict = months
 
     __hasTo: bool = False
 
@@ -151,11 +152,16 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
             By.XPATH)
 
     def __date(self, data):
-        date = data.split('/')
-        self.clickBtn(
-            "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[2]/div[2]/div/div[2]/div[1]/div[3]/div["
-            + date[2] + "]",
-            By.XPATH)
+        date: list[str] = data.split('/')
+        day: str = date[2] if not date[2][0] == "0" else date[2][1]
+        index = "1" if self.__month[date[1]] in self.wait_and_return(
+            "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[2]/div[2]/div/div[2]/div[1]/div[1]",
+            By.XPATH).text else "2"
+        self.wait_and_returns(
+            "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[2]/div[2]/div/div[2]/div["
+            + index +
+            "]/div[3]/div[not(contains(@class, 'empty'))]",
+            By.XPATH, 10)[int(day) - 1].click()
 
     def __openDate(self):
         self.clickBtn("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[1]/div[1]", By.XPATH)
