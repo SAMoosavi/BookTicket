@@ -15,7 +15,7 @@ bookTicket.login(dataLogin)
 # sex : 1 = woman 2 = man 3 = other
 data = {
     'fromd': '1401/05/19',
-    'tod': '1401/05/30',
+    'tod': '1401/06/06',
     'from': "219",
     'to': "1",
     'sex': "3",
