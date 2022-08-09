@@ -161,7 +161,7 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
             "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[2]/div[2]/div/div[2]/div["
             + index +
             "]/div[3]/div[not(contains(@class, 'empty'))]",
-            By.XPATH, 10)[int(day) - 1].click()
+            By.XPATH)[int(day) - 1].click()
 
     def __openDate(self):
         self.clickBtn("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[1]/div[1]", By.XPATH)
