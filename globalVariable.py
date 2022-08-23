@@ -1,3 +1,5 @@
+from enum import Enum
+
 cities: dict = {
     "90016": "آب نيل",
     "670": "آب نيل",
@@ -149,3 +151,9 @@ months: dict = {
     "11": "بهمن",
     "12": "اسفند"
 }
+
+
+class Sex(Enum):
+    WOMAN = 1
+    MAN = 2
+    BOTH = 3
