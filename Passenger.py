@@ -24,13 +24,7 @@ class Passenger:
         for person in self.__passengers:
             if person['ID'] == str(ID):
                 print(person['ID'] == str(ID))
-                return Person().set(
-                    person['firstName'],
-                    person['lastName'], person['ID'],
-                    str(person['berthDay']['year']) + "/" +
-                    str(person['berthDay']['month']) + "/" +
-                    str(person['berthDay']['day'])
-                )
+                return Person().set_on_dict(person)
             return None
 
     def get_person_by_ID(self, ID: str | int) -> Person:
