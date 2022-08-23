@@ -41,10 +41,11 @@ class Person:
             for char in ID:
                 if not ord(char) in range(ord("0"), ord("9")):
                     raise "not correct data"
+            self.__ID = ID
         else:
             if not 10e10 < ID < 10e11:
                 raise "not correct data"
-        self.__ID = ID
+            self.__ID = str(ID)
 
     def get_dict(self) -> dict:
         return {
