@@ -13,6 +13,25 @@ class Person:
         self.__set_ID(ID)
         self.__set_berth_day(berthDay)
 
+    def set_on_dict(self, data: dict):
+        if not data['firstName']:
+            raise "not correct data"
+        if not data['lastName']:
+            raise "not correct data"
+        if not data['berthDay']['year']:
+            raise "not correct data"
+        if not data['berthDay']['month']:
+            raise "not correct data"
+        if not data['berthDay']['day']:
+            raise "not correct data"
+
+        self.__set_first_name(data['firstName'])
+        self.__set_last_name(data['lastName'])
+        self.__set_ID(data['ID'])
+        self.__set_berth_day(
+            str(data['berthDay']['year']) + "/" + str(data['berthDay']['month']) + "/" + str(data['berthDay']['day'])
+        )
+
     def __set_berth_day(self, date: str) -> None:
         dateSpirited = date.split('/')
         if int(dateSpirited[0]) <= 1300:
