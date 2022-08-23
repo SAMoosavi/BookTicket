@@ -50,7 +50,7 @@ class Person:
 
     def get_dict(self) -> dict:
         # if not self.__set:
-        #     raise "dont set person"
+        #     raise "don't set person"
         return {
             'firstName': self.__firstName,
             'lastName': self.__lastName,
@@ -69,25 +69,25 @@ class Person:
 
     def get_last_name(self):
         # if not self.__set:
-        #     raise "dont set person"
+        #     raise "don't set person"
         return self.__lastName
 
     def get_ID(self):
         # if not self.__set:
-        #     raise "dont set person"
+        #     raise "don't set person"
         return self.__ID
 
     def get_day(self):
         # if not self.__set:
-        #     raise "dont set person"
+        #     raise "don't set person"
         return self.__day
 
     def get_month(self):
         # if not self.__set:
-        #     raise "dont set person"
+        #     raise "don't set person"
         return self.__month
 
     def get_year(self):
         # if not self.__set:
-        #     raise "dont set person"
+        #     raise "don't set person"
         return self.__year
