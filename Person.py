@@ -26,18 +26,18 @@ class Person:
         self.__year = int(dateSpirited[0])
 
     def __set_first_name(self, firstName: str) -> None:
-        if len(firstName) is 0:
+        if len(firstName) == 0:
             raise "not correct data"
         self.__firstName = firstName
 
     def __set_last_name(self, lastName: str) -> None:
-        if len(lastName) is 0:
+        if len(lastName) == 0:
             raise "not correct data"
         self.__lastName = lastName
 
     def __set_ID(self, ID: str | int) -> None:
         if type(ID) is str:
-            if not len(ID) is 10:
+            if not len(ID) == 10:
                 raise "not correct data"
             for char in ID:
                 if not ord(char) in range(ord("0"), ord("9")):
@@ -49,8 +49,8 @@ class Person:
             self.__ID = str(ID)
 
     def get_dict(self) -> dict:
-        if not self.__set:
-            raise "dont set person"
+        # if not self.__set:
+        #     raise "dont set person"
         return {
             'firstName': self.__firstName,
             'lastName': self.__lastName,
@@ -68,26 +68,26 @@ class Person:
         return self.__firstName
 
     def get_last_name(self):
-        if not self.__set:
-            raise "dont set person"
+        # if not self.__set:
+        #     raise "dont set person"
         return self.__lastName
 
     def get_ID(self):
-        if not self.__set:
-            raise "dont set person"
+        # if not self.__set:
+        #     raise "dont set person"
         return self.__ID
 
     def get_day(self):
-        if not self.__set:
-            raise "dont set person"
+        # if not self.__set:
+        #     raise "dont set person"
         return self.__day
 
     def get_month(self):
-        if not self.__set:
-            raise "dont set person"
+        # if not self.__set:
+        #     raise "dont set person"
         return self.__month
 
     def get_year(self):
-        if not self.__set:
-            raise "dont set person"
+        # if not self.__set:
+        #     raise "dont set person"
         return self.__year
