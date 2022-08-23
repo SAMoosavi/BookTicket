@@ -5,8 +5,9 @@ class Person:
     __day: int = 0
     __month: int = 0
     __year: int = 0
+    __set = False
 
-    def __int__(self, firstName: str, lastName: str, ID: str | int, berthDay: str):
+    def set(self, firstName: str, lastName: str, ID: str | int, berthDay: str):
         self.__set_first_name(firstName)
         self.__set_last_name(lastName)
         self.__set_ID(ID)
@@ -48,6 +49,8 @@ class Person:
             self.__ID = str(ID)
 
     def get_dict(self) -> dict:
+        if not self.__set:
+            raise "dont set person"
         return {
             'firstName': self.__firstName,
             'lastName': self.__lastName,
@@ -58,3 +61,33 @@ class Person:
                 'year': self.__year
             }
         }
+
+    def get_first_name(self):
+        if not self.__set:
+            raise
+        return self.__firstName
+
+    def get_last_name(self):
+        if not self.__set:
+            raise "dont set person"
+        return self.__lastName
+
+    def get_ID(self):
+        if not self.__set:
+            raise "dont set person"
+        return self.__ID
+
+    def get_day(self):
+        if not self.__set:
+            raise "dont set person"
+        return self.__day
+
+    def get_month(self):
+        if not self.__set:
+            raise "dont set person"
+        return self.__month
+
+    def get_year(self):
+        if not self.__set:
+            raise "dont set person"
+        return self.__year
