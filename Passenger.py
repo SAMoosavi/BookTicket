@@ -7,7 +7,7 @@ class Passenger:
     __URL: str = "data/passengers.json"
     __passengers: list[dict] = []
 
-    def __int__(self):
+    def __init__(self):
         file = open(self.__URL, "r")
         print("hi")
         print(file)
