@@ -64,18 +64,13 @@ class Path:
         LogTrain().write(trains)
         for train in trains:
             capacity: int = 0
-            correctCapacity: int = 0
             for b in train['Prices']:
-                if b['SellType'] == 3:
-                    for c in b['Classes']:
-                        capacity += c['Capacity']
-
                 if b['SellType'] == sex_enum_to_int(sex):
                     for c in b['Classes']:
-                        correctCapacity += c['Capacity']
+                        capacity += c['Capacity']
                     break
 
-            if not capacity == 0 and not correctCapacity == 0:
+            if not capacity == 0:
                 self.__listOfTrain.append(train)
 
     def __set_train(self, listTrainId: list[int | str]) -> bool:
