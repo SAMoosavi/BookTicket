@@ -1,3 +1,6 @@
+from globalVariable import Sex
+
+
 class Person:
     __firstName: str = ""
     __lastName: str = ""
@@ -5,13 +8,15 @@ class Person:
     __day: int = 0
     __month: int = 0
     __year: int = 0
+    __sex: Sex = Sex.MAN
     __set = False
 
-    def set(self, firstName: str, lastName: str, ID: str | int, berthDay: str):
+    def set(self, firstName: str, lastName: str, ID: str | int, berthDay: str, sex: Sex):
         self.__set_first_name(firstName)
         self.__set_last_name(lastName)
         self.__set_ID(ID)
         self.__set_berth_day(berthDay)
+        self.__set_sex(sex)
 
     def set_on_dict(self, data: dict):
         if not data['firstName']:
@@ -24,6 +29,8 @@ class Person:
             raise "not correct data"
         if not data['berthDay']['day']:
             raise "not correct data"
+        if not data['sex']:
+            raise "not correct data"
 
         self.__set_first_name(data['firstName'])
         self.__set_last_name(data['lastName'])
@@ -31,6 +38,10 @@ class Person:
         self.__set_berth_day(
             str(data['berthDay']['year']) + "/" + str(data['berthDay']['month']) + "/" + str(data['berthDay']['day'])
         )
+        self.__set_sex(data['sex'])
+
+    def __set_sex(self, sex: Sex):
+        self.__sex = sex
 
     def __set_berth_day(self, date: str) -> None:
         dateSpirited = date.split('/')
@@ -78,7 +89,8 @@ class Person:
                 'day': self.__day,
                 'month': self.__month,
                 'year': self.__year
-            }
+            },
+            'sex': self.__sex
         }
 
     def get_first_name(self):
@@ -110,3 +122,8 @@ class Person:
         # if not self.__set:
         #     raise "don't set person"
         return self.__year
+
+    def get_sex(self):
+        # if not self.__set:
+        #     raise "don't set person"
+        return self.__sex
