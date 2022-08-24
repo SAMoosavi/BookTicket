@@ -48,16 +48,19 @@ def get_query(beginning: str, ending: str, date: str) -> str:
 
 
 class Path:
-    __train: dict = {}
-    __listOfTrain: list = []
+    __train: dict | None = None
+    __listOfTrain: list | None = None
+    __sex: Sex | None = None
+    __classesTrain: list[dict] | None = None
 
     def is_free(self, beginning: str, ending: str, date: str, sex: Sex, listTrainId: list[int | str]) -> bool:
+        self.__sex = sex
         query = get_query(beginning, ending, date)
         response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2?" + query).text
-        self.__get_list_of_train(json.loads(response), sex)
+        self.__get_list_of_train(json.loads(response))
         return self.__set_train(listTrainId)
 
-    def __get_list_of_train(self, data, sex: Sex) -> None:
+    def __get_list_of_train(self, data) -> None:
         if 'Trains' not in data:
             return
         trains = data['Trains']
@@ -65,7 +68,7 @@ class Path:
         for train in trains:
             capacity: int = 0
             for b in train['Prices']:
-                if b['SellType'] == sex_enum_to_int(sex):
+                if b['SellType'] == sex_enum_to_int(self.__sex):
                     for c in b['Classes']:
                         capacity += c['Capacity']
                     break
@@ -83,6 +86,9 @@ class Path:
             for train in self.__listOfTrain:
                 if str(Id) == str(train['TrainNumber']):
                     self.__train = train
+                    for Price in self.__train['Prices']:
+                        if Price['SellType'] == sex_enum_to_int(self.__sex):
+                            self.__classesTrain = Price['Classes']
                     return True
 
         return False
