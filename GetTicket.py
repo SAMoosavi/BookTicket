@@ -40,7 +40,7 @@ class GetTicket(CompleteForms):
                     sex: Sex) -> list[WebElement]:
         self.__complete_form_search(beginning, ending, date, adultNum, childNum, sex)
         self.__btn_search()
-        self.__minTrain()
+        self.__min_train()
         return self.__tickets()
 
     # search
@@ -135,7 +135,8 @@ class GetTicket(CompleteForms):
         self.clickBtn(
             "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[4]/button", By.XPATH)
 
-    def __minTrain(self):
+    # ticket
+    def __min_train(self):
         self.clickBtn("/html/body/div/div/div/div[2]/div[3]/aside/div/div[4]/div[1]/div/div[2]/div[1]/div/label[2]",
                       By.XPATH)
         time.sleep(1)
