@@ -1,5 +1,5 @@
 class LogTrain:
-    __URL = "./train.csv"
+    __PATH = "./data/train.csv"
     __file = None
 
     def __init__(self):
@@ -9,7 +9,7 @@ class LogTrain:
         self.__file.close()
 
     def write(self, trains):
-        self.__file = open(self.__URL, 'a')
+        self.__file = open(self.__PATH, 'a')
         self.__writeOnFile(trains)
 
     def __writeOnFile(self, data: list):
