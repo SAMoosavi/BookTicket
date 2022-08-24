@@ -15,12 +15,12 @@ class GetElement:
     def __del__(self):
         self.driver.close()
 
-    def wait_and_return(self, pathOfElement: str, el_type: By = By.ID, timeWAit: int = 60) -> WebElement:
+    def wait_and_return(self, pathOfElement: str, el_type: By = By.ID, timeWAit: float = 60) -> WebElement:
         return WebDriverWait(self.driver, timeWAit).until(
             EC.presence_of_element_located((el_type, pathOfElement))
         )
 
-    def wait_and_returns(self, pathOfElement: str, el_type: By = By.ID, timeWAit: int = 60) -> list[WebElement]:
+    def wait_and_returns(self, pathOfElement: str, el_type: By = By.ID, timeWAit: float = 60) -> list[WebElement]:
         return WebDriverWait(self.driver, timeWAit).until(
             EC.presence_of_all_elements_located((el_type, pathOfElement))
         )
