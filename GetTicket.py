@@ -1,6 +1,7 @@
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
 from CompleteForms import CompleteForms
 from globalVariable import cities, months, Sex
@@ -123,7 +124,14 @@ class GetTicket(CompleteForms):
         time.sleep(timeSleep)
         self.clickBtn(btnPath, elTypeBtn)
 
-
     def __btn_search(self):
         self.clickBtn(
             "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[4]/button", By.XPATH)
+
+    def __minTrain(self):
+        self.clickBtn("/html/body/div/div/div/div[2]/div[3]/aside/div/div[4]/div[1]/div/div[2]/div[1]/div/label[2]",
+                      By.XPATH)
+        time.sleep(1)
+
+    def __tickets(self) -> list[WebElement]:
+        return self.wait_and_returns("/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/*", By.XPATH, 1)
