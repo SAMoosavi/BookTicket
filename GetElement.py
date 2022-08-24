@@ -12,12 +12,15 @@ class GetElement:
         self.driver = webdriver.Firefox()
         self.driver.get(URL)
 
-    def wait_and_return(self, element, el_type=By.ID) -> WebElement:
-        return WebDriverWait(self.driver, 60).until(
-            EC.presence_of_element_located((el_type, element))
+    def __del__(self):
+        self.driver.close()
+
+    def wait_and_return(self, pathOfElement: str, el_type: By = By.ID, timeWAit: int = 60) -> WebElement:
+        return WebDriverWait(self.driver, timeWAit).until(
+            EC.presence_of_element_located((el_type, pathOfElement))
         )
 
-    def wait_and_returns(self, element, el_type=By.ID) -> list[WebElement]:
-        return WebDriverWait(self.driver, 60).until(
-            EC.presence_of_all_elements_located((el_type, element))
+    def wait_and_returns(self, pathOfElement: str, el_type: By = By.ID, timeWAit: int = 60) -> list[WebElement]:
+        return WebDriverWait(self.driver, timeWAit).until(
+            EC.presence_of_all_elements_located((el_type, pathOfElement))
         )
