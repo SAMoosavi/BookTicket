@@ -8,17 +8,17 @@ class CompleteForms(GetElement):
     def __init__(self, URL):
         GetElement.__init__(self, URL)
 
-    def completeSelectForm(self, value, element, el_type=By.ID):
-        selectFrom = Select(self.wait_and_return(element, el_type))
+    def completeSelectForm(self, value, element, el_type=By.ID, timeWait: int = 60):
+        selectFrom = Select(self.wait_and_return(element, el_type, timeWait))
         selectFrom.select_by_value(value)
 
-    def completeInputForm(self, value, element, el_type=By.ID):
-        inputForm = self.wait_and_return(element, el_type)
+    def completeInputForm(self, value, element, el_type=By.ID, timeWait: int = 60):
+        inputForm = self.wait_and_return(element, el_type, timeWait)
         inputForm.clear()
         inputForm.send_keys(value)
 
-    def completeInputFormReadOnly(self, value, element, el_type=By.ID):
-        inputForm = self.wait_and_return(element, el_type)
+    def completeInputFormReadOnly(self, value, element, el_type=By.ID, timeWait: int = 60):
+        inputForm = self.wait_and_return(element, el_type, timeWait)
         selector: str = ""
         isMulty: bool = False
         if el_type == By.ID:
@@ -44,14 +44,14 @@ class CompleteForms(GetElement):
         inputForm.clear()
         inputForm.send_keys(value)
 
-    def completeRadio(self, value, element, el_type=By.ID):
-        radioForm = self.wait_and_returns(element, el_type)
+    def completeRadio(self, value, element, el_type=By.ID, timeWait: int = 60):
+        radioForm = self.wait_and_returns(element, el_type, timeWait)
         radioForm[value].click()
 
-    def completeCheckBox(self, element, el_type=By.ID):
-        checkBoxForm = self.wait_and_return(element, el_type)
+    def completeCheckBox(self, element, el_type=By.ID, timeWait: int = 60):
+        checkBoxForm = self.wait_and_return(element, el_type, timeWait)
         checkBoxForm.click()
 
-    def clickBtn(self, element, el_type=By.ID):
-        pageLink = self.wait_and_return(element, el_type)
+    def clickBtn(self, element, el_type=By.ID, timeWait: int = 60):
+        pageLink = self.wait_and_return(element, el_type, timeWait)
         pageLink.click()
