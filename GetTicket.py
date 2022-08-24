@@ -3,7 +3,10 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
+from Passenger import Passenger
 from CompleteForms import CompleteForms
+from Person import Person
+from PlayAlarm import PlayAlarm
 from globalVariable import cities, months, Sex
 
 
@@ -143,3 +146,102 @@ class GetTicket(CompleteForms):
 
     def __tickets(self) -> list[WebElement]:
         return self.wait_and_returns("/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/*", By.XPATH, 1)
+
+    def sel_ticket(self, ticket: WebElement, passengers: list[dict]):
+        self.__book_ticket(ticket)
+        self.__btn_verify()
+        self.__set_passengers(passengers)
+        self.__credentials()
+        self.__check_price()
+        self.__click_buy()
+
+    def __book_ticket(self, ticket: WebElement):
+        btn = ticket.find_element(By.XPATH, "//div/section[2]/div[2]/button")
+        btn.location_once_scrolled_into_view
+        time.sleep(1)
+        btn.click()
+
+    def __btn_verify(self):
+        self.click_btn_scroll("/html/body/div/div/div/div[2]/div[2]/div[2]/div/div[8]/button[2]", By.XPATH)
+
+    def __set_passengers(self, passengers: list[dict]):
+        Pas = Passenger()
+        for index in (0, len(passengers)):
+            person = Pas.get_person_by_ID(passengers[index]['ID'])
+            self.__set_passenger(index, person, passengers[index]['service'])
+
+    def __set_passenger(self, index: int, passenger: Person, service: str):
+        baseLocation = "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[2]/div[" + str(index) + "]"
+        self.wait_and_return(baseLocation, By.XPATH).location_once_scrolled_into_view
+        time.sleep(0.5)
+        self.__set_first_name(baseLocation, passenger.get_first_name())
+        self.__set_last_name(baseLocation, passenger.get_last_name())
+        self.__set_sex(baseLocation, passenger.get_sex())
+        self.__set_ID(baseLocation, passenger.get_ID())
+        self.__set_day(baseLocation, passenger.get_day())
+        self.__set_month(baseLocation, passenger.get_month())
+        self.__set_year(baseLocation, passenger.get_year())
+        self.__set_service(baseLocation, service)
+
+    def __set_service(self, baseLocation, service: str):
+        try:
+            if service is None or service == "":
+                self.clickBtn(baseLocation + "/div/form/span/div/div[1]/div[2]/label", By.XPATH, 0.1)
+            else:
+                self.completeInputForm(service, baseLocation + "/div/form/span/div/div[1]/div[2]/label/input", By.XPATH,
+                                       0.1)
+            time.sleep(1)
+            self.clickBtn(baseLocation + "/div/form/span/div/div[2]/div/div/div[2]/div[1]", By.XPATH)
+        except:
+            pass
+
+    def __set_first_name(self, baseLocation, data: str):
+        self.completeInputForm(data, baseLocation + "/div/form/div[2]/div[2]/label/input", By.XPATH)
+
+    def __set_last_name(self, baseLocation, data: str):
+        self.completeInputForm(data, baseLocation + "/div/form/div[3]/div[2]/label/input", By.XPATH)
+
+    def __set_sex(self, baseLocation, data: Sex):
+        location = baseLocation + "/div/form/div[1]/span[1]/div/div[1]/div"
+        if data == Sex.MAN:
+            self.clickBtn(location + "/label[1]", By.XPATH)
+        elif data == Sex.WOMAN:
+            self.clickBtn(location + "/label[2]", By.XPATH)
+
+    def __set_ID(self, baseLocation, data: str):
+        self.completeInputForm(data, baseLocation + "/div/form/div[4]/div[2]/label/input", By.XPATH)
+
+    def __set_day(self, baseLocation, data: int):
+        self.completeInputForm(str(data),
+                               baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[1]/div[2]/label/input",
+                               By.XPATH)
+        time.sleep(1)
+        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
+
+    def __set_month(self, baseLocation, data: int):
+        month = self.__month[data]
+        self.completeInputForm(month,
+                               baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[2]/div/div[2]/label/input",
+                               By.XPATH)
+        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[2]/div[2]/div/div/div[2]/div", By.XPATH)
+
+    def __set_year(self, baseLocation, data: int):
+        self.completeInputForm(str(data),
+                               baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[3]/div[1]/div[2]/label/input",
+                               By.XPATH)
+        time.sleep(1)
+        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[3]/div[2]/div/div/div[2]/div", By.XPATH)
+
+    def __credentials(self):
+        self.click_btn_scroll("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[3]/label", By.XPATH)
+
+    def __check_price(self):
+        price = self.wait_and_return(
+            "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[3]/div[1]/div[4]/div[2]/span",
+            By.XPATH).text
+        if int(price) != 0:
+            PlayAlarm()
+
+    def __click_buy(self):
+        self.clickBtn("btnAccept")
+        time.sleep(30)
