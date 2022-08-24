@@ -36,6 +36,13 @@ class GetTicket(CompleteForms):
     def __close_login_form(self):
         self.clickBtn("/html/body/div[2]/div/div/div[2]/div/span/span", By.XPATH, 1)
 
+    def get_tickets(self, beginning: int, ending: int, date: str, adultNum: int | str, childNum: int | str,
+                    sex: Sex) -> list[WebElement]:
+        self.__complete_form_search(beginning, ending, date, adultNum, childNum, sex)
+        self.__btn_search()
+        self.__minTrain()
+        return self.__tickets()
+
     # search
     def __complete_form_search(
             self,
