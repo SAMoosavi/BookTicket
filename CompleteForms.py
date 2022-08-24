@@ -61,3 +61,7 @@ class CompleteForms(GetElement):
     def clickBtn(self, element, el_type=By.ID, timeWait: int = 60):
         pageLink = self.wait_and_return(element, el_type, timeWait)
         pageLink.click()
+
+    def click_btn_on_list(self, element, index: int, el_type=By.ID, timeWait: int = 60):
+        btns = self.wait_and_returns(element, el_type, timeWait)
+        btns[index].click()
