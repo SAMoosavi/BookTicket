@@ -1,6 +1,28 @@
 from globalVariable import Sex
 
 
+def sex_enum_to_int(sex: Sex) -> int:
+    if Sex.MAN == sex:
+        return 1
+    elif Sex.WOMAN == sex:
+        return 2
+    elif Sex.BOTH == sex:
+        return 3
+    else:
+        raise "sex isn in Sex Enum"
+
+
+def int_to_sex_enum(sex: int) -> Sex:
+    if sex == 1:
+        return Sex.MAN
+    elif sex == 2:
+        return Sex.WOMAN
+    elif sex == 3:
+        return Sex.BOTH
+    else:
+        raise "sex isn in Sex Enum"
+
+
 class Person:
     __firstName: str = ""
     __lastName: str = ""
@@ -8,10 +30,10 @@ class Person:
     __day: int = 0
     __month: int = 0
     __year: int = 0
-    __sex: Sex = Sex.MAN
+    __sex: Sex = Sex.BOTH
     __set = False
 
-    def set(self, firstName: str, lastName: str, ID: str | int, berthDay: str, sex: Sex):
+    def set(self, firstName: str, lastName: str, ID: str | int, berthDay: str, sex: int):
         self.__set_first_name(firstName)
         self.__set_last_name(lastName)
         self.__set_ID(ID)
@@ -40,8 +62,8 @@ class Person:
         )
         self.__set_sex(data['sex'])
 
-    def __set_sex(self, sex: Sex):
-        self.__sex = sex
+    def __set_sex(self, sex: int):
+        self.__sex = int_to_sex_enum(sex)
 
     def __set_berth_day(self, date: str) -> None:
         dateSpirited = date.split('/')
@@ -90,7 +112,7 @@ class Person:
                 'month': self.__month,
                 'year': self.__year
             },
-            'sex': self.__sex
+            'sex': sex_enum_to_int(self.__sex)
         }
 
     def get_first_name(self):
@@ -123,7 +145,7 @@ class Person:
         #     raise "don't set person"
         return self.__year
 
-    def get_sex(self):
+    def get_sex(self) -> Sex:
         # if not self.__set:
         #     raise "don't set person"
         return self.__sex
