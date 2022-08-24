@@ -58,7 +58,7 @@ class Path:
         return self.__set_train(listTrainId)
 
     def __get_list_of_train(self, data, sex: Sex) -> None:
-        if not 'Trains' in data:
+        if 'Trains' not in data:
             return
         trains = data['Trains']
         LogTrain().write(trains)
