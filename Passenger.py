@@ -11,7 +11,10 @@ class Passenger:
         file = open(self.__URL, "r")
         print("hi")
         print(file)
-        self.__passengers = json.loads(file.read())
+        data = file.read()
+        if data:
+            self.__passengers = json.loads(data)
+
 
     def add_person(self, person: Person) -> None:
         personDict = person.get_dict()
