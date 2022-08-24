@@ -17,6 +17,12 @@ class CompleteForms(GetElement):
         inputForm.clear()
         inputForm.send_keys(value)
 
+    def complete_input_scroll(self, value, element, el_type=By.ID, timeWait: int = 60):
+        inputForm = self.wait_and_return(element, el_type, timeWait)
+        inputForm.location_once_scrolled_into_view
+        inputForm.clear()
+        inputForm.send_keys(value)
+
     def completeInputFormReadOnly(self, value, element, el_type=By.ID, timeWait: int = 60):
         inputForm = self.wait_and_return(element, el_type, timeWait)
         selector: str = ""
