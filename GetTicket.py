@@ -122,3 +122,8 @@ class GetTicket(CompleteForms):
         self.complete_input_scroll(city, inputPath, elTypeInput)
         time.sleep(timeSleep)
         self.clickBtn(btnPath, elTypeBtn)
+
+
+    def __btn_search(self):
+        self.clickBtn(
+            "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[4]/button", By.XPATH)
