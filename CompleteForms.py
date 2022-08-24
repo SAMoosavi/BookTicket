@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from GetElement import GetElement
@@ -17,9 +19,10 @@ class CompleteForms(GetElement):
         inputForm.clear()
         inputForm.send_keys(value)
 
-    def complete_input_scroll(self, value, element, el_type=By.ID, timeWait: int = 60):
+    def complete_input_scroll(self, value, element, el_type=By.ID, timeSleep: float = 0.5, timeWait: int = 60):
         inputForm = self.wait_and_return(element, el_type, timeWait)
         inputForm.location_once_scrolled_into_view
+        time.sleep(timeSleep)
         inputForm.clear()
         inputForm.send_keys(value)
 
@@ -65,3 +68,9 @@ class CompleteForms(GetElement):
     def click_btn_on_list(self, element, index: int, el_type=By.ID, timeWait: int = 60):
         btns = self.wait_and_returns(element, el_type, timeWait)
         btns[index].click()
+
+    def click_btn_scroll(self, element, el_type=By.ID, timeSleep: float = 0.5, timeWait: int = 60):
+        btn = self.wait_and_return(element, el_type, timeWait)
+        btn.location_once_scrolled_into_view
+        time.sleep(timeSleep)
+        btn.click()
