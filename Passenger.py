@@ -19,6 +19,7 @@ class Passenger:
             print('person has in passenger list')
         else:
             self.__passengers.append(personDict)
+            self.__save()
 
     def __get_person_by_ID(self, ID: str | int) -> Person | None:
         for person in self.__passengers:
@@ -33,6 +34,9 @@ class Passenger:
             return result
         raise "not found passenger"
 
-    def __del__(self):
+    def __save(self):
         file = open(self.__URL, "w")
         file.write(json.dumps(self.__passengers))
+
+    def __del__(self):
+        self.__save()
