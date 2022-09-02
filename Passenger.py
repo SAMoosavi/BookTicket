@@ -16,7 +16,7 @@ class Passenger:
     def add_person(self, person: Person) -> None:
         personDict = person.get_dict()
         if self.__get_person_by_ID(personDict['ID']):
-            print('person has in passenger list')
+            print(personDict['ID'], 'person has in passenger list')
         else:
             self.__passengers.append(personDict)
             self.__save()
@@ -24,7 +24,9 @@ class Passenger:
     def __get_person_by_ID(self, ID: str | int) -> Person | None:
         for person in self.__passengers:
             if person['ID'] == str(ID):
-                return Person().set_on_dict(person)
+                result = Person()
+                result.set_on_dict(person)
+                return result
             return None
 
     def get_person_by_ID(self, ID: str | int) -> Person:
