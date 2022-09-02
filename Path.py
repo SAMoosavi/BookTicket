@@ -62,7 +62,7 @@ def get_query(beginning: str, ending: str, date: str) -> str:
 
 class Path:
     __train: dict | None = None
-    __listOfTrain: list | None = None
+    __listOfTrain: list = []
     __sex: Sex | None = None
     __classesTrain: list[dict] | None = None
 
@@ -140,7 +140,6 @@ class Path:
 
     def __is_ticket_with_time(self, ticket: WebElement) -> bool:
         DepartureTime = ticket.find_element(By.XPATH, "//div/section[1]/div[1]/section/div[1]/div[1]").text
-
         if DepartureTime not in self.__train['DepartureTime']:
             return False
 
@@ -187,7 +186,7 @@ class Path:
         price = ticket.find_element(By.XPATH, "//div/section[2]/div[2]/div").text
         for classTrain in self.__classesTrain:
             if classTrain['Capacity'] > 0:
-                if price in classTrain['Price']:
+                if str(classTrain['Price']) in price:
                     return True
 
         return False
