@@ -225,10 +225,10 @@ class GetTicket(CompleteForms):
 
     def __set_day(self, baseLocation, data: int):
         self.completeInputForm(str(data),
-                               baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[1]/div[2]/label/input",
+                               baseLocation + "/div/form/div[5]/div/div[3]/div[1]/div/div[2]/label/input",
                                By.XPATH)
         time.sleep(1)
-        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
+        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
 
     def __set_month(self, baseLocation, data: int):
         month = self.__month[data]
