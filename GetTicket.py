@@ -185,9 +185,9 @@ class GetTicket(CompleteForms):
 
     def __set_passengers(self, passengers: list[dict]):
         Pas = Passenger()
-        for index in (0, len(passengers)):
-            person = Pas.get_person_by_ID(passengers[index]['ID'])
-            self.__set_passenger(index + 1, person, passengers[index]['service'])
+        for index in (1, len(passengers)):
+            person = Pas.get_person_by_ID(passengers[index - 1]['ID'])
+            self.__set_passenger(index, person, passengers[index - 1]['service'])
 
     def __set_passenger(self, index: int, passenger: Person, service: str):
         baseLocation = "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[2]/div[" + str(index) + "]"
