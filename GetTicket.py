@@ -10,6 +10,17 @@ from PlayAlarm import PlayAlarm
 from globalVariable import cities, months, Sex
 
 
+def int_to_sex_enum(sex: int) -> Sex:
+    if sex == 1:
+        return Sex.MAN
+    elif sex == 2:
+        return Sex.WOMAN
+    elif sex == 3:
+        return Sex.BOTH
+    else:
+        raise "sex isn in Sex Enum"
+
+
 class GetTicket(CompleteForms):
     __URL: str = "https://mrbilit.com/train-ticket"
 
@@ -40,7 +51,7 @@ class GetTicket(CompleteForms):
         self.clickBtn("/html/body/div[2]/div/div/div[2]/div/span/span", By.XPATH, 1)
 
     def get_tickets(self, beginning: int, ending: int, date: str, adultNum: int | str, childNum: int | str,
-                    sex: Sex) -> list[WebElement]:
+                    sex: int) -> list[WebElement]:
         self.__complete_form_search(beginning, ending, date, adultNum, childNum, sex)
         self.__btn_search()
         self.__min_train()
@@ -52,7 +63,7 @@ class GetTicket(CompleteForms):
             beginning: int, ending: int,
             date: str,
             adultNum: int | str, childNum: int | str,
-            sex: Sex
+            sex: int
     ):
         self.__beginning(beginning)
         self.__ending(ending)
@@ -60,16 +71,17 @@ class GetTicket(CompleteForms):
         self.__person_number(adultNum, childNum)
         self.__sex(sex)
 
-    def __sex(self, data: Sex):
-        if data == Sex.WOMAN:
+    def __sex(self, data: int):
+        sex = int_to_sex_enum(data)
+        if sex == Sex.WOMAN:
             self.clickBtn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[4]/label[3]",
                 By.XPATH)
-        elif data == Sex.MAN:
+        elif sex == Sex.MAN:
             self.clickBtn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[4]/label[2]",
                 By.XPATH)
-        elif data == Sex.BOTH:
+        elif sex == Sex.BOTH:
             self.clickBtn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[4]/label[1]",
                 By.XPATH)
