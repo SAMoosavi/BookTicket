@@ -21,6 +21,13 @@ def int_to_sex_enum(sex: int) -> Sex:
         raise "sex isn in Sex Enum"
 
 
+def int_to_month_of_month(data: int) -> str:
+    if data < 10:
+        return "0" + str(data)
+    else:
+        return str(data)
+
+
 class GetTicket(CompleteForms):
     __URL: str = "https://mrbilit.com/train-ticket"
 
@@ -231,11 +238,11 @@ class GetTicket(CompleteForms):
         self.clickBtn(baseLocation + "/div/form/div[5]/div/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
 
     def __set_month(self, baseLocation, data: int):
-        month = self.__month[data]
+        month = self.__month[int_to_month_of_month(data)]
         self.completeInputForm(month,
-                               baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[2]/div/div[2]/label/input",
+                               baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[1]/div[2]/label/input",
                                By.XPATH)
-        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[2]/div[2]/div/div/div[2]/div", By.XPATH)
+        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[2]/div/div/div[2]", By.XPATH)
 
     def __set_year(self, baseLocation, data: int):
         self.completeInputForm(str(data),
