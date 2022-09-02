@@ -116,8 +116,8 @@ class Person:
         }
 
     def get_first_name(self):
-        if not self.__set:
-            raise
+        # if not self.__set:
+        #     raise "don't set person"
         return self.__firstName
 
     def get_last_name(self):
