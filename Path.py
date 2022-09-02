@@ -31,6 +31,17 @@ def sex_enum_to_int(sex: Sex) -> int:
         raise "sex isn in Sex Enum"
 
 
+def int_to_sex_enum(sex: int) -> Sex:
+    if sex == 1:
+        return Sex.MAN
+    elif sex == 2:
+        return Sex.WOMAN
+    elif sex == 3:
+        return Sex.BOTH
+    else:
+        raise "sex isn in Sex Enum"
+
+
 def j_to_g(date: str, spliter='/') -> str:
     splitDate: list[str] = date.split(spliter)
     return str(jdatetime.date(day=int(splitDate[2]), month=int(splitDate[1]), year=int(splitDate[0])).togregorian())
@@ -55,8 +66,8 @@ class Path:
     __sex: Sex | None = None
     __classesTrain: list[dict] | None = None
 
-    def is_free(self, beginning: str, ending: str, date: str, sex: Sex, listTrainId: list[int | str]) -> bool:
-        self.__sex = sex
+    def is_free(self, beginning: str, ending: str, date: str, sex: int, listTrainId: list[int | str]) -> bool:
+        self.__sex = int_to_sex_enum(sex)
         query = get_query(beginning, ending, date)
         response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2?" + query).text
         self.__get_list_of_train(json.loads(response))
@@ -79,6 +90,9 @@ class Path:
                 self.__listOfTrain.append(train)
 
     def __set_train(self, listTrainId: list[int | str]) -> bool:
+        if not self.__listOfTrain:
+            return False
+
         if len(self.__listOfTrain) == 0:
             return False
 
