@@ -174,7 +174,7 @@ class GetTicket(CompleteForms):
         btn.click()
 
     def __btn_verify(self):
-        self.click_btn_scroll("/html/body/div/div/div/div[2]/div[2]/div[2]/div/div[8]/button[2]", By.XPATH)
+        self.click_btn_scroll("//div[contains(@class, 'btn-container')]/button[2]", By.XPATH)
 
     def __set_passengers(self, passengers: list[dict]):
         Pas = Passenger()
