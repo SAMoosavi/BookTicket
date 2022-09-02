@@ -169,7 +169,7 @@ class GetTicket(CompleteForms):
 
     def __book_ticket(self, ticket: WebElement):
         btn = ticket.find_element(By.XPATH, "//div/section[2]/div[2]/button")
-        btn.location_once_scrolled_into_view
+        ticket.location_once_scrolled_into_view
         time.sleep(1)
         btn.click()
 
