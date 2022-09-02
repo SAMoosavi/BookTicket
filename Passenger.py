@@ -9,12 +9,9 @@ class Passenger:
 
     def __init__(self):
         file = open(self.__URL, "r")
-        print("hi")
-        print(file)
         data = file.read()
         if data:
             self.__passengers = json.loads(data)
-
 
     def add_person(self, person: Person) -> None:
         personDict = person.get_dict()
@@ -27,7 +24,6 @@ class Passenger:
     def __get_person_by_ID(self, ID: str | int) -> Person | None:
         for person in self.__passengers:
             if person['ID'] == str(ID):
-                print(person['ID'] == str(ID))
                 return Person().set_on_dict(person)
             return None
 
