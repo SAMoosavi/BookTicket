@@ -1,5 +1,5 @@
 class LogTrain:
-    __PATH = "../v2/storage/train.csv"
+    __PATH = "v2/storage/train.csv"
     __file = None
 
     def __init__(self):

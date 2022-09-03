@@ -6,8 +6,8 @@ from selenium.webdriver.remote.webelement import WebElement
 
 from globalClass.LogTrain import LogTrain
 from globalClass.globalVariable import Sex
-from helper.DateFunctions import j_to_g
-from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
+from v2.helper.DateFunctions import j_to_g
+from v2.helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
 
 
 def get_query(beginning: str, ending: str, date: str) -> str:

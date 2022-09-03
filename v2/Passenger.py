@@ -1,10 +1,10 @@
 import json
 
-from Person import Person
+from v2.Person import Person
 
 
 class Passenger:
-    __URL: str = "storage/passengers.json"
+    __URL: str = "v2/storage/passengers.json"
     __passengers: list[dict] = []
 
     def __init__(self):

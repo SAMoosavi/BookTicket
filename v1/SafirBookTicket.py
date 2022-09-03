@@ -1,8 +1,9 @@
 import time
 
-from BookTicket import BookTicket
-from globalClass.CompleteForms import CompleteForms
 from selenium.webdriver.common.by import By
+
+from globalClass.CompleteForms import CompleteForms
+from v1.BookTicket import BookTicket
 
 
 class SafirBookTicket(BookTicket, CompleteForms):

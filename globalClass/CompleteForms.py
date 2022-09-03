@@ -2,7 +2,8 @@ import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-from GetElement import GetElement
+
+from globalClass.GetElement import GetElement
 
 
 class CompleteForms(GetElement):

@@ -3,13 +3,13 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
-from Passenger import Passenger
 from globalClass.CompleteForms import CompleteForms
-from Person import Person
-from PlayAlarm import PlayAlarm
 from globalClass.globalVariable import cities, months, Sex
-from helper.DateFunctions import int_to_month_of_number
-from helper.SexFunctions import int_to_sex_enum
+from v2.Passenger import Passenger
+from v2.Person import Person
+from v2.PlayAlarm import PlayAlarm
+from v2.helper.DateFunctions import int_to_month_of_number
+from v2.helper.SexFunctions import int_to_sex_enum
 
 
 class GetTicket(CompleteForms):
