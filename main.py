@@ -1,3 +1,4 @@
+"""
 import json
 from AliBabaBookTicket import AliBabaBookTicket
 from SafirBookTicket import SafirBookTicket
@@ -40,7 +41,7 @@ bookTicket: BookTicket = MrBilitBookTicket()
 #         }
 #     ]
 # }
-fileJson = open("./data.json", 'r')
+fileJson = open("./Path.json", 'r')
 data = json.loads(fileJson.read())
 fileJson.close()
 print(data)
@@ -55,3 +56,44 @@ else:
 
 bookTicket.setUsers(data["travelers"])
 bookTicket.buy()
+"""
+import json
+import time
+
+from GetTicket import GetTicket
+from Passenger import Passenger
+from Path import Path
+from Person import Person
+
+personJson = open("./Person.json", 'r')
+personData = json.loads(personJson.read())
+personJson.close()
+del personJson
+
+passenger = Passenger()
+
+for person in personData:
+    per = Person()
+    per.set_on_dict(person)
+    passenger.add_person(per)
+
+pathJson = open("./Path.json", 'r')
+data = json.loads(pathJson.read())
+pathJson.close()
+del pathJson
+
+path = Path()
+pathData = data['path']
+i: int = 0
+while True:
+    i += 1
+    if path.is_free(pathData['beginning'], pathData['ending'], pathData['date'], pathData['sex'], data['listId']):
+        getTicket = GetTicket()
+        loginData = data['login']
+        getTicket.login(loginData['username'], loginData['password'])
+        tickets = getTicket.get_tickets(pathData['beginning'], pathData['ending'], pathData['date'], pathData['adult'],
+                                        pathData['child'], pathData['sex'])
+        getTicket.sel_ticket(path.find_ticket(tickets), data['Passengers'])
+        break
+    time.sleep(3)
+    print(i)
