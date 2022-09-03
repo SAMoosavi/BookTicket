@@ -11,11 +11,11 @@ class CompleteForms(GetElement):
     def __init__(self, URL):
         GetElement.__init__(self, URL)
 
-    def completeSelectForm(self, value, element, el_type=By.ID, timeWait: float = 60):
+    def complete_select_form(self, value, element, el_type=By.ID, timeWait: float = 60):
         selectFrom = Select(self.wait_and_return(element, el_type, timeWait))
         selectFrom.select_by_value(value)
 
-    def completeInputForm(self, value, element, el_type=By.ID, timeWait: float = 60):
+    def complete_input_form(self, value, element, el_type=By.ID, timeWait: float = 60):
         inputForm = self.wait_and_return(element, el_type, timeWait)
         inputForm.clear()
         inputForm.send_keys(value)
@@ -27,7 +27,7 @@ class CompleteForms(GetElement):
         inputForm.clear()
         inputForm.send_keys(value)
 
-    def completeInputFormReadOnly(self, value, element, el_type=By.ID, timeWait: float = 60):
+    def complete_input_form_read_only(self, value, element, el_type=By.ID, timeWait: float = 60):
         inputForm = self.wait_and_return(element, el_type, timeWait)
         selector: str = ""
         isMulty: bool = False
@@ -54,15 +54,15 @@ class CompleteForms(GetElement):
         inputForm.clear()
         inputForm.send_keys(value)
 
-    def completeRadio(self, value, element, el_type=By.ID, timeWait: float = 60):
+    def complete_radio(self, value, element, el_type=By.ID, timeWait: float = 60):
         radioForm = self.wait_and_returns(element, el_type, timeWait)
         radioForm[value].click()
 
-    def completeCheckBox(self, element, el_type=By.ID, timeWait: float = 60):
+    def complete_check_box(self, element, el_type=By.ID, timeWait: float = 60):
         checkBoxForm = self.wait_and_return(element, el_type, timeWait)
         checkBoxForm.click()
 
-    def clickBtn(self, element, el_type=By.ID, timeWait: float = 60):
+    def click_btn(self, element, el_type=By.ID, timeWait: float = 60):
         pageLink = self.wait_and_return(element, el_type, timeWait)
         pageLink.click()
 

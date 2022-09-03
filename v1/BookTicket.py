@@ -19,7 +19,7 @@ class BookTicket(ABC):
     #     pass
 
     @abstractmethod
-    def setUsers(self, dataUsers):
+    def set_users(self, dataUsers):
         pass
 
     @abstractmethod

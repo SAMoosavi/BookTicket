@@ -1,5 +1,5 @@
 from globalClass.globalVariable import Sex
-from v2.helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
+from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
 
 
 class Person:

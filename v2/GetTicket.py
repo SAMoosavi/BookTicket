@@ -8,8 +8,8 @@ from globalClass.globalVariable import cities, months, Sex
 from v2.Passenger import Passenger
 from v2.Person import Person
 from v2.PlayAlarm import PlayAlarm
-from v2.helper.DateFunctions import int_to_month_of_number
-from v2.helper.SexFunctions import int_to_sex_enum
+from helper.DateFunctions import int_to_month_of_number
+from helper.SexFunctions import int_to_sex_enum
 
 
 class GetTicket(CompleteForms):
@@ -26,20 +26,20 @@ class GetTicket(CompleteForms):
     # login
     def login(self, username: str, password: str):
         self.__go_to_login_form()
-        self.completeInputForm(username, "phonenumber")
-        self.clickBtn("login-btn-step1")
-        self.completeInputForm(password, "//input[@type='password']", By.XPATH)
-        self.clickBtn("//form/div[4]/button[2]", By.XPATH)
+        self.complete_input_form(username, "phonenumber")
+        self.click_btn("login-btn-step1")
+        self.complete_input_form(password, "//input[@type='password']", By.XPATH)
+        self.click_btn("//form/div[4]/button[2]", By.XPATH)
         try:
             self.__close_login_form()
         except:
             pass
 
     def __go_to_login_form(self):
-        self.clickBtn("//header/nav/ul/li[3]/div", By.XPATH)
+        self.click_btn("//header/nav/ul/li[3]/div", By.XPATH)
 
     def __close_login_form(self):
-        self.clickBtn("/html/body/div[2]/div/div/div[2]/div/span/span", By.XPATH, 1)
+        self.click_btn("/html/body/div[2]/div/div/div[2]/div/span/span", By.XPATH, 1)
 
     def get_tickets(self, beginning: int, ending: int, date: str, adultNum: int | str, childNum: int | str,
                     sex: int) -> list[WebElement]:
@@ -65,27 +65,27 @@ class GetTicket(CompleteForms):
     def __sex(self, data: int):
         sex = int_to_sex_enum(data)
         if sex == Sex.WOMAN:
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[4]/label[3]",
                 By.XPATH)
         elif sex == Sex.MAN:
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[4]/label[2]",
                 By.XPATH)
         elif sex == Sex.BOTH:
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[4]/label[1]",
                 By.XPATH)
 
     def __person_number(self, adult: str | int, child: str | int):
-        self.clickBtn(
+        self.click_btn(
             "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[1]/div/label", By.XPATH)
         for i in range(1, int(adult)):
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[1]/div/button[2]",
                 By.XPATH)
         for i in range(0, int(child)):
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[2]/div/button[2]",
                 By.XPATH)
 
@@ -95,7 +95,7 @@ class GetTicket(CompleteForms):
         self.__save_date()
 
     def __save_date(self):
-        self.clickBtn(
+        self.click_btn(
             "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[2]/div[3]/div[2]/button[2]",
             By.XPATH)
 
@@ -113,8 +113,8 @@ class GetTicket(CompleteForms):
         self.click_btn_on_list(btnsPath, day - 1, By.XPATH)
 
     def __open_date(self):
-        self.clickBtn("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[1]/div[1]",
-                      By.XPATH)
+        self.click_btn("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[1]/div[1]",
+                       By.XPATH)
 
     def __ending(self, cityNumber: int):
         inputPath = "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[2]/div/div/div[1]/div/label/input"
@@ -135,16 +135,16 @@ class GetTicket(CompleteForms):
         city = self.__cities[cityNumber]
         self.complete_input_scroll(city, inputPath, elTypeInput)
         time.sleep(timeSleep)
-        self.clickBtn(btnPath, elTypeBtn)
+        self.click_btn(btnPath, elTypeBtn)
 
     def __btn_search(self):
-        self.clickBtn(
+        self.click_btn(
             "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[4]/button", By.XPATH)
 
     # ticket
     def __min_train(self):
-        self.clickBtn("/html/body/div/div/div/div[2]/div[3]/aside/div/div[4]/div[1]/div/div[2]/div[1]/div/label[2]",
-                      By.XPATH)
+        self.click_btn("/html/body/div/div/div/div[2]/div[3]/aside/div/div[4]/div[1]/div/div[2]/div[1]/div/label[2]",
+                       By.XPATH)
         time.sleep(1)
 
     def __tickets(self) -> list[WebElement]:
@@ -191,52 +191,52 @@ class GetTicket(CompleteForms):
     def __set_service(self, baseLocation, service: str):
         try:
             if service is None or service == "":
-                self.clickBtn(baseLocation + "/div/form/span/div/div[1]/div[2]/label", By.XPATH, 0.1)
+                self.click_btn(baseLocation + "/div/form/span/div/div[1]/div[2]/label", By.XPATH, 0.1)
             else:
-                self.completeInputForm(service, baseLocation + "/div/form/span/div/div[1]/div[2]/label/input", By.XPATH,
-                                       0.1)
+                self.complete_input_form(service, baseLocation + "/div/form/span/div/div[1]/div[2]/label/input", By.XPATH,
+                                         0.1)
             time.sleep(1)
-            self.clickBtn(baseLocation + "/div/form/span/div/div[2]/div/div/div[2]/div[1]", By.XPATH)
+            self.click_btn(baseLocation + "/div/form/span/div/div[2]/div/div/div[2]/div[1]", By.XPATH)
         except:
             pass
 
     def __set_first_name(self, baseLocation, data: str):
-        self.completeInputForm(data, baseLocation + "/div/form/div[2]/div[2]/label/input", By.XPATH)
+        self.complete_input_form(data, baseLocation + "/div/form/div[2]/div[2]/label/input", By.XPATH)
 
     def __set_last_name(self, baseLocation, data: str):
-        self.completeInputForm(data, baseLocation + "/div/form/div[3]/div[2]/label/input", By.XPATH)
+        self.complete_input_form(data, baseLocation + "/div/form/div[3]/div[2]/label/input", By.XPATH)
 
     def __set_sex(self, baseLocation, data: Sex):
         location = baseLocation + "/div/form/div[1]/span[1]/div/div[1]/div"
         if data == Sex.MAN:
-            self.clickBtn(location + "/label[1]", By.XPATH)
+            self.click_btn(location + "/label[1]", By.XPATH)
         elif data == Sex.WOMAN:
-            self.clickBtn(location + "/label[2]", By.XPATH)
+            self.click_btn(location + "/label[2]", By.XPATH)
 
     def __set_ID(self, baseLocation, data: str):
-        self.completeInputForm(data, baseLocation + "/div/form/div[4]/div[2]/label/input", By.XPATH)
+        self.complete_input_form(data, baseLocation + "/div/form/div[4]/div[2]/label/input", By.XPATH)
 
     def __set_day(self, baseLocation, data: int):
-        self.completeInputForm(str(data),
-                               baseLocation + "/div/form/div[5]/div/div[3]/div[1]/div/div[2]/label/input",
-                               By.XPATH)
+        self.complete_input_form(str(data),
+                                 baseLocation + "/div/form/div[5]/div/div[3]/div[1]/div/div[2]/label/input",
+                                 By.XPATH)
         time.sleep(1)
-        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
+        self.click_btn(baseLocation + "/div/form/div[5]/div/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
 
     def __set_month(self, baseLocation, data: int):
         month = self.__month[int_to_month_of_number(data)]
-        self.completeInputForm(month,
-                               baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[1]/div[2]/label/input",
-                               By.XPATH)
+        self.complete_input_form(month,
+                                 baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[1]/div[2]/label/input",
+                                 By.XPATH)
         time.sleep(1)
-        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[2]/div/div/div[2]/div", By.XPATH)
+        self.click_btn(baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[2]/div/div/div[2]/div", By.XPATH)
 
     def __set_year(self, baseLocation, data: int):
-        self.completeInputForm(str(data),
-                               baseLocation + "/div/form/div[5]/div/div[3]/div[3]/div[1]/div[2]/label/input",
-                               By.XPATH)
+        self.complete_input_form(str(data),
+                                 baseLocation + "/div/form/div[5]/div/div[3]/div[3]/div[1]/div[2]/label/input",
+                                 By.XPATH)
         time.sleep(1)
-        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[3]/div[3]/div[2]/div/div/div[2]/div", By.XPATH)
+        self.click_btn(baseLocation + "/div/form/div[5]/div/div[3]/div[3]/div[2]/div/div/div[2]/div", By.XPATH)
 
     def __credentials(self):
         self.click_btn_scroll("form-next-button")
@@ -250,5 +250,5 @@ class GetTicket(CompleteForms):
             PlayAlarm()
 
     def __click_buy(self):
-        self.clickBtn("btnAccept")
+        self.click_btn("btnAccept")
         time.sleep(30)

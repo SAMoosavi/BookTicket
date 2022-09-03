@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from globalClass.CompleteForms import CompleteForms
 from globalClass.LogTrain import LogTrain
 from globalClass.globalVariable import cities, months
+from helper.DateFunctions import j_to_g
 from v1.BookTicket import BookTicket
 
 
@@ -27,21 +28,21 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
 
     # Login
     def login(self, data):
-        self.__goToLoginForm()
-        self.completeInputForm(data['username'], "phonenumber")
-        self.clickBtn("login-btn-step1")
-        self.completeInputForm(data['password'], "//input[@type='password']", By.XPATH)
-        self.clickBtn("//form/div[4]/button[2]", By.XPATH)
+        self.__go_to_login_form()
+        self.complete_input_form(data['username'], "phonenumber")
+        self.click_btn("login-btn-step1")
+        self.complete_input_form(data['password'], "//input[@type='password']", By.XPATH)
+        self.click_btn("//form/div[4]/button[2]", By.XPATH)
         try:
-            self.__closeLoginForm()
+            self.__close_login_form()
         except:
             pass
 
-    def __closeLoginForm(self):
-        self.clickBtn("/html/body/div[2]/div/div/div[2]/div/span/span", By.XPATH)
+    def __close_login_form(self):
+        self.click_btn("/html/body/div[2]/div/div/div[2]/div/span/span", By.XPATH)
 
-    def __goToLoginForm(self):
-        self.clickBtn("//header/nav/ul/li[3]/div", By.XPATH)
+    def __go_to_login_form(self):
+        self.click_btn("//header/nav/ul/li[3]/div", By.XPATH)
 
     # search
     __fromTime: str = ""
@@ -50,34 +51,34 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
     def search(self, data):
         if data['groupWay'] == 1:
             self.__hasTo = True
-        self.__completeFormSearch(data)
-        self.__btnSearch()
-        self.__setTrain()
-        self.__btnVerify()
+        self.__complete_form_search(data)
+        self.__btn_search()
+        self.__set_train()
+        self.__btn_verify()
 
-    def searchS(self, data, listId):
+    def super_search(self, data, listId):
         if data['groupWay'] == 1:
             self.__hasTo = True
-        self.__firstSearch(data, listId)
-        self.__completeFormSearch(data)
-        self.__btnSearch()
-        self.__setTrain()
-        self.__btnVerify()
+        self.__first_search(data, listId)
+        self.__complete_form_search(data)
+        self.__btn_search()
+        self.__set_train()
+        self.__btn_verify()
 
-    def __btnVerify(self):
+    def __btn_verify(self):
         r = self.wait_and_return("/html/body/div/div/div/div[2]/div[2]/div[2]/div/div[8]/button[2]", By.XPATH)
         r.location_once_scrolled_into_view
         time.sleep(0.5)
         r.click()
 
-    def __setTrain(self):
-        self.__minTrain()
-        self.__clickTicket(self.__fromTime)
+    def __set_train(self):
+        self.__min_train()
+        self.__click_ticket(self.__fromTime)
         if self.__hasTo:
-            self.__minTrain()
-            self.__clickTicket(self.__toTime)
+            self.__min_train()
+            self.__click_ticket(self.__toTime)
 
-    def __clickTicket(self, dataTime: str):
+    def __click_ticket(self, dataTime: str):
         num = 1
         if dataTime != "":
             r = self.wait_and_returns("/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/*", By.XPATH)
@@ -93,62 +94,62 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
                         break
                 except:
                     continue
-        self.clickBtn(
+        self.click_btn(
             "/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/div["
             + str(num) +
             "]/div/section[2]/div[2]/button",
             By.XPATH)
 
-    def __minTrain(self):
-        self.clickBtn("/html/body/div/div/div/div[2]/div[3]/aside/div/div[4]/div[1]/div/div[2]/div[1]/div/label[2]",
-                      By.XPATH)
+    def __min_train(self):
+        self.click_btn("/html/body/div/div/div/div[2]/div[3]/aside/div/div[4]/div[1]/div/div[2]/div[1]/div/label[2]",
+                       By.XPATH)
         time.sleep(1)
 
-    def __btnSearch(self):
-        self.clickBtn(
+    def __btn_search(self):
+        self.click_btn(
             "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[4]/button", By.XPATH)
 
-    def __completeFormSearch(self, data):
+    def __complete_form_search(self, data):
         self.__wagon(data['wagon'])
-        self.__groupWay(data['groupWay'])
+        self.__group_way(data['groupWay'])
         self.__from(data['from'])
         self.__to(data['to'])
-        self.__openDate()
+        self.__open_date()
         self.__date(data['fromd'])
         if self.__hasTo:
             self.__date(data['tod'])
-        self.__setDate()
+        self.__set_date()
         self.__traveler(data['adult'], data['child'], data['infant'])
         self.__sex(data['sex'])
 
     def __sex(self, data):
         if data == "1":
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[4]/label[3]",
                 By.XPATH)
         elif data == "2":
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[4]/label[2]",
                 By.XPATH)
         elif data == "3":
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[4]/label[1]",
                 By.XPATH)
 
     def __traveler(self, adult, child, infant):
-        self.clickBtn(
+        self.click_btn(
             "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[1]/div/label", By.XPATH)
         for i in range(1, int(adult)):
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[1]/div/button[2]",
                 By.XPATH)
         for i in range(0, int(child) + int(infant)):
-            self.clickBtn(
+            self.click_btn(
                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[3]/div/div[2]/div[1]/div[2]/div/button[2]",
                 By.XPATH)
 
-    def __setDate(self):
-        self.clickBtn(
+    def __set_date(self):
+        self.click_btn(
             "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[2]/div[3]/div[2]/button[2]",
             By.XPATH)
 
@@ -164,58 +165,58 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
             "]/div[3]/div[not(contains(@class, 'empty'))]",
             By.XPATH)[int(day) - 1].click()
 
-    def __openDate(self):
-        self.clickBtn("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[1]/div[1]", By.XPATH)
+    def __open_date(self):
+        self.click_btn("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[1]/div[1]", By.XPATH)
 
     def __to(self, data):
-        city = self.__getCity(data)
-        self.completeInputForm(city,
-                               "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[2]/div/div/div[1]/div/label/input",
-                               By.XPATH)
+        city = self.__get_city(data)
+        self.complete_input_form(city,
+                                 "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[2]/div/div/div[1]/div/label/input",
+                                 By.XPATH)
         time.sleep(1)
-        self.clickBtn(
+        self.click_btn(
             "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[2]/div/div/div[2]/div/div/div[2]/div",
             By.XPATH)
 
     def __from(self, data):
-        city = self.__getCity(data)
+        city = self.__get_city(data)
         inp = self.wait_and_return(
             "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[1]/div/div/div[1]/div/label/input",
             By.XPATH)
         inp.location_once_scrolled_into_view
         inp.send_keys(city)
         time.sleep(1)
-        self.clickBtn(
+        self.click_btn(
             "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div",
             By.XPATH)
 
-    def __getCity(self, date) -> str:
+    def __get_city(self, date) -> str:
         return self.__cities[date]
 
-    def __groupWay(self, data):
+    def __group_way(self, data):
         if data == 1:
-            self.clickBtn("/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[1]/div[2]/label[2]", By.XPATH)
+            self.click_btn("/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[1]/div[2]/label[2]", By.XPATH)
         else:
-            self.clickBtn("/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[1]/div[2]/label[1]", By.XPATH)
+            self.click_btn("/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[1]/div[2]/label[1]", By.XPATH)
 
     def __wagon(self, data):
         if data == "1":
-            self.clickBtn("/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[1]/label", By.XPATH)
+            self.click_btn("/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[1]/label", By.XPATH)
 
-    def __firstSearch(self, data, listId):
+    def __first_search(self, data, listId):
         findFrom: bool = False
         while not findFrom:
-            query: str = self.__getQuery(data, True)
+            query: str = self.__get_query(data, True)
             response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2?" + query).text
-            findFrom = self.__getTrain(response, listId[0], True)
+            findFrom = self.__get_train(response, listId[0], True)
         if self.__hasTo:
             findFrom: bool = False
             while not findFrom:
-                query: str = self.__getQuery(data, False)
+                query: str = self.__get_query(data, False)
                 response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2?" + query).text
-                findFrom = self.__getTrain(response, listId[1], False)
+                findFrom = self.__get_train(response, listId[1], False)
 
-    def __getTrain(self, data, listId, isFrom: bool) -> bool:
+    def __get_train(self, data, listId, isFrom: bool) -> bool:
         unavailables: list = []
         availables: list = []
         enCodedData = json.loads(data)
@@ -246,11 +247,11 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
             return True
         return False
 
-    def __getQuery(self, data, isFrom: bool) -> str:
+    def __get_query(self, data, isFrom: bool) -> str:
         query: str = ""
         query += "from=" + (data['from'] if isFrom else data['to']) + '&'
         query += "to=" + (data['to'] if isFrom else data['from']) + '&'
-        query += "date=" + self.__jToG(data['fromd'] if isFrom else data['tod']) + '&'
+        query += "date=" + j_to_g(data['fromd'] if isFrom else data['tod']) + '&'
         query += "adultCount=" + data['adult'] + '&'
         query += "childCount=" + data['child'] + '&'
         query += "infantCount=" + data['infant'] + '&'
@@ -258,100 +259,96 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
         query += "availableStatus=" + "Both"
         return query
 
-    def __jToG(self, date: str, spliter='/') -> str:
-        splitDate: list[str] = date.split(spliter)
-        return str(jdatetime.date(day=int(splitDate[2]), month=int(splitDate[1]), year=int(splitDate[0])).togregorian())
-
     # setUsers
-    def setUsers(self, dataUsers):
+    def set_users(self, dataUsers):
         hasService: bool = True
         for i in range(1, len(dataUsers) + 1):
-            hasService = self.__setUser(i, dataUsers[i - 1], hasService)
-        self.__setUsersBtn()
+            hasService = self.__set_user(i, dataUsers[i - 1], hasService)
+        self.__set_users_btn()
 
-    def __setUsersBtn(self):
+    def __set_users_btn(self):
         r = self.wait_and_return('form-next-button')
         r.location_once_scrolled_into_view
         time.sleep(0.5)
         r.click()
 
-    def __setUser(self, i, data, hasService):
+    def __set_user(self, i, data, hasService):
         baseLocation = "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[2]/div[" + str(i) + "]"
         self.wait_and_return(baseLocation, By.XPATH).location_once_scrolled_into_view
         time.sleep(0.5)
-        self.__setFName(baseLocation, data['FName'])
-        self.__setLName(baseLocation, data['LName'])
-        self.__setSex(baseLocation, data['sex'])
-        self.__setId(baseLocation, data['id'])
-        self.__setBirthday(baseLocation, data['birthday'])
+        self.__set_first_name(baseLocation, data['FName'])
+        self.__set_last_name(baseLocation, data['LName'])
+        self.__set_sex(baseLocation, data['sex'])
+        self.__set_ID(baseLocation, data['id'])
+        self.__set_birthday(baseLocation, data['birthday'])
         try:
             if hasService:
-                self.__setService(baseLocation, data['service'])
+                self.__set_service(baseLocation, data['service'])
                 return True
         except:
             return False
 
-    def __setService(self, baseLocation, data):
+    def __set_service(self, baseLocation, data):
         if data is None or data == "":
-            r = self.wait_and_return(baseLocation + "/div/form/span/div/div[1]/div[2]/label", By.XPATH)
+            r = self.wait_and_return(baseLocation + "/div/form/span/div/div[1]/div[2]/label", By.XPATH, 1)
             r.click()
         else:
-            self.completeInputForm(data, baseLocation + "/div/form/span/div/div[1]/div[2]/label/input", By.XPATH)
+            self.complete_input_form(data, baseLocation + "/div/form/span/div/div[1]/div[2]/label/input", By.XPATH, 1)
         time.sleep(1)
-        self.clickBtn(baseLocation + "/div/form/span/div/div[2]/div/div/div[2]/div[1]", By.XPATH)
+        self.click_btn(baseLocation + "/div/form/span/div/div[2]/div/div/div[2]/div[1]", By.XPATH, 1)
 
-    def __setBirthday(self, baseLocation, data):
-        self.__setDay(baseLocation, data['day'])
-        self.__setMonth(baseLocation, data['month'])
-        self.__setYear(baseLocation, data['year'])
+    def __set_birthday(self, baseLocation, data):
+        self.__set_day(baseLocation, data['day'])
+        self.__set_month(baseLocation, data['month'])
+        self.__set_year(baseLocation, data['year'])
 
-    def __setYear(self, baseLocation, data):
+    def __set_year(self, baseLocation, data):
         data = "13" + data
-        self.completeInputForm(data,
-                               baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[3]/div[1]/div[2]/label/input",
-                               By.XPATH)
+        self.complete_input_form(data,
+                                 baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[3]/div[1]/div[2]/label/input",
+                                 By.XPATH)
         time.sleep(1)
-        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[3]/div[2]/div/div/div[2]/div", By.XPATH)
+        self.click_btn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[3]/div[2]/div/div/div[2]/div", By.XPATH)
 
-    def __setMonth(self, baseLocation, data):
+    def __set_month(self, baseLocation, data):
         if data[0] == "0":
             data = data[1:]
-        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[2]/div/div[2]/label", By.XPATH)
-        self.clickBtn(
+        self.click_btn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[2]/div/div[2]/label", By.XPATH)
+        self.click_btn(
             baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[2]/div[2]/div/div/div[2]/div["
             + data +
             "]",
             By.XPATH)
 
-    def __setDay(self, baseLocation, data):
+    def __set_day(self, baseLocation, data):
         if data[0] == "0":
             data = data[1:]
-        self.completeInputForm(data,
-                               baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[1]/div[2]/label/input",
-                               By.XPATH)
+        self.complete_input_form(data,
+                                 baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[1]/div[2]/label/input",
+                                 By.XPATH)
         time.sleep(1)
-        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
+        self.click_btn(baseLocation + "/div/form/div[5]/div/div[2]/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
 
-    def __setId(self, baseLocation, data):
-        self.completeInputForm(data, baseLocation + "/div/form/div[4]/div[2]/label/input", By.XPATH)
+    def __set_ID(self, baseLocation, data):
+        self.complete_input_form(data, baseLocation + "/div/form/div[4]/div[2]/label/input", By.XPATH)
 
-    def __setLName(self, baseLocation, data):
-        self.completeInputForm(data, baseLocation + "/div/form/div[3]/div[2]/label/input", By.XPATH)
+    def __set_last_name(self, baseLocation, data):
+        self.complete_input_form(data, baseLocation + "/div/form/div[3]/div[2]/label/input", By.XPATH)
 
-    def __setFName(self, baseLocation, data):
-        self.completeInputForm(data, baseLocation + "/div/form/div[2]/div[2]/label/input", By.XPATH)
+    def __set_first_name(self, baseLocation, data):
+        self.complete_input_form(data, baseLocation + "/div/form/div[2]/div[2]/label/input", By.XPATH)
 
-    def __setSex(self, baseLocation, data):
+    def __set_sex(self, baseLocation, data):
         location = (baseLocation + "/div/form/div[1]/span[1]/div/div[1]/div")
         if data == "2" or data == 2:
-            self.clickBtn(location + "/label[1]", By.XPATH)
+            self.click_btn(location + "/label[1]", By.XPATH)
         elif data == "1" or data == 1:
-            self.clickBtn(location + "/label[2]", By.XPATH)
+            self.click_btn(location + "/label[2]", By.XPATH)
 
     # buy
     def buy(self):
         self.__credentials()
-        self.__clickBuy()
+        self.__click_buy()
 
     def __credentials(self):
         r = self.wait_and_return("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[3]/label", By.XPATH)
@@ -359,6 +356,6 @@ class MrBilitBookTicket(BookTicket, CompleteForms):
         time.sleep(0.5)
         r.click()
 
-    def __clickBuy(self):
-        self.clickBtn("btnAccept")
+    def __click_buy(self):
+        self.click_btn("btnAccept")
         time.sleep(30)

@@ -10,13 +10,13 @@ class LogTrain:
 
     def write(self, trains):
         self.__file = open(self.__PATH, 'a')
-        self.__writeOnFile(trains)
+        self.__write_on_file(trains)
 
-    def __writeOnFile(self, data: list):
+    def __write_on_file(self, data: list):
         for a in data:
-            self.__file.write(self.__trainToStr(a))
+            self.__file.write(self.__train_to_str(a))
 
-    def __trainToStr(self, data: dict) -> str:
+    def __train_to_str(self, data: dict) -> str:
         result: str = ""
         baseStr: str = ""
         baseStr += str(data['TrainNumber']) + ','

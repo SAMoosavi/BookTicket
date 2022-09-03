@@ -17,33 +17,33 @@ class SafirBookTicket(BookTicket, CompleteForms):
 
     # login
     def login(self, data):
-        self.completeInputForm(data['username'], 'user', By.NAME)
-        self.completeInputForm(data['password'], 'pass', By.NAME)
-        self.clickBtn('//input[@type="submit"]', By.XPATH)
+        self.complete_input_form(data['username'], 'user', By.NAME)
+        self.complete_input_form(data['password'], 'pass', By.NAME)
+        self.click_btn('//input[@type="submit"]', By.XPATH)
 
     # search
     def search(self, data):
-        self.__goToSearchPage()
-        self.__completeFormSearch(data)
-        self.__getTicket(data)
+        self.__go_to_search_page()
+        self.__complete_form_search(data)
+        self.__get_ticket(data)
 
-    def __goToSearchPage(self):
-        self.clickBtn('//a[@href="../etrain/"]', By.XPATH)
+    def __go_to_search_page(self):
+        self.click_btn('//a[@href="../etrain/"]', By.XPATH)
 
-    def __completeFormSearch(self, data):
-        self.completeSelectForm(data['from'], 'from')
-        self.completeSelectForm(data['to'], 'to')
-        self.completeRadio(data['groupWay'], 'groupWay', By.NAME)
-        self.completeInputFormReadOnly(data['fromd'], 'fromd')
-        self.completeInputFormReadOnly(data['tod'], 'tod')
-        self.completeSelectForm(data['sex'], 'sex')
-        self.completeInputForm(data['adult'], 'adult')
-        self.completeInputForm(data['child'], 'child')
-        self.completeInputForm(data['infant'], 'infant')
+    def __complete_form_search(self, data):
+        self.complete_select_form(data['from'], 'from')
+        self.complete_select_form(data['to'], 'to')
+        self.complete_radio(data['groupWay'], 'groupWay', By.NAME)
+        self.complete_input_form_read_only(data['fromd'], 'fromd')
+        self.complete_input_form_read_only(data['tod'], 'tod')
+        self.complete_select_form(data['sex'], 'sex')
+        self.complete_input_form(data['adult'], 'adult')
+        self.complete_input_form(data['child'], 'child')
+        self.complete_input_form(data['infant'], 'infant')
         if data['wagon'] == "1":
-            self.completeCheckBox('wagon')
+            self.complete_check_box('wagon')
 
-    def __getTrains(self, Id):
+    def __get_trains(self, Id):
         trains = list()
         table = self.wait_and_return(Id)
         tr = table.find_elements(By.TAG_NAME, 'tr')
@@ -57,7 +57,7 @@ class SafirBookTicket(BookTicket, CompleteForms):
                     trains.append(cols)
         return trains
 
-    def __strPriceToInt(self, strPrice):
+    def __str_price_to_int(self, strPrice):
         strPrice = strPrice.split(',')
         intPrice = 0
         for price in strPrice:
@@ -65,42 +65,42 @@ class SafirBookTicket(BookTicket, CompleteForms):
             intPrice += int(price)
         return intPrice
 
-    def __minTrainFromd(self, trains):
+    def __min_train_fromd(self, trains):
         minPrice = 0
         minTrain = None
         for train in trains:
-            price = self.__strPriceToInt(train[9].text)
+            price = self.__str_price_to_int(train[9].text)
             if minPrice > price or minPrice == 0:
                 minPrice = price
                 minTrain = train
         return minTrain
 
-    def __minTrainTod(self, trains):
+    def __min_train_tod(self, trains):
         minPrice = 0
         minTrain = None
         for train in trains:
-            price = self.__strPriceToInt(train[10].text)
+            price = self.__str_price_to_int(train[10].text)
             if minPrice > price or minPrice == 0:
                 minPrice = price
                 minTrain = train
         return minTrain
 
-    def __getTicket(self, data):
+    def __get_ticket(self, data):
         while True:
-            self.clickBtn('srchB')
+            self.click_btn('srchB')
 
             ticketExisting = 0
 
-            trainsFromd = self.__getTrains('Tbl')
+            trainsFromd = self.__get_trains('Tbl')
             if len(trainsFromd) > 0:
-                trainFromd = self.__minTrainFromd(trainsFromd)
+                trainFromd = self.__min_train_fromd(trainsFromd)
                 trainFromd[0].click()
                 ticketExisting += 1
 
             if data['groupWay'] == 1:
-                trainsTod = self.__getTrains('retTbl')
+                trainsTod = self.__get_trains('retTbl')
                 if len(trainsTod) > 0:
-                    trainTod = self.__minTrainTod(trainsTod)
+                    trainTod = self.__min_train_tod(trainsTod)
                     trainTod[0].click()
                     ticketExisting += 1
 
@@ -110,23 +110,23 @@ class SafirBookTicket(BookTicket, CompleteForms):
             else:
                 if ticketExisting == 1:
                     break
-        self.clickBtn('srchC')
+        self.click_btn('srchC')
 
     # set users
-    def setUsers(self, dataUsers):
+    def set_users(self, dataUsers):
         for i in range(0, len(dataUsers)):
-            self.__setUser(dataUsers[i], i)
-        self.completeCheckBox('wgnVerify')
+            self.__set_user(dataUsers[i], i)
+        self.complete_check_box('wgnVerify')
 
-    def __setUser(self, user, i):
-        self.completeInputForm(user['id'], 'pid' + str(i))
-        self.completeInputForm(user['FName'], 'fn' + str(i))
-        self.completeInputForm(user['LName'], 'ln' + str(i))
-        self.completeInputForm(user['birthday']['day'], 'ruz' + str(i))
-        self.completeInputForm(user['birthday']['month'], 'mah' + str(i))
-        self.completeInputForm(user['birthday']['year'], 'sal' + str(i))
+    def __set_user(self, user, i):
+        self.complete_input_form(user['id'], 'pid' + str(i))
+        self.complete_input_form(user['FName'], 'fn' + str(i))
+        self.complete_input_form(user['LName'], 'ln' + str(i))
+        self.complete_input_form(user['birthday']['day'], 'ruz' + str(i))
+        self.complete_input_form(user['birthday']['month'], 'mah' + str(i))
+        self.complete_input_form(user['birthday']['year'], 'sal' + str(i))
 
     # buy
     def buy(self):
-        self.clickBtn('FlatButton', By.CLASS_NAME)
+        self.click_btn('FlatButton', By.CLASS_NAME)
         time.sleep(60)
