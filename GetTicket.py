@@ -242,7 +242,8 @@ class GetTicket(CompleteForms):
         self.completeInputForm(month,
                                baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[1]/div[2]/label/input",
                                By.XPATH)
-        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[2]/div/div/div[2]", By.XPATH)
+        time.sleep(1)
+        self.clickBtn(baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[2]/div/div/div[2]/div", By.XPATH)
 
     def __set_year(self, baseLocation, data: int):
         self.completeInputForm(str(data),
