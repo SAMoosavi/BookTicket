@@ -1,50 +1,13 @@
 import json
 
-import jdatetime
 import requests
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 from LogTrain import LogTrain
 from globalVariable import Sex
-
-
-def sex_switch(sex: Sex):
-    if Sex.MAN == sex:
-        return "Man"
-    elif Sex.WOMAN == sex:
-        return "Woman"
-    elif Sex.BOTH == sex:
-        return "Both"
-    else:
-        raise "sex isn in Sex Enum"
-
-
-def sex_enum_to_int(sex: Sex) -> int:
-    if Sex.MAN == sex:
-        return 1
-    elif Sex.WOMAN == sex:
-        return 2
-    elif Sex.BOTH == sex:
-        return 3
-    else:
-        raise "sex isn in Sex Enum"
-
-
-def int_to_sex_enum(sex: int) -> Sex:
-    if sex == 1:
-        return Sex.MAN
-    elif sex == 2:
-        return Sex.WOMAN
-    elif sex == 3:
-        return Sex.BOTH
-    else:
-        raise "sex isn in Sex Enum"
-
-
-def j_to_g(date: str, spliter='/') -> str:
-    splitDate: list[str] = date.split(spliter)
-    return str(jdatetime.date(day=int(splitDate[2]), month=int(splitDate[1]), year=int(splitDate[0])).togregorian())
+from helper.DateFunctions import j_to_g
+from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
 
 
 def get_query(beginning: str, ending: str, date: str) -> str:

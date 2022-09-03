@@ -8,24 +8,8 @@ from CompleteForms import CompleteForms
 from Person import Person
 from PlayAlarm import PlayAlarm
 from globalVariable import cities, months, Sex
-
-
-def int_to_sex_enum(sex: int) -> Sex:
-    if sex == 1:
-        return Sex.MAN
-    elif sex == 2:
-        return Sex.WOMAN
-    elif sex == 3:
-        return Sex.BOTH
-    else:
-        raise "sex isn in Sex Enum"
-
-
-def int_to_month_of_month(data: int) -> str:
-    if data < 10:
-        return "0" + str(data)
-    else:
-        return str(data)
+from helper.DateFunctions import int_to_month_of_number
+from helper.SexFunctions import int_to_sex_enum
 
 
 class GetTicket(CompleteForms):
@@ -240,7 +224,7 @@ class GetTicket(CompleteForms):
         self.clickBtn(baseLocation + "/div/form/div[5]/div/div[3]/div[1]/div[2]/div/div/div[2]/div", By.XPATH)
 
     def __set_month(self, baseLocation, data: int):
-        month = self.__month[int_to_month_of_month(data)]
+        month = self.__month[int_to_month_of_number(data)]
         self.completeInputForm(month,
                                baseLocation + "/div/form/div[5]/div/div[3]/div[2]/div[1]/div[2]/label/input",
                                By.XPATH)
