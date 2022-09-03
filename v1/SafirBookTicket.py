@@ -1,7 +1,7 @@
 import time
 
 from BookTicket import BookTicket
-from CompleteForms import CompleteForms
+from globalClass.CompleteForms import CompleteForms
 from selenium.webdriver.common.by import By
 
 

@@ -1,4 +1,4 @@
-from globalVariable import Sex
+from globalClass.globalVariable import Sex
 from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
 
 
@@ -21,17 +21,17 @@ class Person:
 
     def set_on_dict(self, data: dict):
         if not data['firstName']:
-            raise "not correct data"
+            raise "not correct storage"
         if not data['lastName']:
-            raise "not correct data"
+            raise "not correct storage"
         if not data['berthDay']['year']:
-            raise "not correct data"
+            raise "not correct storage"
         if not data['berthDay']['month']:
-            raise "not correct data"
+            raise "not correct storage"
         if not data['berthDay']['day']:
-            raise "not correct data"
+            raise "not correct storage"
         if not data['sex']:
-            raise "not correct data"
+            raise "not correct storage"
 
         self.__set_first_name(data['firstName'])
         self.__set_last_name(data['lastName'])
@@ -47,36 +47,36 @@ class Person:
     def __set_berth_day(self, date: str) -> None:
         dateSpirited = date.split('/')
         if int(dateSpirited[0]) <= 1300:
-            raise "not correct data"
+            raise "not correct storage"
         if not int(dateSpirited[1]) in range(1, 12):
-            raise "not correct data"
+            raise "not correct storage"
         if not int(dateSpirited[2]) in range(1, 31):
-            raise "not correct data"
+            raise "not correct storage"
         self.__day = int(dateSpirited[2])
         self.__month = int(dateSpirited[1])
         self.__year = int(dateSpirited[0])
 
     def __set_first_name(self, firstName: str) -> None:
         if len(firstName) == 0:
-            raise "not correct data"
+            raise "not correct storage"
         self.__firstName = firstName
 
     def __set_last_name(self, lastName: str) -> None:
         if len(lastName) == 0:
-            raise "not correct data"
+            raise "not correct storage"
         self.__lastName = lastName
 
     def __set_ID(self, ID: str | int) -> None:
         if type(ID) is str:
             if not len(ID) == 10:
-                raise "not correct data"
+                raise "not correct storage"
             for char in ID:
                 if not ord(char) in range(ord("0"), ord("9")):
-                    raise "not correct data"
+                    raise "not correct storage"
             self.__ID = ID
         else:
             if not 10e10 < ID < 10e11:
-                raise "not correct data"
+                raise "not correct storage"
             self.__ID = str(ID)
 
     def get_dict(self) -> dict:

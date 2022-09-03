@@ -1,4 +1,4 @@
-from globalVariable import Sex
+from globalClass.globalVariable import Sex
 
 
 def sex_enum_to_int(sex: Sex) -> int:

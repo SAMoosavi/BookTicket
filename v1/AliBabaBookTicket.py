@@ -1,8 +1,8 @@
 import time
 from BookTicket import BookTicket
-from CompleteForms import CompleteForms
+from globalClass.CompleteForms import CompleteForms
 from selenium.webdriver.common.by import By
-from globalVariable import cities, months
+from globalClass.globalVariable import cities, months
 
 
 class AliBabaBookTicket(BookTicket, CompleteForms):
@@ -198,7 +198,7 @@ class AliBabaBookTicket(BookTicket, CompleteForms):
                       "]/div[2]/div/div[5]/div/div[3]",
                       By.XPATH)
         self.clickBtn(
-            "//form/div[2]/div/div[1]/div[2]/div/div[5]/div/div[3]/div[2]/div/ul/li[@data-value=\"13" + data + "\"]/a",
+            "//form/div[2]/div/div[1]/div[2]/div/div[5]/div/div[3]/div[2]/div/ul/li[@storage-value=\"13" + data + "\"]/a",
             By.XPATH)
 
     def __setMonth(self, i, data):

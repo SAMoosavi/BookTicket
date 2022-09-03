@@ -4,10 +4,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 from Passenger import Passenger
-from CompleteForms import CompleteForms
+from globalClass.CompleteForms import CompleteForms
 from Person import Person
 from PlayAlarm import PlayAlarm
-from globalVariable import cities, months, Sex
+from globalClass.globalVariable import cities, months, Sex
 from helper.DateFunctions import int_to_month_of_number
 from helper.SexFunctions import int_to_sex_enum
 

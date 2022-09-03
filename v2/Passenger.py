@@ -4,7 +4,7 @@ from Person import Person
 
 
 class Passenger:
-    __URL: str = "data/passengers.json"
+    __URL: str = "storage/passengers.json"
     __passengers: list[dict] = []
 
     def __init__(self):

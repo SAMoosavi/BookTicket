@@ -4,8 +4,8 @@ import requests
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
-from LogTrain import LogTrain
-from globalVariable import Sex
+from globalClass.LogTrain import LogTrain
+from globalClass.globalVariable import Sex
 from helper.DateFunctions import j_to_g
 from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
 

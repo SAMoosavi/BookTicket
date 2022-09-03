@@ -1,71 +1,12 @@
-"""
-import json
-from AliBabaBookTicket import AliBabaBookTicket
-from SafirBookTicket import SafirBookTicket
-from MrBilitBookTicket import MrBilitBookTicket
-from BookTicket import BookTicket
-
-bookTicket: BookTicket = MrBilitBookTicket()
-
-# data = {
-#     'dataLogin': {
-#         'username': "moosavi238@gmail.com",
-#         'password': "Ali1#2#3#4#"
-#
-#     },
-#     'data': {
-#         'fromd': '1401/05/19',
-#         'tod': '1401/06/06',
-#         'from': "219",
-#         'to': "1",
-#         'sex': "3",
-#         'wagon': "0",
-#         'groupWay': 1,
-#         'adult': "1",
-#         'child': "0",
-#         'infant': "0"
-#     }
-#     , 'listId': [[621, 821], [822, 720, 722, 620]],
-#     'travelers': [
-#         {
-#             'id': "4421161772",
-#             'birthday': {
-#                 'day': "27",
-#                 'month': '03',
-#                 'year': "82"
-#             },
-#             'FName': "سید علی",
-#             'LName': "موسوی",
-#             'sex': "2",
-#             'service': "جوجه"
-#         }
-#     ]
-# }
-fileJson = open("./Path.json", 'r')
-data = json.loads(fileJson.read())
-fileJson.close()
-print(data)
-
-bookTicket.login(data['dataLogin'])
-
-searchSuper: bool = True
-if searchSuper and type(bookTicket) == MrBilitBookTicket:
-    bookTicket.searchS(data["data"], data["listId"])
-else:
-    bookTicket.search(data["data"])
-
-bookTicket.setUsers(data["travelers"])
-bookTicket.buy()
-"""
 import json
 import time
 
-from GetTicket import GetTicket
-from Passenger import Passenger
-from Path import Path
-from Person import Person
+from v2.GetTicket import GetTicket
+from v2.Passenger import Passenger
+from v2.Path import Path
+from v2.Person import Person
 
-personJson = open("./Person.json", 'r')
+personJson = open("v2/data/Person.json", 'r')
 personData = json.loads(personJson.read())
 personJson.close()
 del personJson
@@ -77,7 +18,7 @@ for person in personData:
     per.set_on_dict(person)
     passenger.add_person(per)
 
-pathJson = open("./Path.json", 'r')
+pathJson = open("v2/data/Path.json", 'r')
 data = json.loads(pathJson.read())
 pathJson.close()
 del pathJson

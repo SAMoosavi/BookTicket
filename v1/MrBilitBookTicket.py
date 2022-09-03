@@ -3,10 +3,10 @@ import time
 import requests
 import jdatetime
 from BookTicket import BookTicket
-from CompleteForms import CompleteForms
+from globalClass.CompleteForms import CompleteForms
 from selenium.webdriver.common.by import By
-from globalVariable import cities, months
-from LogTrain import LogTrain
+from globalClass.globalVariable import cities, months
+from globalClass.LogTrain import LogTrain
 
 
 # CompleteForms
