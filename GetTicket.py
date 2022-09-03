@@ -256,6 +256,7 @@ class GetTicket(CompleteForms):
         self.click_btn_scroll("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[3]/label", By.XPATH)
 
     def __check_price(self):
+        self.click_btn_scroll("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[3]/label", By.XPATH)
         price = self.wait_and_return(
             "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/div/div[3]/div[1]/div[4]/div[2]/span",
             By.XPATH).text
