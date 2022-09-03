@@ -164,7 +164,9 @@ class GetTicket(CompleteForms):
         time.sleep(1)
 
     def __tickets(self) -> list[WebElement]:
-        return self.wait_and_returns("/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/*[contains(@class, 'trip-card-wrapper')]", By.XPATH, 1)
+        return self.wait_and_returns(
+            "/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/*[contains(@class, 'trip-card-wrapper')]",
+            By.XPATH, 1)
 
     def sel_ticket(self, ticket: WebElement, passengers: list[dict]):
         self.__book_ticket(ticket)
