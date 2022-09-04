@@ -1,4 +1,5 @@
 import json
+import os
 
 from v2.Person import Person
 
@@ -8,10 +9,11 @@ class Passenger:
     __passengers: list[dict] = []
 
     def __init__(self):
-        file = open(self.__URL, "r")
-        data = file.read()
-        if data:
-            self.__passengers = json.loads(data)
+        if os.path.exists(self.__URL):
+            file = open(self.__URL, "r")
+            data = file.read()
+            if data:
+                self.__passengers = json.loads(data)
 
     def add_person(self, person: Person) -> None:
         personDict = person.get_dict()
