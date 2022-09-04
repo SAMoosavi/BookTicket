@@ -41,9 +41,9 @@ class GetTicket(CompleteForms):
     def __close_login_form(self):
         self.click_btn("/html/body/div[2]/div/div/div[2]/div/span/span", By.XPATH, 1)
 
-    def get_tickets(self, beginning: int, ending: int, date: str, adultNum: int | str, childNum: int | str,
+    def get_tickets(self, source: int, destination: int, date: str, adultNum: int | str, childNum: int | str,
                     sex: int) -> list[WebElement]:
-        self.__complete_form_search(beginning, ending, date, adultNum, childNum, sex)
+        self.__complete_form_search(source, destination, date, adultNum, childNum, sex)
         self.__btn_search()
         self.__min_train()
         return self.__tickets()
@@ -51,13 +51,13 @@ class GetTicket(CompleteForms):
     # search
     def __complete_form_search(
             self,
-            beginning: int, ending: int,
+            source: int, destination: int,
             date: str,
             adultNum: int | str, childNum: int | str,
             sex: int
     ):
-        self.__beginning(beginning)
-        self.__ending(ending)
+        self.__source(source)
+        self.__destination(destination)
         self.__date(date)
         self.__person_number(adultNum, childNum)
         self.__sex(sex)
@@ -116,12 +116,12 @@ class GetTicket(CompleteForms):
         self.click_btn("/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[2]/div/div[1]/div[1]",
                        By.XPATH)
 
-    def __ending(self, cityNumber: int):
+    def __destination(self, cityNumber: int):
         inputPath = "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[2]/div/div/div[1]/div/label/input"
         btnPath = "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[2]/div/div/div[2]/div/div/div[2]/div"
         self.__set_city(cityNumber, inputPath, btnPath)
 
-    def __beginning(self, cityNumber: int):
+    def __source(self, cityNumber: int):
         inputPath = "/html/body/div/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[1]/div/div/div[1]/div/label/input"
         btnPath = "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/form/div[2]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div"
         self.__set_city(cityNumber, inputPath, btnPath)

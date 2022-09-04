@@ -27,11 +27,11 @@ path = Path()
 pathData = data['path']
 
 while True:
-    if path.is_free(pathData['beginning'], pathData['ending'], pathData['date'], pathData['sex'], data['listId']):
+    if path.is_free(pathData['source'], pathData['destination'], pathData['date'], pathData['sex'], data['listId']):
         getTicket = GetTicket()
         loginData = data['login']
         getTicket.login(loginData['username'], loginData['password'])
-        tickets = getTicket.get_tickets(pathData['beginning'], pathData['ending'], pathData['date'], pathData['adult'],
+        tickets = getTicket.get_tickets(pathData['source'], pathData['destination'], pathData['date'], pathData['adult'],
                                         pathData['child'], pathData['sex'])
         getTicket.sel_ticket(path.find_ticket(tickets), data['Passengers'])
         break

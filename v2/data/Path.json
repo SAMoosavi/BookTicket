@@ -5,8 +5,8 @@
   },
   "path": {
     "date": "1401/06/22",
-    "beginning": "219",
-    "ending": "1",
+    "source": "219",
+    "destination": "1",
     "sex": 3,
     "adult": "1",
     "child": "0"

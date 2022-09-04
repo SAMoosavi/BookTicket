@@ -10,10 +10,10 @@ from helper.DateFunctions import j_to_g
 from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
 
 
-def get_query(beginning: str, ending: str, date: str) -> str:
+def get_query(source: str, destination: str, date: str) -> str:
     query: str = ""
-    query += "from=" + beginning + '&'
-    query += "to=" + ending + '&'
+    query += "from=" + source + '&'
+    query += "to=" + destination + '&'
     query += "date=" + j_to_g(date) + '&'
     query += "adultCount=" + "1" + '&'
     query += "childCount=" + "0" + '&'
@@ -29,9 +29,9 @@ class Path:
     __sex: Sex | None = None
     __classesTrain: list[dict] | None = None
 
-    def is_free(self, beginning: str, ending: str, date: str, sex: int, listTrainId: list[int | str]) -> bool:
+    def is_free(self, source: str, destination: str, date: str, sex: int, listTrainId: list[int | str]) -> bool:
         self.__sex = int_to_sex_enum(sex)
-        query = get_query(beginning, ending, date)
+        query = get_query(source, destination, date)
         response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2?" + query).text
         self.__get_list_of_train(json.loads(response))
         return self.__set_train(listTrainId)
