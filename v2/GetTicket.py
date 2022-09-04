@@ -148,9 +148,11 @@ class GetTicket(CompleteForms):
         time.sleep(1)
 
     def __tickets(self) -> list[WebElement]:
-        return self.wait_and_returns(
-            "/html/body/div/div/div/div[2]/div[3]/div/section[1]/div/*[contains(@class, 'trip-card-wrapper')]",
-            By.XPATH, 1)
+        a = self.wait_and_returns(
+            "//section[@class='card-section-wrapper cards-container']/div/div[@class='trip-card-wrapper']", By.XPATH)
+        for b in a:
+            print(b.location_once_scrolled_into_view, len(a))
+        return a
 
     def sel_ticket(self, ticket: WebElement, passengers: list[dict]):
         self.__book_ticket(ticket)
@@ -193,7 +195,8 @@ class GetTicket(CompleteForms):
             if service is None or service == "":
                 self.click_btn(baseLocation + "/div/form/span/div/div[1]/div[2]/label", By.XPATH, 0.1)
             else:
-                self.complete_input_form(service, baseLocation + "/div/form/span/div/div[1]/div[2]/label/input", By.XPATH,
+                self.complete_input_form(service, baseLocation + "/div/form/span/div/div[1]/div[2]/label/input",
+                                         By.XPATH,
                                          0.1)
             time.sleep(1)
             self.click_btn(baseLocation + "/div/form/span/div/div[2]/div/div/div[2]/div[1]", By.XPATH)
