@@ -25,9 +25,8 @@ del pathJson
 
 path = Path()
 pathData = data['path']
-i: int = 0
+
 while True:
-    i += 1
     if path.is_free(pathData['beginning'], pathData['ending'], pathData['date'], pathData['sex'], data['listId']):
         getTicket = GetTicket()
         loginData = data['login']
@@ -37,4 +36,3 @@ while True:
         getTicket.sel_ticket(path.find_ticket(tickets), data['Passengers'])
         break
     time.sleep(3)
-    print(i)
