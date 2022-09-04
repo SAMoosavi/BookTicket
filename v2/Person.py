@@ -20,19 +20,8 @@ class Person:
         self.__set_sex(sex)
 
     def set_on_dict(self, data: dict):
-        if not data['firstName']:
+        if self.__validation_dict_data(data):
             raise "not correct storage"
-        if not data['lastName']:
-            raise "not correct storage"
-        if not data['berthDay']['year']:
-            raise "not correct storage"
-        if not data['berthDay']['month']:
-            raise "not correct storage"
-        if not data['berthDay']['day']:
-            raise "not correct storage"
-        if not data['sex']:
-            raise "not correct storage"
-
         self.__set_first_name(data['firstName'])
         self.__set_last_name(data['lastName'])
         self.__set_ID(data['ID'])
@@ -41,20 +30,31 @@ class Person:
         )
         self.__set_sex(data['sex'])
 
+    def __validation_dict_data(self, data: dict):
+        return \
+            not data['firstName'] or \
+            not data['lastName'] or \
+            not data['berthDay']['year'] or \
+            not data['berthDay']['month'] or \
+            not data['berthDay']['day'] or \
+            not data['sex']
+
     def __set_sex(self, sex: int):
         self.__sex = int_to_sex_enum(sex)
 
     def __set_berth_day(self, date: str) -> None:
         dateSpirited = date.split('/')
-        if int(dateSpirited[0]) <= 1300:
-            raise "not correct storage"
-        if not int(dateSpirited[1]) in range(1, 12):
-            raise "not correct storage"
-        if not int(dateSpirited[2]) in range(1, 31):
+        if self.__validation_date(dateSpirited):
             raise "not correct storage"
         self.__day = int(dateSpirited[2])
         self.__month = int(dateSpirited[1])
         self.__year = int(dateSpirited[0])
+
+    def __validation_date(self, dateSpirited: list[str]):
+        return \
+            int(dateSpirited[0]) <= 1300 or \
+            not int(dateSpirited[1]) in range(1, 12) or \
+            not int(dateSpirited[2]) in range(1, 31)
 
     def __set_first_name(self, firstName: str) -> None:
         if len(firstName) == 0:
