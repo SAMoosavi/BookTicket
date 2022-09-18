@@ -2,20 +2,20 @@ import re
 
 
 class User:
-    username: str
-    password: str
-    mobile: str
-    email: str
+    __username: str
+    __password: str
+    __mobile: str
+    __email: str
 
     def __init__(self, username: str, password: str, mobile: str | int, email: str):
-        self.username = username
-        self.password = password
+        self.__username = username
+        self.__password = password
         self.__set_mobile(mobile)
         self.__set_email(email)
 
     def __set_mobile(self, mobile: str | int):
         mobile = self.__validation_mobile(mobile)
-        self.mobile = mobile
+        self.__mobile = mobile
 
     def __validation_mobile(self, mobile: str | int):
         phoneNumber: str = str(mobile)
@@ -31,7 +31,7 @@ class User:
 
     def __set_email(self, email: str):
         if self.__validation_email(email):
-            self.email = email
+            self.__email = email
 
     def __validation_email(self, email: str):
         pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
@@ -40,13 +40,13 @@ class User:
         raise "email not correct"
 
     def get_username(self):
-        return self.username
+        return self.__username
 
     def get_password(self):
-        return self.password
+        return self.__password
 
     def get_mobile(self):
-        return self.mobile
+        return self.__mobile
 
     def get_email(self):
-        return self.email
+        return self.__email
