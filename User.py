@@ -1,4 +1,4 @@
-import re
+from helper.validation import validation_email, validation_mobile
 
 
 class User:
@@ -14,30 +14,12 @@ class User:
         self.__set_email(email)
 
     def __set_mobile(self, mobile: str | int):
-        mobile = self.__validation_mobile(mobile)
+        mobile = validation_mobile(mobile)
         self.__mobile = mobile
 
-    def __validation_mobile(self, mobile: str | int):
-        phoneNumber: str = str(mobile)
-        if not phoneNumber[0] == "0":
-            if not phoneNumber[0] == "9":
-                raise "mobile not correct"
-            else:
-                phoneNumber = "0" + phoneNumber
-        else:
-            if not phoneNumber[1] == "9":
-                raise "mobile not correct"
-        return phoneNumber
-
     def __set_email(self, email: str):
-        if self.__validation_email(email):
+        if validation_email(email):
             self.__email = email
-
-    def __validation_email(self, email: str):
-        pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
-        if re.match(pat, email):
-            return True
-        raise "email not correct"
 
     def get_username(self):
         return self.__username
