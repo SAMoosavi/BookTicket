@@ -45,6 +45,7 @@ import time
 from MrBilitApiWrapper import MrBilitApiWrapper
 from Passenger import Passenger
 from Person import Person
+from User import User
 
 personJson = open('data/Person.json', 'r')
 personData = json.loads(personJson.read())
@@ -70,14 +71,14 @@ listId = data['listId']
 passengerData = data['passengers']
 
 passenger = Passenger(passengerData['Email'], passengerData['Mobile'], people, passengerData['Phone'])
-
+user = User(loginData['username'], loginData['password'], loginData['mobile'], loginData['email'])
 mrBilit = MrBilitApiWrapper()
 
 while True:
     if mrBilit.get_available(pathData['source'], pathData['destination'], pathData['date'], pathData['sex'], listId):
         mrBilit.reserve_seat()
         mrBilit.register_info(passenger)
-        mrBilit.login(loginData['username'], loginData['password'], loginData['mobile'])
+        mrBilit.login(user.get_username(), user.get_password(), user.get_mobile())
         mrBilit.pay()
         break
     time.sleep(3)
