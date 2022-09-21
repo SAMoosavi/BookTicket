@@ -2,18 +2,19 @@ import json
 import requests
 
 from Passenger import Passenger
-from globalClass.LogTrain import LogTrain
-from globalClass.globalVariable import Sex
+from LogTrain import LogTrain
+from globalVariable import Sex
 from helper.DateFunctions import j_to_g
 from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
-from helper.validation import validation_email, validation_mobile
+from helper.validation import validation_mobile
+import urllib.parse
 
 
 def generate_query_get_available(source: str, destination: str, date: str) -> str:
     query: str = ""
-    query += "from=" + source + '&'
-    query += "to=" + destination + '&'
-    query += "date=" + j_to_g(date) + '&'
+    query += "from=" + urllib.parse.quote(source) + '&'
+    query += "to=" + urllib.parse.quote(destination) + '&'
+    query += "date=" + urllib.parse.quote(j_to_g(date)) + '&'
     query += "adultCount=" + "1" + '&'
     query += "childCount=" + "0" + '&'
     query += "infantCount=" + "0" + '&'
@@ -25,10 +26,10 @@ def generate_query_get_available(source: str, destination: str, date: str) -> st
 def generate_query_reserve_seat(trainID: int | str, adultCount: int | str, childCount: int | str,
                                 infantCount: str | int):
     query: str = ""
-    query += "trainID=" + str(trainID) + '&'
-    query += "adultCount=" + str(adultCount) + '&'
-    query += "childCount=" + str(childCount) + '&'
-    query += "infantCount=" + str(infantCount) + '&'
+    query += "trainID=" + urllib.parse.quote(str(trainID)) + '&'
+    query += "adultCount=" + urllib.parse.quote(str(adultCount)) + '&'
+    query += "childCount=" + urllib.parse.quote(str(childCount)) + '&'
+    query += "infantCount=" + urllib.parse.quote(str(infantCount)) + '&'
     query += "includeOptionalServices=" + "true" + '&'
     query += "exclusive=" + "false" + '&'
     query += "genderCode=" + "3" + '&'
@@ -39,9 +40,9 @@ def generate_query_reserve_seat(trainID: int | str, adultCount: int | str, child
 def generate_query_login(Username: int | str, Password: int | str, Mobile: str | int):
     Mobile = validation_mobile(Mobile)
     query: str = ""
-    query += "Username=" + str(Username) + '&'
-    query += "Password=" + str(Password) + '&'
-    query += "Mobile=" + str(Mobile) + '&'
+    query += "Username=" + urllib.parse.quote(str(Username)) + '&'
+    query += "Password=" + urllib.parse.quote(str(Password)) + '&'
+    query += "Mobile=" + urllib.parse.quote(str(Mobile)) + '&'
     query += "Source=" + "2"
     return query
 
@@ -106,7 +107,8 @@ class MrBilitApiWrapper:
 
     def register_info(self, passenger: Passenger):
         REG = 'https://train.atighgasht.com/TrainService/api/RegisterInfo'
-        reg_req = requests.post(REG, json=passenger.get_dict(self.__res_s['BillID']))
+        reg_req = requests.post(REG, json=passenger.get_dict(self.__res_s['BillID']),
+                                headers={'Authorization': 'Bearer ' + self.__token})
         self.__reg_s = json.loads(reg_req.text)
         print("register_info", self.__reg_s)
 
@@ -114,12 +116,11 @@ class MrBilitApiWrapper:
         login_req = requests.get(
             'https://auth.mrbilit.com/api/login?' + generate_query_login(Username, Password, Mobile))
         login_data = json.loads(login_req.text)
-        print("login", 'https://auth.mrbilit.com/api/login?' + generate_query_login(Username, Password, Mobile),
-              login_data)
+        print("login", login_data)
         self.__token = login_data['token']
 
     def pay(self):
         query = 'https://payment.mrbilit.com/api/billpayment/' + str(self.__res_s['BillCode']) + \
                 '?payFromCredit=true&access_token=' + str(self.__token)
         pay_status = requests.get(query, headers={'Authorization': 'Bearer ' + self.__token})
-        print("pay", pay_status.url, pay_status.text)
+        print("pay", pay_status.url)
