@@ -1,5 +1,5 @@
 from Person import Person
-from helper.validation import validation_email, required, validation_mobile
+from helper.validation import validation_email, validation_mobile
 
 
 class Passenger:
@@ -7,10 +7,9 @@ class Passenger:
     __Mobile: str
     __People: list[Person]
     __Phone: str
-    __BillID: str
 
-    def __init__(self, Email: str, Mobile: str, People: list[Person], Phone: str, BillID: str):
-        if validation_email(Email) and required(BillID):
+    def __init__(self, Email: str, Mobile: str, People: list[Person], Phone: str):
+        if validation_email(Email):
             Mobile = validation_mobile(Mobile)
             if len(Phone):
                 Phone = validation_mobile(Phone)
@@ -19,15 +18,14 @@ class Passenger:
             self.__Mobile = Mobile
             self.__People = People
             self.__Phone = Phone
-            self.__BillID = BillID
 
-    def get_dict(self) -> dict:
+    def get_dict(self, BillID) -> dict:
         return {
             "Email": self.__Email,
             "Mobile": self.__Mobile,
             "People": self.__get_people(),
             "Phone": self.__Phone,
-            "BillID": self.__BillID
+            "BillID": BillID
         }
 
     def __get_people(self) -> list[dict]:
