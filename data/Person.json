@@ -1,0 +1,12 @@
+[
+    {
+      "PaxType": "ADL",
+      "PersianFirstName": "ali",
+      "PersianLastName": "moosavi",
+      "Male": "True",
+     "BirthDay": "1382/03/27",
+      "NationalCode": "4421161772",
+      "TrainCars": [],
+      "TrainCapacityOptionalService": {}
+    }
+]

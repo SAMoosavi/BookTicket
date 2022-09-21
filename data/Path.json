@@ -1,10 +1,11 @@
 {
   "login": {
     "username": "moosavi238@gmail.com",
-    "password": "Ali1#2#3#4#"
+    "password": "Ali1#2#3#4#",
+    "mobile": "09101513198"
   },
   "path": {
-    "date": "1401/06/22",
+    "date": "1401/07/02",
     "source": "219",
     "destination": "1",
     "sex": 3,
@@ -16,10 +17,9 @@
     620,
     0
   ],
-  "Passengers": [
-    {
-      "ID": "4421161772",
-      "service": ""
-    }
-  ]
+  "passengers": {
+    "Email": "moosavi238@gmail.com",
+    "Mobile": "09101513198",
+    "Phone": ""
+  }
 }

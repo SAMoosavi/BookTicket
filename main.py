@@ -1,3 +1,4 @@
+"""
 import json
 import time
 
@@ -34,5 +35,49 @@ while True:
         tickets = getTicket.get_tickets(pathData['source'], pathData['destination'], pathData['date'], pathData['adult'],
                                         pathData['child'], pathData['sex'])
         getTicket.sel_ticket(path.find_ticket(tickets), data['Passengers'])
+        break
+    time.sleep(3)
+
+"""
+import json
+import time
+
+from MrBilitApiWrapper import MrBilitApiWrapper
+from Passenger import Passenger
+from Person import Person
+
+personJson = open('data/Person.json', 'r')
+personData = json.loads(personJson.read())
+personJson.close()
+del personJson
+
+people: list[Person] = []
+
+for person in personData:
+    per = Person(person['PaxType'], person['PersianFirstName'], person['PersianLastName'], person['Male'],
+                 person['BirthDay'], person['NationalCode'], person['TrainCars'],
+                 person['TrainCapacityOptionalService'])
+    people.append(per)
+
+pathJson = open("data/Path.json", 'r')
+data = json.loads(pathJson.read())
+pathJson.close()
+del pathJson
+
+loginData = data['login']
+pathData = data['path']
+listId = data['listId']
+passengerData = data['passengers']
+
+passenger = Passenger(passengerData['Email'], passengerData['Mobile'], people, passengerData['Phone'])
+
+mrBilit = MrBilitApiWrapper()
+
+while True:
+    if mrBilit.get_available(pathData['source'], pathData['destination'], pathData['date'], pathData['sex'], listId):
+        mrBilit.reserve_seat()
+        mrBilit.register_info(passenger)
+        mrBilit.login(loginData['username'], loginData['password'], loginData['mobile'])
+        mrBilit.pay()
         break
     time.sleep(3)

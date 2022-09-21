@@ -4,6 +4,7 @@ import requests
 from Passenger import Passenger
 from globalClass.LogTrain import LogTrain
 from globalClass.globalVariable import Sex
+from helper.DateFunctions import j_to_g
 from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
 from helper.validation import validation_email, validation_mobile
 
@@ -12,7 +13,7 @@ def generate_query_get_available(source: str, destination: str, date: str) -> st
     query: str = ""
     query += "from=" + source + '&'
     query += "to=" + destination + '&'
-    query += "date=" + date + '&'
+    query += "date=" + j_to_g(date) + '&'
     query += "adultCount=" + "1" + '&'
     query += "childCount=" + "0" + '&'
     query += "infantCount=" + "0" + '&'
@@ -97,27 +98,28 @@ class MrBilitApiWrapper:
         return False
 
     def reserve_seat(self):
-        query = generate_query_reserve_seat(self.__classesTrain["ID"], 1, 0, 0)
+        query = generate_query_reserve_seat(self.__classesTrain[0]["ID"], 1, 0, 0)
         res_req = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat?' + query)
         cookies = res_req.cookies
         self.__res_s = json.loads(res_req.text)
-        print(self.__res_s)
+        print("reserve_seat", self.__res_s)
 
     def register_info(self, passenger: Passenger):
         REG = 'https://train.atighgasht.com/TrainService/api/RegisterInfo'
         reg_req = requests.post(REG, json=passenger.get_dict(self.__res_s['BillID']))
         self.__reg_s = json.loads(reg_req.text)
-        print(self.__reg_s)
+        print("register_info", self.__reg_s)
 
-    def __login(self, Username: int | str, Password: int | str, Mobile: str | int):
+    def login(self, Username: int | str, Password: int | str, Mobile: str | int):
         login_req = requests.get(
             'https://auth.mrbilit.com/api/login?' + generate_query_login(Username, Password, Mobile))
         login_data = json.loads(login_req.text)
-        print(login_data)
+        print("login", 'https://auth.mrbilit.com/api/login?' + generate_query_login(Username, Password, Mobile),
+              login_data)
         self.__token = login_data['token']
 
     def pay(self):
-        query = 'https://payment.mrbilit.com/api/billpayment/' + self.__res_s['BillCode'] + \
-                '?payFromCredit=true&access_token=' + self.__token
+        query = 'https://payment.mrbilit.com/api/billpayment/' + str(self.__res_s['BillCode']) + \
+                '?payFromCredit=true&access_token=' + str(self.__token)
         pay_status = requests.get(query, headers={'Authorization': 'Bearer ' + self.__token})
-        print(pay_status.url)
+        print("pay", pay_status.url, pay_status.text)

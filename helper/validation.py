@@ -22,7 +22,7 @@ def validation_mobile(mobile: str | int):
 
 
 def required(val: str):
-    return not len(val) is 0
+    return len(val) != 0
 
 
 def validation_national_code(NationalCode: int | str):

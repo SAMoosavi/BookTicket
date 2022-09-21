@@ -11,10 +11,3 @@ def j_to_g(date: str, spliter='/') -> str:
         year += 1300
 
     return str(jdatetime.date(day=day, month=month, year=year).togregorian())
-
-
-def int_to_month_of_number(data: int) -> str:
-    if data < 10:
-        return "0" + str(data)
-    else:
-        return str(data)
