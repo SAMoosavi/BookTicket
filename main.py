@@ -76,9 +76,10 @@ mrBilit = MrBilitApiWrapper()
 
 while True:
     if mrBilit.get_available(pathData['source'], pathData['destination'], pathData['date'], pathData['sex'], listId):
+        mrBilit.login(user.get_username(), user.get_password(), user.get_mobile())
         mrBilit.reserve_seat()
         mrBilit.register_info(passenger)
-        mrBilit.login(user.get_username(), user.get_password(), user.get_mobile())
         mrBilit.pay()
+        mrBilit.get_status()
         break
     time.sleep(3)

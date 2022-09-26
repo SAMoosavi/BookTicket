@@ -55,6 +55,7 @@ class MrBilitApiWrapper:
     __res_s: dict | None = None
     __reg_s: dict | None = None
     __token: str = ""
+    __mac: str = ""
 
     def get_available(self, source: str, destination: str, date: str, sex: int, listTrainId: list[int | str]) -> bool:
         self.__sex = int_to_sex_enum(sex)
@@ -88,6 +89,10 @@ class MrBilitApiWrapper:
 
         for Id in listTrainId:
             if Id == 0:
+                self.__train = self.__listOfTrain[0]
+                for Price in self.__train['Prices']:
+                    if Price['SellType'] == sex_enum_to_int(self.__sex):
+                        self.__classesTrain = Price['Classes']
                 return True
             for train in self.__listOfTrain:
                 if str(Id) == str(train['TrainNumber']):
@@ -100,7 +105,8 @@ class MrBilitApiWrapper:
 
     def reserve_seat(self):
         query = generate_query_reserve_seat(self.__classesTrain[0]["ID"], 1, 0, 0)
-        res_req = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat?' + query)
+        res_req = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat?' + query,
+                               headers={'Authorization': 'Bearer ' + self.__token})
         cookies = res_req.cookies
         self.__res_s = json.loads(res_req.text)
         print("reserve_seat", self.__res_s)
@@ -124,3 +130,10 @@ class MrBilitApiWrapper:
                 '?payFromCredit=true&access_token=' + str(self.__token)
         pay_status = requests.get(query, headers={'Authorization': 'Bearer ' + self.__token})
         print("pay", pay_status.url)
+        parsed_url = urllib.parse.urlparse(pay_status.url)
+        self.__mac = urllib.parse.parse_qs(parsed_url.query)['mac'][0]
+
+    def get_status(self):
+        print(self.__mac)
+        status = requests.get("https://finalize.mrbilit.com/api/workflow/bill/69220430/status?mac=" + self.__mac)
+        print("status", status.text)
