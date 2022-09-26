@@ -3,7 +3,7 @@
       "PaxType": "ADL",
       "PersianFirstName": "ali",
       "PersianLastName": "moosavi",
-      "Male": "True",
+      "Male": true,
      "BirthDay": "1382/03/27",
       "NationalCode": "4421161772",
       "TrainCars": [],
