@@ -56,6 +56,8 @@ class MrBilitApiWrapper:
     __reg_s: dict | None = None
     __token: str = ""
     __mac: str = ""
+    __billCode: str | int = ""
+    __status: dict = {}
 
     def get_available(self, source: str, destination: str, date: str, sex: int, listTrainId: list[int | str]) -> bool:
         self.__sex = int_to_sex_enum(sex)
@@ -127,13 +129,22 @@ class MrBilitApiWrapper:
 
     def pay(self):
         query = 'https://payment.mrbilit.com/api/billpayment/' + str(self.__res_s['BillCode']) + \
-                '?payFromCredit=true&access_token=' + str(self.__token)
+                '?payFromCredit=true&access_token=' + self.__token
         pay_status = requests.get(query, headers={'Authorization': 'Bearer ' + self.__token})
         print("pay", pay_status.url)
         parsed_url = urllib.parse.urlparse(pay_status.url)
-        self.__mac = urllib.parse.parse_qs(parsed_url.query)['mac'][0]
+        queries = urllib.parse.parse_qs(parsed_url.query)
+        self.__mac = queries['mac'][0]
+        self.__billCode = queries['billCode'][0]
 
-    def get_status(self):
-        print(self.__mac)
-        status = requests.get("https://finalize.mrbilit.com/api/workflow/bill/69220430/status?mac=" + self.__mac)
+    def get_status(self) -> bool:
+        status = requests.get(
+            "https://finalize.mrbilit.com/api/workflow/bill/" + str(self.__billCode) + "/status?mac=" + self.__mac)
         print("status", status.text)
+        self.__status = json.loads(status.text)
+        return len(self.__status["ticketFiles"]) > 0
+
+    def get_pdf(self):
+        print("list of blit:")
+        for ticketFile in self.__status["ticketFiles"]:
+            print(ticketFile["url"])
