@@ -4,7 +4,6 @@ import time
 from MrBilitApiWrapper import MrBilitApiWrapper
 from Passenger import Passenger
 from Person import Person
-from PlayMusic import PlayMusic
 from User import User
 
 person_json = open('data/Person.json', 'r')
@@ -43,4 +42,3 @@ mr_bilit.pay()
 while not mr_bilit.get_status():
     time.sleep(3)
 mr_bilit.get_pdf()
-PlayMusic()
