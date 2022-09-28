@@ -106,12 +106,17 @@ class MrBilitApiWrapper:
         return False
 
     def reserve_seat(self):
-        query = generate_query_reserve_seat(self.__classes_train[0]["ID"], 1, 0, 0)
+        query = generate_query_reserve_seat(self.__get_class_train_ID(), 1, 0, 0)
         reserve_requests = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat?' + query,
                                         headers={'Authorization': 'Bearer ' + self.__token})
         cookies = reserve_requests.cookies
         self.__reserve_data = json.loads(reserve_requests.text)
         print("reserve_seat", self.__reserve_data)
+
+    def __get_class_train_ID(self) -> int | str:
+        for class_train in self.__classes_train:
+            if class_train["Capacity"] > 0:
+                return class_train["ID"]
 
     def register_info(self, passenger: Passenger):
         register_request = requests.post('https://train.atighgasht.com/TrainService/api/RegisterInfo',
