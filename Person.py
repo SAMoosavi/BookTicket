@@ -3,6 +3,7 @@ from helper.validation import required, validation_national_code
 
 
 class Person:
+    # {"BillID":39385645,"Email":"moosavi238@gmail.com","Mobile":"09101513198","People":[{"PaxType":"ADL","PersianFirstName":"ali","PersianLastName":"moosavi","Male":true,"BirthDay":"2003-06-17","NationalCode":"4421161772","TrainCars":[],"TrainCapacityOptionalService":{}}],"Phone":""}
     __persian_first_name: str
     __persian_last_name: str
     __male: bool
@@ -28,11 +29,11 @@ class Person:
 
     def get_dict(self) -> dict:
         return {
-            "persian_first_name": self.__persian_first_name,
-            "persian_last_name": self.__persian_last_name,
+            "PersianFirstName": self.__persian_first_name,
+            "PersianLastName": self.__persian_last_name,
             "Male": self.__male,
             "BirthDay": self.__birth_day,
-            "national_code": self.__national_code,
+            "NationalCode": self.__national_code,
             "TrainCars": self.__train_cars,
             "TrainCapacityOptionalService": self.__train_capacity_optional_service,
         }
