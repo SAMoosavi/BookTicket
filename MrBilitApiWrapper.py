@@ -3,7 +3,7 @@ import requests
 
 from Passenger import Passenger
 from LogTrain import LogTrain
-from GlobalVariable import Sex
+from GlobalVariables import Sex
 from helper.DateFunctions import jalali_to_gregorian
 from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
 from helper.validation import validation_mobile
