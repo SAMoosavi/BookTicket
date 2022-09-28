@@ -1,7 +1,7 @@
 import jdatetime
 
 
-def j_to_g(date: str, spliter='/') -> str:
+def jalali_to_gregorian(date: str, spliter='/') -> str:
     splitDate: list[str] = date.split(spliter)
     year = int(splitDate[0])
     month = int(splitDate[1])

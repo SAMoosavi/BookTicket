@@ -1,4 +1,4 @@
-from helper.DateFunctions import j_to_g
+from helper.DateFunctions import jalali_to_gregorian
 from helper.validation import required, validation_national_code
 
 
@@ -14,7 +14,7 @@ class Person:
 
     def __init__(self, PaxType: str, PersianFirstName: str, PersianLastName: str, Male: bool, BirthDay: str,
                  NationalCode: int | str, TrainCars: list, TrainCapacityOptionalService: dict):
-        self.__BirthDay = j_to_g(BirthDay)
+        self.__BirthDay = jalali_to_gregorian(BirthDay)
         if not self.__validation(PersianFirstName, PersianLastName, NationalCode):
             raise "not correct data"
         self.__PaxType = PaxType

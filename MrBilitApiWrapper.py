@@ -4,7 +4,7 @@ import requests
 from Passenger import Passenger
 from LogTrain import LogTrain
 from GlobalVariable import Sex
-from helper.DateFunctions import j_to_g
+from helper.DateFunctions import jalali_to_gregorian
 from helper.SexFunctions import int_to_sex_enum, sex_enum_to_int
 from helper.validation import validation_mobile
 import urllib.parse
@@ -14,7 +14,7 @@ def generate_query_get_available(source: str, destination: str, date: str) -> st
     query: str = ""
     query += "from=" + urllib.parse.quote(source) + '&'
     query += "to=" + urllib.parse.quote(destination) + '&'
-    query += "date=" + urllib.parse.quote(j_to_g(date)) + '&'
+    query += "date=" + urllib.parse.quote(jalali_to_gregorian(date)) + '&'
     query += "adultCount=" + "1" + '&'
     query += "childCount=" + "0" + '&'
     query += "infantCount=" + "0" + '&'
