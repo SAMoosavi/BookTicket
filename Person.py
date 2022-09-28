@@ -3,39 +3,39 @@ from helper.validation import required, validation_national_code
 
 
 class Person:
-    __PaxType: str
-    __PersianFirstName: str
-    __PersianLastName: str
-    __Male: bool
-    __BirthDay: str
-    __NationalCode: int | str
-    __TrainCars: list
-    __TrainCapacityOptionalService: dict
+    __pax_type: str
+    __persian_first_name: str
+    __persian_last_name: str
+    __male: bool
+    __birth_day: str
+    __national_code: int | str
+    __train_cars: list
+    __train_capacity_optional_service: dict
 
-    def __init__(self, PaxType: str, PersianFirstName: str, PersianLastName: str, Male: bool, BirthDay: str,
-                 NationalCode: int | str, TrainCars: list, TrainCapacityOptionalService: dict):
-        self.__BirthDay = jalali_to_gregorian(BirthDay)
-        if not self.__validation(PersianFirstName, PersianLastName, NationalCode):
+    def __init__(self, pax_type: str, persian_first_name: str, persian_last_name: str, male: bool, birth_day: str,
+                 national_code: int | str, train_cars: list, train_capacity_optional_service: dict):
+        self.__birth_day = jalali_to_gregorian(birth_day)
+        if not self.__validation(persian_first_name, persian_last_name, national_code):
             raise "not correct data"
-        self.__PaxType = PaxType
-        self.__PersianFirstName = PersianFirstName
-        self.__PersianLastName = PersianLastName
-        self.__Male = Male
-        self.__NationalCode = NationalCode
-        self.__TrainCars = TrainCars
-        self.__TrainCapacityOptionalService = TrainCapacityOptionalService
+        self.__pax_type = pax_type
+        self.__persian_first_name = persian_first_name
+        self.__persian_last_name = persian_last_name
+        self.__male = male
+        self.__national_code = national_code
+        self.__train_cars = train_cars
+        self.__train_capacity_optional_service = train_capacity_optional_service
 
-    def __validation(self, PersianFirstName: str, PersianLastName: str, NationalCode: int | str):
-        return required(PersianLastName) and required(PersianFirstName) and validation_national_code(NationalCode)
+    def __validation(self, persian_first_name: str, persian_last_name: str, national_code: int | str):
+        return required(persian_last_name) and required(persian_first_name) and validation_national_code(national_code)
 
     def get_dict(self) -> dict:
         return {
-            "PaxType": self.__PaxType,
-            "PersianFirstName": self.__PersianFirstName,
-            "PersianLastName": self.__PersianLastName,
-            "Male": self.__Male,
-            "BirthDay": self.__BirthDay,
-            "NationalCode": self.__NationalCode,
-            "TrainCars": self.__TrainCars,
-            "TrainCapacityOptionalService": self.__TrainCapacityOptionalService,
+            "PaxType": self.__pax_type,
+            "persian_first_name": self.__persian_first_name,
+            "persian_last_name": self.__persian_last_name,
+            "Male": self.__male,
+            "BirthDay": self.__birth_day,
+            "national_code": self.__national_code,
+            "TrainCars": self.__train_cars,
+            "TrainCapacityOptionalService": self.__train_capacity_optional_service,
         }

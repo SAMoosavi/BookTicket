@@ -19,23 +19,23 @@ class LogTrain:
 
     def __train_to_str(self, data: dict) -> str:
         result: str = ""
-        baseStr: str = ""
-        baseStr += str(data['TrainNumber']) + ','
-        baseStr += data['FromName'] + ','
-        baseStr += data['ToName'] + ','
-        baseStr += data['DepartureTime'] + ','
-        baseStr += data['ArrivalTime'] + ','
-        baseStr += data['ProviderName'] + ','
-        baseStr += data['CorporationName'] + ','
-        baseStr += data['Weekday'] + ','
-        baseStr += data['DateString'] + ','
-        for sellType in data['Prices']:
-            sellTypeStr: str = str(sellType['SellType']) + ','
-            for wagonType in sellType['Classes']:
-                wagonTypeStr: str = ""
-                wagonTypeStr += wagonType['WagonName'] + ','
-                wagonTypeStr += str(wagonType['Capacity']) + ','
-                wagonTypeStr += str(wagonType['Price']) + ','
-                wagonTypeStr += "True" if wagonType['Capacity'] > 0 else "False"
-                result += baseStr + sellTypeStr + wagonTypeStr + '\n'
+        base_str: str = ""
+        base_str += str(data['TrainNumber']) + ','
+        base_str += data['FromName'] + ','
+        base_str += data['ToName'] + ','
+        base_str += data['DepartureTime'] + ','
+        base_str += data['ArrivalTime'] + ','
+        base_str += data['ProviderName'] + ','
+        base_str += data['CorporationName'] + ','
+        base_str += data['Weekday'] + ','
+        base_str += data['DateString'] + ','
+        for sell_type in data['Prices']:
+            sell_type_str: str = str(sell_type['SellType']) + ','
+            for wagon_type in sell_type['Classes']:
+                wagon_type_str: str = ""
+                wagon_type_str += wagon_type['WagonName'] + ','
+                wagon_type_str += str(wagon_type['Capacity']) + ','
+                wagon_type_str += str(wagon_type['Price']) + ','
+                wagon_type_str += "True" if wagon_type['Capacity'] > 0 else "False"
+                result += base_str + sell_type_str + wagon_type_str + '\n'
         return result

@@ -2,10 +2,10 @@ import jdatetime
 
 
 def jalali_to_gregorian(date: str, spliter='/') -> str:
-    splitDate: list[str] = date.split(spliter)
-    year = int(splitDate[0])
-    month = int(splitDate[1])
-    day = int(splitDate[2])
+    split_date: list[str] = date.split(spliter)
+    year = int(split_date[0])
+    month = int(split_date[1])
+    day = int(split_date[2])
 
     if year < 100:
         year += 1300

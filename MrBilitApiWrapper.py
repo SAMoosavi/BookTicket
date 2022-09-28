@@ -23,13 +23,13 @@ def generate_query_get_available(source: str, destination: str, date: str) -> st
     return query
 
 
-def generate_query_reserve_seat(trainID: int | str, adultCount: int | str, childCount: int | str,
-                                infantCount: str | int):
+def generate_query_reserve_seat(train_ID: int | str, adult_count: int | str, child_count: int | str,
+                                infant_count: str | int):
     query: str = ""
-    query += "trainID=" + urllib.parse.quote(str(trainID)) + '&'
-    query += "adultCount=" + urllib.parse.quote(str(adultCount)) + '&'
-    query += "childCount=" + urllib.parse.quote(str(childCount)) + '&'
-    query += "infantCount=" + urllib.parse.quote(str(infantCount)) + '&'
+    query += "trainID=" + urllib.parse.quote(str(train_ID)) + '&'
+    query += "adultCount=" + urllib.parse.quote(str(adult_count)) + '&'
+    query += "childCount=" + urllib.parse.quote(str(child_count)) + '&'
+    query += "infantCount=" + urllib.parse.quote(str(infant_count)) + '&'
     query += "includeOptionalServices=" + "true" + '&'
     query += "exclusive=" + "false" + '&'
     query += "genderCode=" + "3" + '&'
@@ -37,26 +37,26 @@ def generate_query_reserve_seat(trainID: int | str, adultCount: int | str, child
     return query
 
 
-def generate_query_login(Username: int | str, Password: int | str, Mobile: str | int):
-    Mobile = validation_mobile(Mobile)
+def generate_query_login(username: int | str, password: int | str, mobile: str | int):
+    mobile = validation_mobile(mobile)
     query: str = ""
-    query += "Username=" + urllib.parse.quote(str(Username)) + '&'
-    query += "Password=" + urllib.parse.quote(str(Password)) + '&'
-    query += "Mobile=" + urllib.parse.quote(str(Mobile)) + '&'
+    query += "Username=" + urllib.parse.quote(str(username)) + '&'
+    query += "Password=" + urllib.parse.quote(str(password)) + '&'
+    query += "Mobile=" + urllib.parse.quote(str(mobile)) + '&'
     query += "Source=" + "2"
     return query
 
 
 class MrBilitApiWrapper:
     __train: dict | None = None
-    __listOfTrain: list = []
+    __list_of_train: list = []
     __sex: Sex | None = None
-    __classesTrain: dict | None = None
-    __res_s: dict | None = None
-    __reg_s: dict | None = None
+    __classes_train: dict | None = None
+    __reserve_data: dict | None = None
+    __register_data: dict | None = None
     __token: str = ""
     __mac: str = ""
-    __billCode: str | int = ""
+    __bill_code: str | int = ""
     __status: dict = {}
 
     def get_available(self, source: str, destination: str, date: str, sex: int, listTrainId: list[int | str]) -> bool:
@@ -80,45 +80,45 @@ class MrBilitApiWrapper:
                     break
 
             if not capacity == 0:
-                self.__listOfTrain.append(train)
+                self.__list_of_train.append(train)
 
-    def __set_train(self, listTrainId: list[int | str]) -> bool:
-        if not self.__listOfTrain:
+    def __set_train(self, list_train_ID: list[int | str]) -> bool:
+        if not self.__list_of_train:
             return False
 
-        if len(self.__listOfTrain) == 0:
+        if len(self.__list_of_train) == 0:
             return False
 
-        for Id in listTrainId:
-            if Id == 0:
-                self.__train = self.__listOfTrain[0]
-                for Price in self.__train['Prices']:
-                    if Price['SellType'] == sex_enum_to_int(self.__sex):
-                        self.__classesTrain = Price['Classes']
+        for ID in list_train_ID:
+            if ID == 0:
+                self.__train = self.__list_of_train[0]
+                for price in self.__train['Prices']:
+                    if price['SellType'] == sex_enum_to_int(self.__sex):
+                        self.__classes_train = price['Classes']
                 return True
-            for train in self.__listOfTrain:
-                if str(Id) == str(train['TrainNumber']):
+            for train in self.__list_of_train:
+                if str(ID) == str(train['TrainNumber']):
                     self.__train = train
-                    for Price in self.__train['Prices']:
-                        if Price['SellType'] == sex_enum_to_int(self.__sex):
-                            self.__classesTrain = Price['Classes']
+                    for price in self.__train['Prices']:
+                        if price['SellType'] == sex_enum_to_int(self.__sex):
+                            self.__classes_train = price['Classes']
                     return True
         return False
 
     def reserve_seat(self):
-        query = generate_query_reserve_seat(self.__classesTrain[0]["ID"], 1, 0, 0)
-        res_req = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat?' + query,
-                               headers={'Authorization': 'Bearer ' + self.__token})
-        cookies = res_req.cookies
-        self.__res_s = json.loads(res_req.text)
-        print("reserve_seat", self.__res_s)
+        query = generate_query_reserve_seat(self.__classes_train[0]["ID"], 1, 0, 0)
+        reserve_requests = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat?' + query,
+                                        headers={'Authorization': 'Bearer ' + self.__token})
+        cookies = reserve_requests.cookies
+        self.__reserve_data = json.loads(reserve_requests.text)
+        print("reserve_seat", self.__reserve_data)
 
     def register_info(self, passenger: Passenger):
-        REG = 'https://train.atighgasht.com/TrainService/api/RegisterInfo'
-        reg_req = requests.post(REG, json=passenger.get_dict(self.__res_s['BillID']),
-                                headers={'Authorization': 'Bearer ' + self.__token})
-        self.__reg_s = json.loads(reg_req.text)
-        print("register_info", self.__reg_s)
+        register_request = requests.post('https://train.atighgasht.com/TrainService/api/RegisterInfo',
+                                         json=passenger.get_dict(self.__reserve_data['BillID']),
+                                         headers={'Authorization': 'Bearer ' + self.__token})
+        self.__register_data = json.loads(register_request.text)
+        print("register_info", self.__register_data)
 
     def login(self, Username: int | str, Password: int | str, Mobile: str | int):
         login_req = requests.get(
@@ -128,23 +128,23 @@ class MrBilitApiWrapper:
         self.__token = login_data['token']
 
     def pay(self):
-        query = 'https://payment.mrbilit.com/api/billpayment/' + str(self.__res_s['BillCode']) + \
+        query = 'https://payment.mrbilit.com/api/billpayment/' + str(self.__reserve_data['BillCode']) + \
                 '?payFromCredit=true&access_token=' + self.__token
         pay_status = requests.get(query, headers={'Authorization': 'Bearer ' + self.__token})
         print("pay", pay_status.url)
         parsed_url = urllib.parse.urlparse(pay_status.url)
         queries = urllib.parse.parse_qs(parsed_url.query)
         self.__mac = queries['mac'][0]
-        self.__billCode = queries['billCode'][0]
+        self.__bill_code = queries['billCode'][0]
 
     def get_status(self) -> bool:
         status = requests.get(
-            "https://finalize.mrbilit.com/api/workflow/bill/" + str(self.__billCode) + "/status?mac=" + self.__mac)
+            "https://finalize.mrbilit.com/api/workflow/bill/" + str(self.__bill_code) + "/status?mac=" + self.__mac)
         print("status", status.text)
         self.__status = json.loads(status.text)
         return len(self.__status["ticketFiles"]) > 0
 
     def get_pdf(self):
         print("list of blit:")
-        for ticketFile in self.__status["ticketFiles"]:
-            print(ticketFile["url"])
+        for ticket_file in self.__status["ticketFiles"]:
+            print(ticket_file["url"])

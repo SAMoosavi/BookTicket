@@ -3,33 +3,33 @@ from helper.validation import validation_email, validation_mobile
 
 
 class Passenger:
-    __Email: str
-    __Mobile: str
-    __People: list[Person]
-    __Phone: str
+    __email: str
+    __mobile: str
+    __people: list[Person]
+    __phone: str
 
-    def __init__(self, Email: str, Mobile: str, People: list[Person], Phone: str):
-        if validation_email(Email):
-            Mobile = validation_mobile(Mobile)
-            if len(Phone):
-                Phone = validation_mobile(Phone)
+    def __init__(self, email: str, mobile: str, people: list[Person], phone: str):
+        if validation_email(email):
+            mobile = validation_mobile(mobile)
+            if len(phone):
+                phone = validation_mobile(phone)
 
-            self.__Email = Email
-            self.__Mobile = Mobile
-            self.__People = People
-            self.__Phone = Phone
+            self.__email = email
+            self.__mobile = mobile
+            self.__people = people
+            self.__phone = phone
 
-    def get_dict(self, BillID) -> dict:
+    def get_dict(self, bill_ID) -> dict:
         return {
-            "Email": self.__Email,
-            "Mobile": self.__Mobile,
+            "Email": self.__email,
+            "Mobile": self.__mobile,
             "People": self.__get_people(),
-            "Phone": self.__Phone,
-            "BillID": BillID
+            "Phone": self.__phone,
+            "BillID": bill_ID
         }
 
     def __get_people(self) -> list[dict]:
         people = []
-        for person in self.__People:
+        for person in self.__people:
             people.append(person.get_dict())
         return people
