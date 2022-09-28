@@ -14,7 +14,7 @@ del person_json
 people: list[Person] = []
 
 for person in person_data:
-    per = Person(person['PaxType'], person['PersianFirstName'], person['PersianLastName'], person['Male'],
+    per = Person(person['PersianFirstName'], person['PersianLastName'], person['Male'],
                  person['BirthDay'], person['NationalCode'], person['TrainCars'],
                  person['TrainCapacityOptionalService'])
     people.append(per)
@@ -33,7 +33,8 @@ passenger = Passenger(passenger_data['Email'], passenger_data['Mobile'], people,
 user = User(login_data['username'], login_data['password'], login_data['mobile'], login_data['email'])
 mr_bilit = MrBilitApiWrapper()
 
-while not mr_bilit.get_available(path_data['source'], path_data['destination'], path_data['date'], path_data['sex'], list_ID):
+while not mr_bilit.get_available(path_data['source'], path_data['destination'], path_data['date'], path_data['sex'],
+                                 list_ID):
     time.sleep(3)
 mr_bilit.login(user.get_username(), user.get_password(), user.get_mobile())
 mr_bilit.reserve_seat()
