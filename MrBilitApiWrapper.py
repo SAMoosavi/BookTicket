@@ -84,7 +84,7 @@ class MrBilitApiWrapper:
         }
         reserve_requests = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat',
                                         params=params,
-                                        headers={'Authorization': 'Bearer ' + self.__token})
+                                        headers=self.__headers)
         reserve_data = json.loads(reserve_requests.text)
         print("reserve_seat", reserve_data)
         return reserve_data
