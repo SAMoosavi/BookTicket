@@ -109,14 +109,11 @@ class MrBilitApiWrapper:
         queries = urllib.parse.parse_qs(parsed_url.query)
         return queries['mac'][0]
 
-    def get_status(self) -> bool:
+    def get_status(self, bill_code, mac):
         status = requests.get(
-            "https://finalize.mrbilit.com/api/workflow/bill/" + str(self.__bill_code) + "/status?mac=" + self.__mac)
-        print("status", status.text)
-        self.__status = json.loads(status.text)
-        return len(self.__status["ticketFiles"]) > 0
-
-    def get_pdf(self):
-        print("list of blit:")
-        for ticket_file in self.__status["ticketFiles"]:
-            print(ticket_file["url"])
+            "https://finalize.mrbilit.com/api/workflow/bill/" + str(bill_code) + "/status"
+            , params={"mac": mac}
+        ).text
+        print("status", status)
+        status = json.loads(status)
+        return status["ticketFiles"]
