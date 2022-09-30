@@ -67,7 +67,8 @@ class MrBilitApiWrapper:
             "childCount": child_count,
             "infantCount": infant_count,
             "includeOptionalServices": True,
-            "exclusive": "3",
+            "exclusive": False,
+            "genderCode": "3",
             "seatCount": "1"
         }
         reserve_requests = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat',
