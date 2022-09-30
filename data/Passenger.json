@@ -1,4 +1,7 @@
-[
+{
+  "Email": "moosavi238@gmail.com",
+  "Mobile": "09101513198",
+  "Phone": [
     {
       "PersianFirstName": "سید علی",
       "PersianLastName": "موسوی",
@@ -6,6 +9,8 @@
       "BirthDay": "1382/03/27",
       "NationalCode": "4421161772",
       "TrainCars": [],
-      "TrainCapacityOptionalService": {}
+      "TrainCapacityOptionalService": {
+      }
     }
-]
+  ]
+}
