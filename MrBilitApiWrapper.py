@@ -10,43 +10,6 @@ from helper.validation import validation_mobile
 import urllib.parse
 
 
-def generate_query_get_available(source: str, destination: str, date: str) -> str:
-    query: str = ""
-    query += "from=" + urllib.parse.quote(source) + '&'
-    query += "to=" + urllib.parse.quote(destination) + '&'
-    query += "date=" + urllib.parse.quote(jalali_to_gregorian(date)) + '&'
-    query += "adultCount=" + "1" + '&'
-    query += "childCount=" + "0" + '&'
-    query += "infantCount=" + "0" + '&'
-    query += "exclusive=" + "false" + '&'
-    query += "availableStatus=" + "Both"
-    return query
-
-
-def generate_query_reserve_seat(train_ID: int | str, adult_count: int | str, child_count: int | str,
-                                infant_count: str | int):
-    query: str = ""
-    query += "trainID=" + urllib.parse.quote(str(train_ID)) + '&'
-    query += "adultCount=" + urllib.parse.quote(str(adult_count)) + '&'
-    query += "childCount=" + urllib.parse.quote(str(child_count)) + '&'
-    query += "infantCount=" + urllib.parse.quote(str(infant_count)) + '&'
-    query += "includeOptionalServices=" + "true" + '&'
-    query += "exclusive=" + "false" + '&'
-    query += "genderCode=" + "3" + '&'
-    query += "seatCount=" + "1"
-    return query
-
-
-def generate_query_login(username: int | str, password: int | str, mobile: str | int):
-    mobile = validation_mobile(mobile)
-    query: str = ""
-    query += "Username=" + urllib.parse.quote(str(username)) + '&'
-    query += "Password=" + urllib.parse.quote(str(password)) + '&'
-    query += "Mobile=" + urllib.parse.quote(str(mobile)) + '&'
-    query += "Source=" + "2"
-    return query
-
-
 class MrBilitApiWrapper:
     __train: dict | None = None
     __list_of_train: list = []
