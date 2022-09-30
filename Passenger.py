@@ -36,6 +36,7 @@ class Passenger:
             mobile = validation_mobile(mobile)
             if len(phone):
                 phone = validation_mobile(phone)
+            set_birth_day_people(people)
 
             self.__email = email
             self.__mobile = mobile
