@@ -109,29 +109,22 @@ class MrBilitApiWrapper:
 
         return list_of_train
 
-        for ID in list_train_ID:
-            if ID == 0:
-                self.__train = self.__list_of_train[0]
-                for price in self.__train['Prices']:
-                    if price['SellType'] == sex_enum_to_int(self.__sex):
-                        self.__classes_train = price['Classes']
-                return True
-            for train in self.__list_of_train:
-                if str(ID) == str(train['TrainNumber']):
-                    self.__train = train
-                    for price in self.__train['Prices']:
-                        if price['SellType'] == sex_enum_to_int(self.__sex):
-                            self.__classes_train = price['Classes']
-                    return True
-        return False
-
-    def reserve_seat(self):
-        query = generate_query_reserve_seat(self.__get_class_train_ID(), 1, 0, 0)
-        reserve_requests = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat?' + query,
+    def reserve_seat(self, train_ID, adult_count, child_count, infant_count):
+        params = {
+            "trainID": train_ID,
+            "adultCount": adult_count,
+            "childCount": child_count,
+            "infantCount": infant_count,
+            "includeOptionalServices": True,
+            "exclusive": "3",
+            "seatCount": "1"
+        }
+        reserve_requests = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat',
+                                        params=params,
                                         headers={'Authorization': 'Bearer ' + self.__token})
-        cookies = reserve_requests.cookies
-        self.__reserve_data = json.loads(reserve_requests.text)
-        print("reserve_seat", self.__reserve_data)
+        reserve_data = json.loads(reserve_requests.text)
+        print("reserve_seat", reserve_data)
+        return reserve_data
 
     def __get_class_train_ID(self) -> int | str:
         for class_train in self.__classes_train:
