@@ -59,6 +59,22 @@ class MrBilitApiWrapper:
     __bill_code: str | int = ""
     __status: dict = {}
 
+    __headers = {}
+
+    def __init__(self, Username: int | str, Password: int | str, Mobile: str | int):
+        self.__login(Username, Password, Mobile)
+
+    def __login(self, Username: int | str, Password: int | str, Mobile: str | int):
+        login_req = requests.get('https://auth.mrbilit.com/api/login', params={
+            "Username": Username,
+            "Password": Password,
+            "Mobile": Mobile,
+            "Source": 2
+        })
+        login_data = json.loads(login_req.text)
+        print("login", login_data)
+        self.__headers = {'Authorization': 'Bearer ' + login_data['token']}
+
     def get_available(self, source: str, destination: str, date: str, sex: int, listTrainId: list[int | str]) -> bool:
         self.__sex = int_to_sex_enum(sex)
         query = generate_query_get_available(source, destination, date)
@@ -124,13 +140,6 @@ class MrBilitApiWrapper:
                                          headers={'Authorization': 'Bearer ' + self.__token})
         self.__register_data = json.loads(register_request.text)
         print("register_info", self.__register_data)
-
-    def login(self, Username: int | str, Password: int | str, Mobile: str | int):
-        login_req = requests.get(
-            'https://auth.mrbilit.com/api/login?' + generate_query_login(Username, Password, Mobile))
-        login_data = json.loads(login_req.text)
-        print("login", login_data)
-        self.__token = login_data['token']
 
     def pay(self):
         query = 'https://payment.mrbilit.com/api/billpayment/' + str(self.__reserve_data['BillCode']) + \
