@@ -97,15 +97,17 @@ class MrBilitApiWrapper:
         register_data = json.loads(register_request.text)
         print("register_info", register_data)
 
-    def pay(self):
-        query = 'https://payment.mrbilit.com/api/billpayment/' + str(self.__reserve_data['BillCode']) + \
-                '?payFromCredit=true&access_token=' + self.__token
-        pay_status = requests.get(query, headers={'Authorization': 'Bearer ' + self.__token})
+    def pay(self, bill_code):
+        pay_status = requests.get('https://payment.mrbilit.com/api/billpayment/' + str(bill_code),
+                                  params={
+                                      "payFromCredit": True,
+                                      "access_token": self.__token
+                                  },
+                                  headers=self.__headers)
         print("pay", pay_status.url)
         parsed_url = urllib.parse.urlparse(pay_status.url)
         queries = urllib.parse.parse_qs(parsed_url.query)
-        self.__mac = queries['mac'][0]
-        self.__bill_code = queries['billCode'][0]
+        return queries['mac'][0]
 
     def get_status(self) -> bool:
         status = requests.get(
