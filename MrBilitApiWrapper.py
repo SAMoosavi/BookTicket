@@ -75,35 +75,39 @@ class MrBilitApiWrapper:
         print("login", login_data)
         self.__headers = {'Authorization': 'Bearer ' + login_data['token']}
 
-    def get_available(self, source: str, destination: str, date: str, sex: int, listTrainId: list[int | str]) -> bool:
-        self.__sex = int_to_sex_enum(sex)
-        query = generate_query_get_available(source, destination, date)
-        response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2?" + query).text
-        self.__get_list_of_train(json.loads(response))
-        return self.__set_train(listTrainId)
+    def get_available(self, source: str, destination: str, date: str, sex: int):
+        response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2", params={
+            "from": source,
+            "to": destination,
+            "date": jalali_to_gregorian(date),
+            "adultCount": 1,
+            "childCount": 0,
+            "infantCount": 0,
+            "exclusive": False,
+            "availableStatus": "Both"
+        }).text
+        return self.__get_list_of_train(json.loads(response), sex)
 
-    def __get_list_of_train(self, data) -> None:
+    def __get_list_of_train(self, data, sex: int):
+        list_of_train = []
         if 'Trains' not in data:
-            return
+            return list_of_train
         trains = data['Trains']
         LogTrain().write(trains)
+
         for train in trains:
             capacity: int = 0
+
             for b in train['Prices']:
-                if b['SellType'] == sex_enum_to_int(self.__sex):
+                if b['SellType'] == sex:
                     for c in b['Classes']:
-                        capacity += c['Capacity']
+                        capacity = c['Capacity']
                     break
 
             if not capacity == 0:
-                self.__list_of_train.append(train)
+                list_of_train.append(train)
 
-    def __set_train(self, list_train_ID: list[int | str]) -> bool:
-        if not self.__list_of_train:
-            return False
-
-        if len(self.__list_of_train) == 0:
-            return False
+        return list_of_train
 
         for ID in list_train_ID:
             if ID == 0:
