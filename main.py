@@ -3,21 +3,12 @@ import time
 
 from MrBilitApiWrapper import MrBilitApiWrapper
 from Passenger import Passenger
-from Person import Person
 from User import User
 
-person_json = open('data/Person.json', 'r')
-person_data = json.loads(person_json.read())
-person_json.close()
-del person_json
-
-people: list[Person] = []
-
-for person in person_data:
-    per = Person(person['PersianFirstName'], person['PersianLastName'], person['Male'],
-                 person['BirthDay'], person['NationalCode'], person['TrainCars'],
-                 person['TrainCapacityOptionalService'])
-    people.append(per)
+passenger_json = open('data/Passenger.json', 'r')
+passenger_data = json.loads(passenger_json.read())
+passenger_json.close()
+del passenger_json
 
 path_json = open("data/Path.json", 'r')
 data = json.loads(path_json.read())
@@ -27,9 +18,15 @@ del path_json
 login_data = data['login']
 path_data = data['path']
 list_ID = data['listId']
-passenger_data = data['passengers']
 
-passenger = Passenger(passenger_data['Email'], passenger_data['Mobile'], people, passenger_data['Phone'])
+passenger = Passenger(
+    passenger_data['Email'],
+    passenger_data['Mobile'],
+    passenger_data['People'],
+    passenger_data['Phone']
+)
+del passenger_data
+
 user = User(login_data['username'], login_data['password'], login_data['mobile'], login_data['email'])
 mr_bilit = MrBilitApiWrapper()
 
