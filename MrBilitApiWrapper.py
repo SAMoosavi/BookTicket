@@ -89,17 +89,12 @@ class MrBilitApiWrapper:
         print("reserve_seat", reserve_data)
         return reserve_data
 
-    def __get_class_train_ID(self) -> int | str:
-        for class_train in self.__classes_train:
-            if class_train["Capacity"] > 0:
-                return class_train["ID"]
-
-    def register_info(self, passenger: Passenger):
+    def register_info(self, bill_ID, passenger: Passenger):
         register_request = requests.post('https://train.atighgasht.com/TrainService/api/RegisterInfo',
-                                         json=passenger.get_dict(self.__reserve_data['BillID']),
-                                         headers={'Authorization': 'Bearer ' + self.__token})
-        self.__register_data = json.loads(register_request.text)
-        print("register_info", self.__register_data)
+                                         json=passenger.get_dict(bill_ID),
+                                         headers=self.__headers)
+        register_data = json.loads(register_request.text)
+        print("register_info", register_data)
 
     def pay(self):
         query = 'https://payment.mrbilit.com/api/billpayment/' + str(self.__reserve_data['BillCode']) + \
