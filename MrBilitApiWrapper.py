@@ -36,6 +36,7 @@ class MrBilitApiWrapper:
         })
         login_data = json.loads(login_req.text)
         print("login", login_data)
+        self.__token = login_data['token']
         self.__headers = {'Authorization': 'Bearer ' + login_data['token']}
 
     def get_available(self, source: str, destination: str, date: str, sex: int):
