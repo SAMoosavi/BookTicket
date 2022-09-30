@@ -80,7 +80,7 @@ while True:
 
 reserve_data = mr_bilit.reserve_seat(train_ID, 1, 0, 0)
 mr_bilit.register_info(reserve_data['BillID'], passenger)
-mac = mr_bilit.pay(reserve_data['BillID'])
+mac = mr_bilit.pay(reserve_data['BillCode'])
 tickets = []
 while True:
     tickets = mr_bilit.get_status(reserve_data['BillCode'], mac)
