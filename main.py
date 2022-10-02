@@ -5,6 +5,7 @@ from MrBilitApiWrapper import MrBilitApiWrapper
 from Passenger import Passenger
 from Person import Person
 from User import User
+from helper.SexFunctions import int_to_sex_enum
 
 person_json = open('data/Person.json', 'r')
 person_data = json.loads(person_json.read())
@@ -78,7 +79,7 @@ while True:
     print(i, " not found")
     time.sleep(20)
 
-reserve_data = mr_bilit.reserve_seat(train_ID, 1, 0, 0)
+reserve_data = mr_bilit.reserve_seat(train_ID, int_to_sex_enum(int(path_data['sex'])))
 mr_bilit.register_info(reserve_data['BillID'], passenger)
 mac = mr_bilit.pay(reserve_data['BillCode'])
 tickets = []
