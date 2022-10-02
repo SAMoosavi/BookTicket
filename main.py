@@ -10,6 +10,7 @@ passenger_data = json.loads(passenger_json.read())
 passenger_json.close()
 del passenger_json
 
+
 def set_train(list_of_train, sex, list_train_ID: list[int | str]):
     for ID in list_train_ID:
 
@@ -49,16 +50,21 @@ path_data = data['path']
 list_ID = data['listId']
 
 passenger = Passenger(
-    passenger_data['Email'],
-    passenger_data['Mobile'],
-    passenger_data['People'],
-    passenger_data['Phone']
+    email=passenger_data['Email'],
+    mobile=passenger_data['Mobile'],
+    phone=passenger_data['Phone'],
+    persian_first_name=passenger_data['People'][0]["PersianFirstName"],
+    persian_last_name=passenger_data['People'][0]["PersianLastName"],
+    male=passenger_data['People'][0]["Male"],
+    birth_day=passenger_data['People'][0]["BirthDay"],
+    national_code=passenger_data['People'][0]["NationalCode"],
+    train_cars=passenger_data['People'][0]["TrainCars"],
+    train_capacity_optional_service=passenger_data['People'][0]["TrainCapacityOptionalService"],
 )
 del passenger_data
 
 user = User(login_data['username'], login_data['password'], login_data['mobile'], login_data['email'])
 mr_bilit = MrBilitApiWrapper(user.get_username(), user.get_password(), user.get_mobile())
-
 
 my_train = {}
 train_ID = ""
