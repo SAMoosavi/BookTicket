@@ -1,35 +1,36 @@
-from Person import Person
-from helper.validation import validation_email, validation_mobile
+from dataclasses import dataclass
+
+from helper.DateFunctions import jalali_to_gregorian
 
 
+@dataclass
 class Passenger:
-    __email: str
-    __mobile: str
-    __people: list[Person]
-    __phone: str
-
-    def __init__(self, email: str, mobile: str, people: list[Person], phone: str):
-        if validation_email(email):
-            mobile = validation_mobile(mobile)
-            if len(phone):
-                phone = validation_mobile(phone)
-
-            self.__email = email
-            self.__mobile = mobile
-            self.__people = people
-            self.__phone = phone
+    email: str
+    mobile: str
+    phone: str
+    persian_first_name: str
+    persian_last_name: str
+    male: bool
+    birth_day: str
+    national_code: str
+    train_cars: list
+    train_capacity_optional_service: dict
 
     def get_dict(self, bill_ID) -> dict:
         return {
-            "Email": self.__email,
-            "Mobile": self.__mobile,
-            "People": self.__get_people(),
-            "Phone": self.__phone,
+            "Email": self.email,
+            "Mobile": self.mobile,
+            "People": [
+                {
+                    "PersianFirstName": self.persian_first_name,
+                    "PersianLastName": self.persian_last_name,
+                    "Male": self.male,
+                    "BirthDay": jalali_to_gregorian(self.birth_day),
+                    "NationalCode": self.national_code,
+                    "TrainCars": self.train_cars,
+                    "TrainCapacityOptionalService": self.train_capacity_optional_service
+                }
+            ],
+            "Phone": self.phone,
             "BillID": bill_ID
         }
-
-    def __get_people(self) -> list[dict]:
-        people = []
-        for person in self.__people:
-            people.append(person.get_dict())
-        return people

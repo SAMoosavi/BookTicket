@@ -3,13 +3,12 @@ import time
 
 from MrBilitApiWrapper import MrBilitApiWrapper
 from Passenger import Passenger
-from Person import Person
 from User import User
 
-person_json = open('data/Person.json', 'r')
-person_data = json.loads(person_json.read())
-person_json.close()
-del person_json
+passenger_json = open('data/Passenger.json', 'r')
+passenger_data = json.loads(passenger_json.read())
+passenger_json.close()
+del passenger_json
 
 
 def set_train(list_of_train, sex, list_train_ID: list[int | str]):
@@ -41,14 +40,6 @@ def get_pdf(ticket_files):
         print(ticket_file["url"])
 
 
-people: list[Person] = []
-
-for person in person_data:
-    per = Person(person['PersianFirstName'], person['PersianLastName'], person['Male'],
-                 person['BirthDay'], person['NationalCode'], person['TrainCars'],
-                 person['TrainCapacityOptionalService'])
-    people.append(per)
-
 path_json = open("data/Path.json", 'r')
 data = json.loads(path_json.read())
 path_json.close()
@@ -57,9 +48,21 @@ del path_json
 login_data = data['login']
 path_data = data['path']
 list_ID = data['listId']
-passenger_data = data['passengers']
 
-passenger = Passenger(passenger_data['Email'], passenger_data['Mobile'], people, passenger_data['Phone'])
+passenger = Passenger(
+    email=passenger_data['Email'],
+    mobile=passenger_data['Mobile'],
+    phone=passenger_data['Phone'],
+    persian_first_name=passenger_data['People'][0]["PersianFirstName"],
+    persian_last_name=passenger_data['People'][0]["PersianLastName"],
+    male=passenger_data['People'][0]["Male"],
+    birth_day=passenger_data['People'][0]["BirthDay"],
+    national_code=passenger_data['People'][0]["NationalCode"],
+    train_cars=passenger_data['People'][0]["TrainCars"],
+    train_capacity_optional_service=passenger_data['People'][0]["TrainCapacityOptionalService"],
+)
+del passenger_data
+
 user = User(login_data['username'], login_data['password'], login_data['mobile'], login_data['email'])
 mr_bilit = MrBilitApiWrapper(user.get_username(), user.get_password(), user.get_mobile())
 
