@@ -69,7 +69,7 @@ user = User(
     mobile=login_data['mobile'],
     email=login_data['email']
 )
-mr_bilit = MrBilitApiWrapper(user.username, user.password, user.mobile)
+mr_bilit = MrBilitApiWrapper(user)
 
 my_train = {}
 train_ID = ""
