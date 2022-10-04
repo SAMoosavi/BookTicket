@@ -63,8 +63,13 @@ passenger = Passenger(
 )
 del passenger_data
 
-user = User(login_data['username'], login_data['password'], login_data['mobile'], login_data['email'])
-mr_bilit = MrBilitApiWrapper(user.get_username(), user.get_password(), user.get_mobile())
+user = User(
+    username=login_data['username'],
+    password=login_data['password'],
+    mobile=login_data['mobile'],
+    email=login_data['email']
+)
+mr_bilit = MrBilitApiWrapper(user.username, user.password, user.mobile)
 
 my_train = {}
 train_ID = ""
