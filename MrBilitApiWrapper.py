@@ -3,6 +3,7 @@ import requests
 
 from Passenger import Passenger
 from LogTrain import LogTrain
+from User import User
 from helper.DateFunctions import jalali_to_gregorian
 import urllib.parse
 
@@ -11,14 +12,14 @@ class MrBilitApiWrapper:
     __token: str = ""
     __headers = {}
 
-    def __init__(self, Username: int | str, Password: int | str, Mobile: str | int):
-        self.__login(Username, Password, Mobile)
+    def __init__(self, user: User):
+        self.__login(user)
 
-    def __login(self, Username: int | str, Password: int | str, Mobile: str | int):
+    def __login(self, user: User):
         login_req = requests.get('https://auth.mrbilit.com/api/login', params={
-            "Username": Username,
-            "Password": Password,
-            "Mobile": Mobile,
+            "Username": user.username,
+            "Password": user.password,
+            "Mobile": user.mobile,
             "Source": 2
         })
         login_data = json.loads(login_req.text)
