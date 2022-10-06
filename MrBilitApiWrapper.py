@@ -78,9 +78,28 @@ class MrBilitApiWrapper:
         print("reserve_seat", reserve_data)
         return reserve_data
 
+    def __get_dict(self, passenger: Passenger, bill_ID) -> dict:
+        return {
+            "Email": passenger.email,
+            "Mobile": passenger.mobile,
+            "People": [
+                {
+                    "PersianFirstName": passenger.persian_first_name,
+                    "PersianLastName": passenger.persian_last_name,
+                    "Male": passenger.male,
+                    "BirthDay": jalali_to_gregorian(passenger.birth_day),
+                    "NationalCode": passenger.national_code,
+                    "TrainCars": passenger.train_cars,
+                    "TrainCapacityOptionalService": passenger.train_capacity_optional_service
+                }
+            ],
+            "Phone": passenger.phone,
+            "BillID": bill_ID
+        }
+
     def register_info(self, bill_ID, passenger: Passenger):
         register_request = requests.post('https://train.atighgasht.com/TrainService/api/RegisterInfo',
-                                         json=passenger.get_dict(bill_ID),
+                                         json=self.__get_dict(passenger, bill_ID),
                                          headers=self.__headers)
         register_data = json.loads(register_request.text)
         print("register_info", register_data)
