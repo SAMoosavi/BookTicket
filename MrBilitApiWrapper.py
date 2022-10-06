@@ -7,8 +7,6 @@ from LogTrain import LogTrain
 from helper.DateFunctions import jalali_to_gregorian
 import urllib.parse
 
-from helper.SexFunctions import sex_enum_to_int
-
 
 class MrBilitApiWrapper:
     __token: str = ""
@@ -72,7 +70,7 @@ class MrBilitApiWrapper:
                                             "infantCount": "0",
                                             "includeOptionalServices": True,
                                             "exclusive": False,
-                                            "genderCode": sex_enum_to_int(sex),
+                                            "genderCode": sex.value,
                                             "seatCount": "1"
                                         },
                                         headers=self.__headers)
