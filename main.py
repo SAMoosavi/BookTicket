@@ -1,6 +1,7 @@
 import json
 import time
 
+from GlobalVariables import Sex
 from MrBilitApiWrapper import MrBilitApiWrapper
 from Passenger import Passenger
 from User import User
@@ -86,7 +87,7 @@ while True:
     print(i, " not found")
     time.sleep(20)
 
-reserve_data = mr_bilit.reserve_seat(train_ID, 1, 0, 0)
+reserve_data = mr_bilit.reserve_seat(train_ID, Sex(int(path_data['sex'])))
 mr_bilit.register_info(reserve_data['BillID'], passenger)
 mac = mr_bilit.pay(reserve_data['BillCode'])
 tickets = []

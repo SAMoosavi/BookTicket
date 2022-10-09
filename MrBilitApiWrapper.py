@@ -1,6 +1,7 @@
 import json
 import requests
 
+from GlobalVariables import Sex
 from Passenger import Passenger
 from LogTrain import LogTrain
 from User import User
@@ -61,16 +62,16 @@ class MrBilitApiWrapper:
 
         return list_of_train
 
-    def reserve_seat(self, train_ID, adult_count, child_count, infant_count):
+    def reserve_seat(self, train_ID, sex: Sex):
         reserve_requests = requests.get('https://train.atighgasht.com/TrainService/api/ReserveSeat',
                                         params={
                                             "trainID": train_ID,
-                                            "adultCount": adult_count,
-                                            "childCount": child_count,
-                                            "infantCount": infant_count,
+                                            "adultCount": "1",
+                                            "childCount": "0",
+                                            "infantCount": "0",
                                             "includeOptionalServices": True,
                                             "exclusive": False,
-                                            "genderCode": "3",
+                                            "genderCode": sex.value,
                                             "seatCount": "1"
                                         },
                                         headers=self.__headers)
