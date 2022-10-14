@@ -12,13 +12,13 @@ passenger_json.close()
 del passenger_json
 
 
-def set_train(list_of_train, sex, list_train_ID: list[int | str]):
+def set_train(list_of_train, sex: Sex, list_train_ID: list[int | str]):
     for ID in list_train_ID:
 
         if ID == 0:
             train = list_of_train[0]
             for price in train['Prices']:
-                if price['SellType'] == sex:
+                if price['SellType'] == sex.value:
                     return price['Classes']
 
         for train in list_of_train:
@@ -77,9 +77,14 @@ train_ID = ""
 i = 0
 while True:
     i += 1
-    trains = mr_bilit.get_available(path_data['source'], path_data['destination'], path_data['date'], path_data['sex'])
+    trains = mr_bilit.get_available(
+        path_data['source'],
+        path_data['destination'],
+        path_data['date'],
+        Sex(path_data['sex'])
+    )
     if len(trains) != 0:
-        my_train = set_train(trains, path_data['sex'], list_ID)
+        my_train = set_train(trains, Sex(path_data['sex']), list_ID)
         if len(my_train) != 0:
             train_ID = get_class_train_ID(my_train)
             print("found")
@@ -87,7 +92,7 @@ while True:
     print(i, " not found")
     time.sleep(20)
 
-reserve_data = mr_bilit.reserve_seat(train_ID, Sex(int(path_data['sex'])))
+reserve_data = mr_bilit.reserve_seat(train_ID, Sex(path_data['sex']))
 mr_bilit.register_info(reserve_data['BillID'], passenger)
 mac = mr_bilit.pay(reserve_data['BillCode'])
 tickets = []

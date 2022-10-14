@@ -24,11 +24,11 @@ class MrBilitApiWrapper:
             "Source": 2
         })
         login_data = json.loads(login_req.text)
-        print("login", login_data)
+        # print("login", login_data)
         self.__token = login_data['token']
         self.__headers = {'Authorization': 'Bearer ' + login_data['token']}
 
-    def get_available(self, source: str, destination: str, date: str, sex: int):
+    def get_available(self, source: str, destination: str, date: str, sex: Sex):
         response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2", params={
             "from": source,
             "to": destination,
@@ -41,7 +41,7 @@ class MrBilitApiWrapper:
         }).text
         return self.__get_list_of_train(json.loads(response), sex)
 
-    def __get_list_of_train(self, data, sex: int):
+    def __get_list_of_train(self, data, sex: Sex):
         list_of_train = []
         if 'Trains' not in data:
             return list_of_train
@@ -52,7 +52,7 @@ class MrBilitApiWrapper:
             capacity: int = 0
 
             for b in train['Prices']:
-                if b['SellType'] == sex:
+                if b['SellType'] == sex.value:
                     for c in b['Classes']:
                         capacity = c['Capacity']
                     break
