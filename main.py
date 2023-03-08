@@ -70,35 +70,48 @@ user = User(
     mobile=login_data['mobile'],
     email=login_data['email']
 )
-mr_bilit = MrBilitApiWrapper(user)
+while True:
+    try:
+        mr_bilit = MrBilitApiWrapper(user)
+        break
+    except:
+        pass
 
 my_train = {}
 train_ID = ""
 i = 0
+j = 0
 while True:
-    i += 1
-    trains = mr_bilit.get_available(
-        path_data['source'],
-        path_data['destination'],
-        path_data['date'],
-        Sex(path_data['sex'])
-    )
-    if len(trains) != 0:
-        my_train = set_train(trains, Sex(path_data['sex']), list_ID)
-        if len(my_train) != 0:
-            train_ID = get_class_train_ID(my_train)
-            print("found")
-            break
-    print(i, " not found")
-    time.sleep(20)
+    try:
+        j += 1
+        print(j)
+        while True:
+            i += 1
+            trains = mr_bilit.get_available(
+                path_data['source'],
+                path_data['destination'],
+                path_data['date'],
+                Sex(path_data['sex'])
+            )
+            if len(trains) != 0:
+                my_train = set_train(trains, Sex(path_data['sex']), list_ID)
+                if len(my_train) != 0:
+                    train_ID = get_class_train_ID(my_train)
+                    print("found")
+                    break
+            print(i, " not found")
+            time.sleep(20)
 
-reserve_data = mr_bilit.reserve_seat(train_ID, Sex(path_data['sex']))
-mr_bilit.register_info(reserve_data['BillID'], passenger)
-mac = mr_bilit.pay(reserve_data['BillCode'])
-tickets = []
-while True:
-    tickets = mr_bilit.get_status(reserve_data['BillCode'], mac)
-    if len(tickets) != 0:
-        get_pdf(tickets)
-        break
-    time.sleep(3)
+        reserve_data = mr_bilit.reserve_seat(train_ID, Sex(path_data['sex']))
+        mr_bilit.register_info(reserve_data['BillID'], passenger)
+        mac = mr_bilit.pay(reserve_data['BillCode'])
+        tickets = []
+        while True:
+            tickets = mr_bilit.get_status(reserve_data['BillCode'], mac)
+            if len(tickets) != 0:
+                get_pdf(tickets)
+                break
+            time.sleep(3)
+    except:
+        print("err")
+        time.sleep(20)
