@@ -71,9 +71,9 @@ while True:
                 path_data['date'],
                 Sex(path_data['sex'])
             )
-            if len(trains) != 0:
+            if trains:
                 my_train = set_train(trains, Sex(path_data['sex']), list_ID)
-                if len(my_train) != 0:
+                if my_train:
                     train_ID = get_class_train_ID(my_train)
                     print("found")
                     break
