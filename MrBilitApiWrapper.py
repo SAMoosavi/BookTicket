@@ -49,7 +49,7 @@ class MrBilitApiWrapper:
                     "availableStatus": "Both"
                 }).text
                 break
-            except ...:
+            except:
                 print("err")
                 time.sleep(20)
         return self.__get_list_of_train(json.loads(response), sex)
