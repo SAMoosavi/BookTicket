@@ -6,10 +6,8 @@ from MrBilitApiWrapper import MrBilitApiWrapper
 from Passenger import Passenger
 from User import User
 
-passenger_json = open('data/Passenger.json', 'r')
-passenger_data = json.loads(passenger_json.read())
-passenger_json.close()
-del passenger_json
+with open('data/Passenger.json', 'r') as passenger_json:
+    passenger_data = json.load(passenger_json)
 
 
 def set_train(list_of_train, sex: Sex, list_train_ID: list[int | str]):
