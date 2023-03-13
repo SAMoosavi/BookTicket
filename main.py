@@ -58,39 +58,32 @@ path_data = data['path']
 my_train = {}
 train_ID = ""
 i = 0
-j = 0
 while True:
-    try:
-        j += 1
-        print(j)
-        while True:
-            i += 1
-            print(i, end=" ")
-            trains = mr_bilit.get_available(
-                path_data['source'],
-                path_data['destination'],
-                path_data['date'],
-                Sex(path_data['sex'])
-            )
-            if trains:
-                my_train = set_train(trains, Sex(path_data['sex']), list_ID)
-                if my_train:
-                    train_ID = get_class_train_ID(my_train)
-                    print("found")
-                    break
-            print("not found")
-            time.sleep(20)
+    i += 1
+    print(i, end=" ")
+    trains = mr_bilit.get_available(
+        path_data['source'],
+        path_data['destination'],
+        path_data['date'],
+        Sex(path_data['sex'])
+    )
+    print("trains", trains)
+    if trains:
+        my_train = set_train(trains, Sex(path_data['sex']), list_ID)
+        if my_train:
+            train_ID = get_class_train_ID(my_train)
+            print("found")
+            break
+    print("not found")
+    time.sleep(20)
 
-        reserve_data = mr_bilit.reserve_seat(train_ID, Sex(path_data['sex']))
-        mr_bilit.register_info(reserve_data['BillID'], passenger)
-        mac = mr_bilit.pay(reserve_data['BillCode'])
-        tickets = []
-        while True:
-            tickets = mr_bilit.get_status(reserve_data['BillCode'], mac)
-            if len(tickets) != 0:
-                get_pdf(tickets)
-                break
-            time.sleep(3)
-    except:
-        print("err")
-        time.sleep(20)
+reserve_data = mr_bilit.reserve_seat(train_ID, Sex(path_data['sex']))
+mr_bilit.register_info(reserve_data['BillID'], passenger)
+mac = mr_bilit.pay(reserve_data['BillCode'])
+tickets = []
+while True:
+    tickets = mr_bilit.get_status(reserve_data['BillCode'], mac)
+    if tickets:
+        get_pdf(tickets)
+        break
+    time.sleep(3)
