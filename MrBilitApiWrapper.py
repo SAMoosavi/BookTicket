@@ -47,24 +47,19 @@ class MrBilitApiWrapper:
         return self.__get_list_of_train(json.loads(response), sex)
 
     def __get_list_of_train(self, data, sex: Sex):
-        list_of_train = []
         if 'Trains' not in data:
-            return list_of_train
-        trains = data['Trains']
-        LogTrain().write(trains)
+            return []
+        list_of_train = [
+            train for train in data['Trains']
+            if any(
+                c['Capacity'] > 0
+                for b in train['Prices']
+                for c in b['Classes']
+                if b['SellType'] == sex.value
+            )
+        ]
 
-        for train in trains:
-            capacity: int = 0
-
-            for b in train['Prices']:
-                if b['SellType'] == sex.value:
-                    for c in b['Classes']:
-                        capacity = c['Capacity']
-                    break
-
-            if not capacity == 0:
-                list_of_train.append(train)
-
+        LogTrain().write(list_of_train)
         return list_of_train
 
     def reserve_seat(self, train_ID, sex: Sex):
