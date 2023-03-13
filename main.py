@@ -65,6 +65,7 @@ while True:
         print(j)
         while True:
             i += 1
+            print(i, end=" ")
             trains = mr_bilit.get_available(
                 path_data['source'],
                 path_data['destination'],
@@ -77,7 +78,7 @@ while True:
                     train_ID = get_class_train_ID(my_train)
                     print("found")
                     break
-            print(i, " not found")
+            print("not found")
             time.sleep(20)
 
         reserve_data = mr_bilit.reserve_seat(train_ID, Sex(path_data['sex']))
