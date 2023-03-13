@@ -9,6 +9,19 @@ from User import User
 with open('data/Passenger.json', 'r') as passenger_json:
     passenger_data = json.load(passenger_json)
 
+passenger = Passenger(
+    email=passenger_data['Email'],
+    mobile=passenger_data['Mobile'],
+    phone=passenger_data['Phone'],
+    persian_first_name=passenger_data['People'][0]["PersianFirstName"],
+    persian_last_name=passenger_data['People'][0]["PersianLastName"],
+    male=passenger_data['People'][0]["Male"],
+    birth_day=passenger_data['People'][0]["BirthDay"],
+    national_code=passenger_data['People'][0]["NationalCode"],
+    train_cars=passenger_data['People'][0]["TrainCars"],
+    train_capacity_optional_service=passenger_data['People'][0]["TrainCapacityOptionalService"],
+)
+
 
 def set_train(list_of_train, sex: Sex, list_train_ID: list[int | str]):
     classes = []
@@ -32,31 +45,10 @@ def get_pdf(ticket_files):
 
 
 with open('data/Path.json', 'r') as path_json:
-  data = json.load(path_json)
-
-login_data = data['login']
-path_data = data['path']
-list_ID = data['listId']
-
-passenger = Passenger(
-    email=passenger_data['Email'],
-    mobile=passenger_data['Mobile'],
-    phone=passenger_data['Phone'],
-    persian_first_name=passenger_data['People'][0]["PersianFirstName"],
-    persian_last_name=passenger_data['People'][0]["PersianLastName"],
-    male=passenger_data['People'][0]["Male"],
-    birth_day=passenger_data['People'][0]["BirthDay"],
-    national_code=passenger_data['People'][0]["NationalCode"],
-    train_cars=passenger_data['People'][0]["TrainCars"],
-    train_capacity_optional_service=passenger_data['People'][0]["TrainCapacityOptionalService"],
-)
-del passenger_data
+    data = json.load(path_json)
 
 user = User(
-    username=login_data['username'],
-    password=login_data['password'],
-    mobile=login_data['mobile'],
-    email=login_data['email']
+    **data['login']
 )
 while True:
     try:
@@ -65,6 +57,8 @@ while True:
     except:
         pass
 
+list_ID = data['listId']
+path_data = data['path']
 my_train = {}
 train_ID = ""
 i = 0
