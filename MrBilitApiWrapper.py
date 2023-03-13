@@ -17,12 +17,17 @@ class MrBilitApiWrapper:
         self.__login(user)
 
     def __login(self, user: User):
-        login_req = requests.get('https://auth.mrbilit.com/api/login', params={
-            "Username": user.username,
-            "Password": user.password,
-            "Mobile": user.mobile,
-            "Source": 2
-        })
+        while True:
+            try:
+                login_req = requests.get('https://auth.mrbilit.com/api/login', params={
+                    "Username": user.username,
+                    "Password": user.password,
+                    "Mobile": user.mobile,
+                    "Source": 2
+                })
+                break
+            except ...:
+                pass
         login_data = json.loads(login_req.text)
         # print("login", login_data)
         self.__token = login_data['token']

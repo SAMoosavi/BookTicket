@@ -50,12 +50,8 @@ with open('data/Path.json', 'r') as path_json:
 user = User(
     **data['login']
 )
-while True:
-    try:
-        mr_bilit = MrBilitApiWrapper(user)
-        break
-    except:
-        pass
+
+mr_bilit = MrBilitApiWrapper(user)
 
 list_ID = data['listId']
 path_data = data['path']
