@@ -31,10 +31,8 @@ def get_pdf(ticket_files):
     print("list of blit:", *urls)
 
 
-path_json = open("data/Path.json", 'r')
-data = json.loads(path_json.read())
-path_json.close()
-del path_json
+with open('data/Path.json', 'r') as path_json:
+  data = json.load(path_json)
 
 login_data = data['login']
 path_data = data['path']
