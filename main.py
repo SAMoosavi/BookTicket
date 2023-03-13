@@ -23,15 +23,12 @@ def set_train(list_of_train, sex: Sex, list_train_ID: list[int | str]):
 
 
 def get_class_train_ID(classes_train) -> int | str:
-    for class_train in classes_train:
-        if class_train["Capacity"] > 0:
-            return class_train["ID"]
+    return next((class_train["ID"] for class_train in classes_train if class_train["Capacity"] > 0), None)
 
 
 def get_pdf(ticket_files):
-    print("list of blit:")
-    for ticket_file in ticket_files:
-        print(ticket_file["url"])
+    urls = [ticket_file["url"] for ticket_file in ticket_files]
+    print("list of blit:", *urls)
 
 
 path_json = open("data/Path.json", 'r')
