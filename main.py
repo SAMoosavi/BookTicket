@@ -11,20 +11,15 @@ with open('data/Passenger.json', 'r') as passenger_json:
 
 
 def set_train(list_of_train, sex: Sex, list_train_ID: list[int | str]):
+    classes = []
     for ID in list_train_ID:
-
-        if ID == 0:
-            train = list_of_train[0]
+        train = next((t for t in list_of_train if str(ID) == str(t['TrainNumber'])), None)
+        if train:
             for price in train['Prices']:
-                if price['SellType'] == sex.value:
-                    return price['Classes']
-
-        for train in list_of_train:
-            if str(ID) == str(train['TrainNumber']):
-                for price in train['Prices']:
-                    if price['SellType'] == sex:
-                        return price['Classes']
-    return []
+                if price['SellType'] == sex:
+                    classes.append(price['Classes'])
+                    break
+    return classes
 
 
 def get_class_train_ID(classes_train) -> int | str:
