@@ -1,4 +1,6 @@
 import json
+import time
+
 import requests
 
 from GlobalVariables import Sex
@@ -34,16 +36,22 @@ class MrBilitApiWrapper:
         self.__headers = {'Authorization': 'Bearer ' + login_data['token']}
 
     def get_available(self, source: str, destination: str, date: str, sex: Sex):
-        response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2", params={
-            "from": source,
-            "to": destination,
-            "date": jalali_to_gregorian(date),
-            "adultCount": 1,
-            "childCount": 0,
-            "infantCount": 0,
-            "exclusive": False,
-            "availableStatus": "Both"
-        }).text
+        while True:
+            try:
+                response = requests.get("https://train.atighgasht.com/TrainService/api/GetAvailable/v2", params={
+                    "from": source,
+                    "to": destination,
+                    "date": jalali_to_gregorian(date),
+                    "adultCount": 1,
+                    "childCount": 0,
+                    "infantCount": 0,
+                    "exclusive": False,
+                    "availableStatus": "Both"
+                }).text
+                break
+            except ...:
+                print("err")
+                time.sleep(20)
         return self.__get_list_of_train(json.loads(response), sex)
 
     def __get_list_of_train(self, data, sex: Sex):
