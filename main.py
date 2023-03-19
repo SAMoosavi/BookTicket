@@ -26,7 +26,7 @@ passenger = Passenger(
 def set_train(list_of_train, sex: Sex, list_train_ID: list[int | str]):
     classes = []
     for ID in list_train_ID:
-        train = next((t for t in list_of_train if str(ID) == str(t['TrainNumber'])), None)
+        train = next((t for t in list_of_train if (str(ID) == str(t['TrainNumber']) or not ID)), None)
         if train:
             for price in train['Prices']:
                 if price['SellType'] == sex:
@@ -36,7 +36,7 @@ def set_train(list_of_train, sex: Sex, list_train_ID: list[int | str]):
 
 
 def get_class_train_ID(classes_train) -> int | str:
-    return next((class_train["ID"] for class_train in classes_train if class_train["Capacity"] > 0), None)
+    return next((class_train["ID"] for class_train in classes_train[0] if class_train["Capacity"] > 0), None)
 
 
 def get_pdf(ticket_files):
@@ -61,13 +61,9 @@ i = 0
 while True:
     i += 1
     print(i, end=" ")
-    trains = mr_bilit.get_available(
-        path_data['source'],
-        path_data['destination'],
-        path_data['date'],
-        Sex(path_data['sex'])
-    )
-    print("trains", trains)
+    trains = \
+        mr_bilit.get_available(path_data['source'], path_data['destination'], path_data['date'], Sex(path_data['sex']))
+    # print("trains", trains)
     if trains:
         my_train = set_train(trains, Sex(path_data['sex']), list_ID)
         if my_train:
@@ -75,7 +71,6 @@ while True:
             print("found")
             break
     print("not found")
-    time.sleep(20)
 
 reserve_data = mr_bilit.reserve_seat(train_ID, Sex(path_data['sex']))
 mr_bilit.register_info(reserve_data['BillID'], passenger)
