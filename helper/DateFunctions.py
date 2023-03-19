@@ -1,13 +1,8 @@
-import jdatetime
+from jdatetime import date
 
 
-def jalali_to_gregorian(date: str, spliter='/') -> str:
-    split_date: list[str] = date.split(spliter)
-    year = int(split_date[0])
-    month = int(split_date[1])
-    day = int(split_date[2])
-
+def jalali_to_gregorian(date_str: str, separator: str = '/') -> str:
+    year, month, day = map(int, date_str.split(separator))
     if year < 100:
         year += 1300
-
-    return str(jdatetime.date(day=day, month=month, year=year).togregorian())
+    return str(date(year=year, month=month, day=day).togregorian())
