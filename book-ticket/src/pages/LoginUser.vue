@@ -72,9 +72,8 @@ function submit() {
 				color.value = 'bg-green';
 				Data.setEmail(response.data.userEmail);
 				Data.setMobile(response.data.userMobile);
-				Data.setFullName(response.data.title);
 
-				router.push({ name: 'get-train' });
+				router.push({ name: 'get-user' });
 			} else {
 				msg.value = response.data.error;
 				color.value = 'bg-red';
