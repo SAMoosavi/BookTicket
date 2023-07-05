@@ -22,7 +22,7 @@ export const useUser = defineStore('user', () => {
 		}
 	}
 
-	function getUser() {
+	function getUser(): User {
 		return user;
 	}
 

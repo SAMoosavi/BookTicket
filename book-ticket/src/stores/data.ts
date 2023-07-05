@@ -17,6 +17,10 @@ export const useData = defineStore('data', () => {
 		data.email = value;
 	}
 
+	function getData() {
+		return data;
+	}
+
 	function setReserve(value: number[]) {
 		reserve.value = value;
 	}
@@ -25,5 +29,5 @@ export const useData = defineStore('data', () => {
 		return reserve.value;
 	}
 
-	return { setMobile, setEmail, setReserve, getReserve };
+	return { setMobile, setEmail, setReserve, getReserve, getData };
 });
