@@ -2,7 +2,7 @@
 	<q-page class="row items-center justify-evenly">
 		<q-card flat class="bg-transparent">
 			<q-card-section class="items-center justify-center flex text-h6">
-				user pass for mr blit
+				مشخصات ورود خود را برای مستر بلیط وارد نمایید.
 			</q-card-section>
 			<q-card-section>
 				<q-form
@@ -13,18 +13,18 @@
 					<q-input
 						filled
 						color="blue-5"
-						label="username"
+						label="نام کاربری"
 						class="q-mb-md"
 						v-model="params.username"
-						:rules="[(val) => !!val || 'Field is required']"
+						:rules="[(val) => !!val || 'این فیلد الزامی است.']"
 					/>
 
 					<q-input
 						filled
 						color="blue-5"
-						label="password"
+						label="رمز ورود"
 						class="q-mb-md"
-						:rules="[(val) => !!val || 'Field is required']"
+						:rules="[(val) => !!val || 'این فیلد الزامی است.']"
 						v-model="params.password"
 						:type="isPwd ? 'password' : 'text'"
 					>
@@ -38,7 +38,7 @@
 					</q-input>
 
 					<q-btn color="blue-5" outline type="submit" class="full-width">
-						vorod
+						ورود
 					</q-btn>
 
 					<q-banner

@@ -2,7 +2,7 @@
 	<q-page class="row items-center justify-evenly">
 		<q-card flat class="bg-transparent">
 			<q-card-section class="items-center justify-center flex text-h6">
-				moshakhasat khod ra bray sabt dar blit vared konid
+				مشخصات خود را برای ثبت در بلیط وارد نمایید.
 			</q-card-section>
 
 			<q-card-section>
@@ -13,7 +13,7 @@
 				>
 					<q-input
 						filled
-						label="Persian First Name"
+						label="نام"
 						class="q-mb-md"
 						dir="rtl"
 						v-model="user.persianFirstName"
@@ -22,7 +22,7 @@
 
 					<q-input
 						filled
-						label="Persian Last Name"
+						label="نام خانوادگی"
 						class="q-mb-md"
 						dir="rtl"
 						v-model="user.persianLastName"
@@ -35,25 +35,25 @@
 								user.birthDay = val;
 							}
 						"
-						label="Birth Day"
+						label="تاریخ تولد"
 					/>
 
 					<q-input
 						filled
-						label="National Code"
+						label="کد ملی"
 						class="q-mb-md"
 						v-model="user.nationalCode"
 						:rules="[justNumber]"
 						maxlength="10"
 					/>
 
-					<div class="q-gutter-sm q-mb-md">
-						<q-radio v-model="user.male" :val="true" label="male" />
-						<q-radio v-model="user.male" :val="false" label="female" />
+					<div dir="rtl" class="q-gutter-sm q-mb-md">
+						<q-radio v-model="user.male" :val="true" label="آفا" />
+						<q-radio v-model="user.male" :val="false" label="خانم" />
 					</div>
 
 					<q-btn type="submit" color="blue-5" class="full-width" outline>
-						sabt etela'at
+						ثبت اطلاعات
 					</q-btn>
 
 					<q-banner
@@ -86,11 +86,11 @@ const user = reactive<User>({
 });
 
 function justNumber(val: string) {
-	return /^[0-9]+$/.test(val) || 'just numbers';
+	return /^[0-9]+$/.test(val) || 'فقط از اعداد استفاده نمایید.';
 }
 
 function justPersian(val: string) {
-	return /^[\u0600-\u06FF\s]+$/.test(val) || 'just persian';
+	return /^[\u0600-\u06FF\s]+$/.test(val) || 'فقط از حروف فارسی و فاصله استفاده نمایید.';
 }
 
 const err = ref('');
@@ -103,6 +103,6 @@ function submit() {
 		useUser().setUser(user);
 
 		router.push({ name: 'get-train' });
-	} else err.value = 'national CODE is not correct';
+	} else err.value = 'کد ملی صحیح نمی باشد.';
 }
 </script>

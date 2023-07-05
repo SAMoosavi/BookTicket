@@ -1,11 +1,11 @@
 <template>
 	<q-page class="row items-center justify-evenly">
 		<q-card flat class="bg-transparent">
-			<q-card-section class="items-center justify-center flex">
+			<q-card-section dir="rtl" class="items-center justify-center flex">
 				<q-spinner-ball color="blue" size="2em" />
-				please wait
-				<span v-if="user.getUser().male">Mr.</span>
-				<span v-else>Miss.</span>
+				در حال رزرو بلیط برای
+				<span v-if="user.getUser().male" class="q-mx-sm"> آقای </span>
+				<span v-else class="q-mx-sm"> خانم </span>
 				<span>{{ user.getFullName() }}</span>
 				<q-spinner-ball color="blue" size="2em" />
 			</q-card-section>

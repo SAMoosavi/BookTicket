@@ -2,11 +2,11 @@
 	<q-page class="row items-center justify-evenly">
 		<q-card flat class="bg-transparent">
 			<q-card-section class="items-center justify-center flex text-h6">
-				<h1 class="text-h4">entkhab ghatar</h1>
+				<h1 class="text-h4">انتخاب قطار</h1>
 			</q-card-section>
 
 			<q-card-section class="items-center justify-center flex text-h6">
-				moshakhasat ghatar made nazar ra entkhab nemayeed
+				مشخصات قطار را وارد نمایید.
 			</q-card-section>
 
 			<q-card-section class="items-center justify-center flex">
@@ -45,7 +45,7 @@
 					/>
 
 					<q-btn color="blue-5" class="full-width" outline type="submit">
-						jost va jo ghatar
+						جست و جوی قطار
 					</q-btn>
 				</q-form>
 			</q-card-section>
@@ -54,7 +54,7 @@
 
 			<q-card-section v-if="hasPropertyInObject(trains)">
 				<q-card-section class="items-center justify-center flex text-h6">
-					ghatar va blit mored nazar ra entkhab konid
+					قطار و بلیط مورد نظر خود را انتخاب نمایید
 				</q-card-section>
 
 				<q-card-section>
@@ -65,7 +65,7 @@
 							:outline="!all[2].hasAll"
 							@click="togel_reserve_trains(all[2])"
 						>
-							عادی all
+							تمام بلیط های عادی
 						</q-btn>
 						<q-btn
 							color="blue-5"
@@ -73,7 +73,7 @@
 							:outline="!all[1].hasAll"
 							@click="togel_reserve_trains(all[1])"
 						>
-							خواهران all
+							تمام بلیط های خواهران
 						</q-btn>
 						<q-btn
 							color="blue-5"
@@ -81,7 +81,7 @@
 							:outline="!all[0].hasAll"
 							@click="togel_reserve_trains(all[0])"
 						>
-							برادران all
+							تمام بلیط های برادران
 						</q-btn>
 					</q-card-actions>
 				</q-card-section>
@@ -117,13 +117,8 @@
 							<q-card-actions class="justify-between">
 								<template v-for="(val, index) in price.ID" :key="index">
 									<q-separator vertical v-if="index != 0" />
+
 									<q-item class="col-3 column">
-										<q-item-label class="q-mb-sm">
-											<span class="q-mr-md">
-												{{ val.val.reduce((a, b) => a + b.capacity, 0) }}
-											</span>
-											<span>zarfiat</span>
-										</q-item-label>
 										<q-btn
 											color="blue-5"
 											:outline="!val.has"
@@ -135,6 +130,13 @@
 												<span v-else>عادی</span>
 											</q-card-section>
 										</q-btn>
+
+										<q-item-label class="q-mt-sm">
+											<span class="q-mr-md">
+												{{ val.val.reduce((a, b) => a + b.capacity, 0) }}
+											</span>
+											<span>ظرفیت</span>
+										</q-item-label>
 									</q-item>
 								</template>
 							</q-card-actions>
@@ -144,7 +146,7 @@
 
 				<q-card-actions>
 					<q-btn class="full-width q-my-md" color="blue-8" @click="send">
-						reserve
+						رزرو
 					</q-btn>
 				</q-card-actions>
 
@@ -301,7 +303,7 @@ const err = ref('');
 const router = useRouter();
 
 function send() {
-	if (reserve.value.size == 0) err.value = 'select train';
+	if (reserve.value.size == 0) err.value = 'حداقل یک قطار را باید انتخاب کنید';
 	else {
 		useData().setReserve([...reserve.value]);
 		router.push({ name: 'find-train' });
