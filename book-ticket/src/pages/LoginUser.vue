@@ -6,7 +6,7 @@
 			</q-card-section>
 			<q-card-section>
 				<q-form
-					class="items-center justify-evenly"
+					class="items-center justify-evenly q-pa-md"
 					style="width: 500px"
 					dir="ltr"
 					@submit.prevent="submit"
