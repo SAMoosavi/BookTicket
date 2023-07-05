@@ -25,6 +25,15 @@ const routes: RouteRecordRaw[] = [
 				},
 			},
 			{
+				path: '/find-train',
+				name: 'find-train',
+				component: () => import('pages/FindTrain.vue'),
+				beforeEnter: (to, from, next) => {
+					if (useToken().isLoggedIn()) next();
+					else next({ name: 'login' });
+				},
+			},
+			{
 				path: '/login',
 				name: 'login',
 				component: () => import('pages/LoginUser.vue'),

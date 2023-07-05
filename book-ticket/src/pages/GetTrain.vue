@@ -43,6 +43,15 @@
 			<q-separator />
 
 			<q-card-section v-if="hasPropertyInObject(trains)">
+				<q-banner
+					dir="rtl"
+					v-if="!!err"
+					inline-actions
+					class="text-white q-mb-md bg-red"
+				>
+					{{ err }}
+				</q-banner>
+
 				<q-card-actions>
 					<q-btn class="full-width" color="blue-8" @click="send"> send</q-btn>
 				</q-card-actions>
@@ -136,6 +145,8 @@ import SelectLocation from 'components/SelectLocation.vue';
 import { reactive, ref } from 'vue';
 import { useGetAvailable } from 'src/functions/MrBilitApiWrapper';
 import type { GetAvailableParameters } from 'src/functions/MrBilitApiWrapper.d';
+import { useData } from 'stores/data';
+import { useRouter } from 'vue-router';
 
 const params = reactive<GetAvailableParameters>({
 	from: 0,
@@ -261,7 +272,14 @@ async function submit() {
 		});
 }
 
+const err = ref('');
+const router = useRouter();
+
 function send() {
-	console.log(reserve.value);
+	if (reserve.value.size == 0) err.value = 'select train';
+	else {
+		useData().setReserve([...reserve.value]);
+		router.push({ name: 'find-train' });
+	}
 }
 </script>
