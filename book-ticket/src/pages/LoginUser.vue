@@ -1,41 +1,57 @@
 <template>
 	<q-page class="row items-center justify-evenly">
-		<q-form
-			class="items-center justify-evenly"
-			style="width: 500px"
-			@submit.prevent="submit"
-		>
-			<q-banner
-				dir="rtl"
-				v-if="!!msg"
-				inline-actions
-				class="text-white q-mb-md"
-				:class="color"
-			>
-				{{ msg }}
-			</q-banner>
+		<q-card flat class="bg-transparent">
+			<q-card-section class="items-center justify-center flex text-h6">
+				user pass for mr blit
+			</q-card-section>
+			<q-card-section>
+				<q-form
+					class="items-center justify-evenly"
+					style="width: 500px"
+					@submit.prevent="submit"
+				>
+					<q-input
+						filled
+						color="blue-5"
+						label="username"
+						class="q-mb-md"
+						v-model="params.username"
+						:rules="[(val) => !!val || 'Field is required']"
+					/>
 
-			<q-input
-				filled
-				color="blue-5"
-				label="username"
-				class="q-mb-md"
-				v-model="params.username"
-				:rules="[(val) => !!val || 'Field is required']"
-			/>
+					<q-input
+						filled
+						color="blue-5"
+						label="password"
+						class="q-mb-md"
+						:rules="[(val) => !!val || 'Field is required']"
+						v-model="params.password"
+						:type="isPwd ? 'password' : 'text'"
+					>
+						<template v-slot:append>
+							<q-icon
+								:name="isPwd ? 'visibility_off' : 'visibility'"
+								class="cursor-pointer"
+								@click="isPwd = !isPwd"
+							/>
+						</template>
+					</q-input>
 
-			<q-input
-				filled
-				color="blue-5"
-				label="password"
-				class="q-mb-md"
-				type="password"
-				:rules="[(val) => !!val || 'Field is required']"
-				v-model="params.password"
-			/>
+					<q-btn color="blue-5" outline type="submit" class="full-width">
+						vorod
+					</q-btn>
 
-			<q-btn color="blue-5" type="submit">ارسال</q-btn>
-		</q-form>
+					<q-banner
+						dir="rtl"
+						inline-actions
+						class="text-white q-mb-md"
+						:class="{ 'bg-red': !!err, 'bg-transparent': !err }"
+					>
+						{{ err }}
+					</q-banner>
+				</q-form>
+			</q-card-section>
+		</q-card>
 	</q-page>
 </template>
 
@@ -55,34 +71,29 @@ const params = reactive<LoginParameters>({
 	Source: 2,
 });
 
-const msg = ref();
-const color = ref();
+const err = ref();
 
 const Data = useData();
+const isPwd = ref(true);
 
 function submit() {
-	msg.value = '';
-	color.value = '';
+	err.value = '';
 
 	useLogin(params)
 		.then((response) => {
 			useToken().setToken(response.data.token);
 			if (response.data.token) {
-				msg.value = 'ورود با موفقیت انجام شد!';
-				color.value = 'bg-green';
 				Data.setEmail(response.data.userEmail);
 				Data.setMobile(response.data.userMobile);
 
 				router.push({ name: 'get-user' });
 			} else {
-				msg.value = response.data.error;
-				color.value = 'bg-red';
+				err.value = response.data.error;
 			}
 		})
 		.catch((error) => {
 			console.error(error);
-			msg.value = 'خطایی رخ داد!!!';
-			color.value = 'bg-red';
+			err.value = 'خطایی رخ داد!!!';
 		});
 }
 </script>

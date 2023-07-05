@@ -4,15 +4,12 @@
 			<q-icon name="event" class="cursor-pointer">
 				<q-popup-proxy cover transition-show="scale" transition-hide="scale">
 					<q-date
+						dir="rtl"
 						v-model="date"
 						calendar="persian"
 						today-btn
 						:options="options"
-					>
-						<div class="row items-center justify-end">
-							<q-btn v-close-popup label="Close" color="primary" flat />
-						</div>
-					</q-date>
+					/>
 				</q-popup-proxy>
 			</q-icon>
 		</template>

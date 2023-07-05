@@ -1,6 +1,14 @@
 <template>
 	<q-page class="row items-center justify-evenly">
 		<q-card flat class="bg-transparent">
+			<q-card-section class="items-center justify-center flex text-h6">
+				<h1 class="text-h4">entkhab ghatar</h1>
+			</q-card-section>
+
+			<q-card-section class="items-center justify-center flex text-h6">
+				moshakhasat ghatar made nazar ra entkhab nemayeed
+			</q-card-section>
+
 			<q-card-section class="items-center justify-center flex">
 				<q-form
 					class="items-center justify-evenly q-pa-md"
@@ -36,51 +44,44 @@
 						"
 					/>
 
-					<q-btn color="blue-5" type="submit">ارسال</q-btn>
+					<q-btn color="blue-5" class="full-width" outline type="submit">
+						jost va jo ghatar
+					</q-btn>
 				</q-form>
 			</q-card-section>
 
 			<q-separator />
 
 			<q-card-section v-if="hasPropertyInObject(trains)">
-				<q-banner
-					dir="rtl"
-					v-if="!!err"
-					inline-actions
-					class="text-white q-mb-md bg-red"
-				>
-					{{ err }}
-				</q-banner>
-
-				<q-card-actions>
-					<q-btn class="full-width" color="blue-8" @click="send"> send</q-btn>
-				</q-card-actions>
+				<q-card-section class="items-center justify-center flex text-h6">
+					ghatar va blit mored nazar ra entkhab konid
+				</q-card-section>
 
 				<q-card-section>
 					<q-card-actions class="justify-between row-reverse">
 						<q-btn
-							color="blue-4"
-							class="col-3 q-mb-md"
+							color="blue-5"
+							class="col-3"
 							:outline="!all[2].hasAll"
 							@click="togel_reserve_trains(all[2])"
 						>
-							عادی
+							عادی all
 						</q-btn>
 						<q-btn
-							color="blue-4"
-							class="col-3 q-mb-md"
+							color="blue-5"
+							class="col-3"
 							:outline="!all[1].hasAll"
 							@click="togel_reserve_trains(all[1])"
 						>
-							خواهران
+							خواهران all
 						</q-btn>
 						<q-btn
-							color="blue-4"
-							class="col-3 q-mb-md"
+							color="blue-5"
+							class="col-3"
 							:outline="!all[0].hasAll"
 							@click="togel_reserve_trains(all[0])"
 						>
-							برادران
+							برادران all
 						</q-btn>
 					</q-card-actions>
 				</q-card-section>
@@ -88,6 +89,12 @@
 				<template v-for="(train, index) in trains" :key="index">
 					<template v-for="(price, index) in train.ID" :key="index">
 						<q-card class="q-mt-md my-card text-center" bordered flat>
+							<q-item class="items-center justify-center">
+								<q-item-label>{{ price.WagonName }}</q-item-label>
+							</q-item>
+
+							<q-separator />
+
 							<q-item class="row-reverse">
 								<q-item-section>
 									<q-item-label caption> حرکت</q-item-label>
@@ -107,33 +114,48 @@
 
 							<q-separator />
 
-							<q-item class="items-center justify-center">
-								<q-item-label>{{ price.WagonName }}</q-item-label>
-							</q-item>
-
-							<q-separator />
-
 							<q-card-actions class="justify-between">
-								<q-btn
-									v-for="(val, index) in price.ID"
-									:key="index"
-									color="blue-4"
-									class="col-3 q-mb-md"
-									:outline="!val.has"
-									@click="togel_reserve_train(val)"
-								>
-									<span v-if="index == 0"> برادران </span>
-									<span v-else-if="index == 1"> خواهران </span>
-									<span v-else>عادی</span>
-								</q-btn>
+								<template v-for="(val, index) in price.ID" :key="index">
+									<q-separator vertical v-if="index != 0" />
+									<q-item class="col-3 column">
+										<q-item-label class="q-mb-sm">
+											<span class="q-mr-md">
+												{{ val.val.reduce((a, b) => a + b.capacity, 0) }}
+											</span>
+											<span>zarfiat</span>
+										</q-item-label>
+										<q-btn
+											color="blue-5"
+											:outline="!val.has"
+											@click="togel_reserve_train(val)"
+										>
+											<q-card-section class="q-pa-none">
+												<span v-if="index == 0"> برادران </span>
+												<span v-else-if="index == 1"> خواهران </span>
+												<span v-else>عادی</span>
+											</q-card-section>
+										</q-btn>
+									</q-item>
+								</template>
 							</q-card-actions>
 						</q-card>
 					</template>
 				</template>
 
 				<q-card-actions>
-					<q-btn class="full-width" color="blue-8" @click="send"> send</q-btn>
+					<q-btn class="full-width q-my-md" color="blue-8" @click="send">
+						reserve
+					</q-btn>
 				</q-card-actions>
+
+				<q-banner
+					dir="rtl"
+					inline-actions
+					class="text-white q-mb-md"
+					:class="{ 'bg-red': !!err, 'bg-transparent': !err }"
+				>
+					{{ err }}
+				</q-banner>
 			</q-card-section>
 		</q-card>
 	</q-page>
@@ -179,7 +201,7 @@ const trains = ref<{
 		ArrivalTime: string;
 		ID: {
 			[WagonID: number]: {
-				ID: { val: number[]; has: boolean }[];
+				ID: { val: { ID: number; capacity: number }[]; has: boolean }[];
 				WagonName: string;
 			};
 		};
@@ -195,10 +217,13 @@ function hasPropertyInObject(ob: { [key: string]: any }) {
 
 const reserve = ref<Set<number>>(new Set());
 
-function togel_reserve_train(trains: { val: number[]; has: boolean }) {
+function togel_reserve_train(trains: {
+	val: { ID: number; capacities: number }[];
+	has: boolean;
+}) {
 	for (const train of trains.val) {
-		if (trains.has) reserve.value.delete(train);
-		else reserve.value.add(train);
+		if (trains.has) reserve.value.delete(train.ID);
+		else reserve.value.add(train.ID);
 	}
 	trains.has = !trains.has;
 	for (const allKey in all.value) {
@@ -219,7 +244,7 @@ function togel_reserve_trains(myTrains: { set: Set<number>; hasAll: boolean }) {
 		for (const trainIdKes in trains.value[trainKey].ID) {
 			for (const ids of trains.value[trainKey].ID[trainIdKes].ID) {
 				for (const id of ids.val) {
-					ids.has = reserve.value.has(id);
+					ids.has = reserve.value.has(id.ID);
 				}
 			}
 		}
@@ -256,10 +281,10 @@ async function submit() {
 									{ val: [], has: false },
 								],
 							};
-
+						console.log(class1);
 						trains.value[train.TrainNumber].ID[class1.WagonID].ID[
 							price.SellType - 1
-						].val.push(class1.ID);
+						].val.push({ ID: class1.ID, capacity: class1.Capacity });
 
 						// @ts-ignore
 						all.value[price.SellType - 1].set.add(class1.ID);

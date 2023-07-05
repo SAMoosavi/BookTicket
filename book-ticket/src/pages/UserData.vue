@@ -1,64 +1,72 @@
 <template>
 	<q-page class="row items-center justify-evenly">
-		<q-form
-			class="items-center justify-evenly q-pa-md"
-			@submit.prevent="submit"
-			style="width: 500px"
-		>
-			<q-banner
-				dir="rtl"
-				v-if="!!err"
-				inline-actions
-				class="text-white q-mb-md bg-red"
-			>
-				{{ err }}
-			</q-banner>
+		<q-card flat class="bg-transparent">
+			<q-card-section class="items-center justify-center flex text-h6">
+				moshakhasat khod ra bray sabt dar blit vared konid
+			</q-card-section>
 
-			<q-input
-				filled
-				label="Persian First Name"
-				class="q-mb-md"
-				dir="rtl"
-				v-model="user.persianFirstName"
-				:rules="[justPersian]"
-			/>
+			<q-card-section>
+				<q-form
+					class="items-center justify-evenly q-pa-md"
+					@submit.prevent="submit"
+					style="width: 500px"
+				>
+					<q-input
+						filled
+						label="Persian First Name"
+						class="q-mb-md"
+						dir="rtl"
+						v-model="user.persianFirstName"
+						:rules="[justPersian]"
+					/>
 
-			<q-input
-				filled
-				label="Persian Last Name"
-				class="q-mb-md"
-				dir="rtl"
-				v-model="user.persianLastName"
-				:rules="[justPersian]"
-			/>
+					<q-input
+						filled
+						label="Persian Last Name"
+						class="q-mb-md"
+						dir="rtl"
+						v-model="user.persianLastName"
+						:rules="[justPersian]"
+					/>
 
-			<persian-date
-				@value="
-					(val) => {
-						user.birthDay = val;
-					}
-				"
-				label="Birth Day"
-			/>
+					<persian-date
+						@value="
+							(val) => {
+								user.birthDay = val;
+							}
+						"
+						label="Birth Day"
+					/>
 
-			<q-input
-				filled
-				label="National Code"
-				class="q-mb-md"
-				v-model="user.nationalCode"
-				:rules="[justNumber]"
-				maxlength="10"
-			/>
+					<q-input
+						filled
+						label="National Code"
+						class="q-mb-md"
+						v-model="user.nationalCode"
+						:rules="[justNumber]"
+						maxlength="10"
+					/>
 
-			<div class="q-gutter-sm q-mb-md">
-				<q-radio v-model="user.male" :val="true" label="male" />
-				<q-radio v-model="user.male" :val="false" label="female" />
-			</div>
+					<div class="q-gutter-sm q-mb-md">
+						<q-radio v-model="user.male" :val="true" label="male" />
+						<q-radio v-model="user.male" :val="false" label="female" />
+					</div>
 
-			<q-btn type="submit" color="blue-4" class="full-width" outline
-				>send
-			</q-btn>
-		</q-form>
+					<q-btn type="submit" color="blue-5" class="full-width" outline>
+						sabt etela'at
+					</q-btn>
+
+					<q-banner
+						dir="rtl"
+						inline-actions
+						class="text-white q-mb-md"
+						:class="{ 'bg-red': !!err, 'bg-transparent': !err }"
+					>
+						{{ err }}
+					</q-banner>
+				</q-form>
+			</q-card-section>
+		</q-card>
 	</q-page>
 </template>
 

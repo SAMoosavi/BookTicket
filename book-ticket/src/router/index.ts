@@ -25,7 +25,7 @@ export default route(function (/* { store, ssrContext } */) {
 		: createWebHashHistory;
 
 	return createRouter({
-		scrollBehavior: () => ({left: 0, top: 0}),
+		scrollBehavior: () => ({ left: 0, top: 0 }),
 		routes,
 
 		// Leave this as is and make changes in quasar.conf.js instead!

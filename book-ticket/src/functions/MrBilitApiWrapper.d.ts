@@ -4,7 +4,6 @@ export interface LoginParameters {
 	Source: 2;
 }
 
-
 export interface GetAvailableParameters {
 	from: number;
 	to: number;
@@ -13,5 +12,5 @@ export interface GetAvailableParameters {
 	childCount: 0;
 	infantCount: 0;
 	exclusive: false;
-	availableStatus: "Both";
+	availableStatus: 'Both';
 }
