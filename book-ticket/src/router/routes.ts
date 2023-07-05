@@ -7,6 +7,15 @@ const routes: RouteRecordRaw[] = [
 		component: () => import('layouts/MainLayout.vue'),
 		children: [
 			{
+				path: '',
+				name: 'home',
+				component: () => import('pages/UserData.vue'),
+				beforeEnter: (to, from, next) => {
+					if (useToken().isLoggedIn()) next({ name: 'get-user' });
+					else next({ name: 'login' });
+				},
+			},
+			{
 				path: '/get-user',
 				name: 'get-user',
 				component: () => import('pages/UserData.vue'),
