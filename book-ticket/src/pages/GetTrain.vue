@@ -283,7 +283,7 @@ async function submit() {
 									{ val: [], has: false },
 								],
 							};
-						console.log(class1);
+
 						trains.value[train.TrainNumber].ID[class1.WagonID].ID[
 							price.SellType - 1
 						].val.push({ ID: class1.ID, capacity: class1.Capacity });
