@@ -17,7 +17,7 @@
 						class="q-mb-md"
 						dir="rtl"
 						v-model="user.persianFirstName"
-						:rules="[justPersian]"
+						:rules="[(val) => !!val || 'این فیلد الزامی است.',justPersian]"
 					/>
 
 					<q-input
@@ -26,7 +26,7 @@
 						class="q-mb-md"
 						dir="rtl"
 						v-model="user.persianLastName"
-						:rules="[justPersian]"
+						:rules="[(val) => !!val || 'این فیلد الزامی است.',justPersian]"
 					/>
 
 					<persian-date
@@ -35,6 +35,8 @@
 								user.birthDay = val;
 							}
 						"
+						class="q-mb-md"
+						:rules="[(val) => !!val || 'این فیلد الزامی است.']"
 						label="تاریخ تولد"
 					/>
 
@@ -43,7 +45,7 @@
 						label="کد ملی"
 						class="q-mb-md"
 						v-model="user.nationalCode"
-						:rules="[justNumber]"
+						:rules="[(val) => !!val || 'این فیلد الزامی است.',justNumber]"
 						maxlength="10"
 					/>
 

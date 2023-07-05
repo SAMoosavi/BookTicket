@@ -131,8 +131,8 @@
 											</q-card-section>
 										</q-btn>
 
-										<q-item-label class="q-mt-sm">
-											<span class="q-mr-md">
+										<q-item-label class="q-mt-sm text-caption text-grey">
+											<span class="q-ml-md">
 												{{ val.val.reduce((a, b) => a + b.capacity, 0) }}
 											</span>
 											<span>ظرفیت</span>

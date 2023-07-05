@@ -8,6 +8,7 @@
 				<q-form
 					class="items-center justify-evenly"
 					style="width: 500px"
+					dir="ltr"
 					@submit.prevent="submit"
 				>
 					<q-input
