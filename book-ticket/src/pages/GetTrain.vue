@@ -254,6 +254,14 @@ function togel_reserve_trains(myTrains: { set: Set<number>; hasAll: boolean }) {
 }
 
 async function submit() {
+	trains.value = {};
+	all.value = {
+		0: { set: new Set(), hasAll: false },
+		1: { set: new Set(), hasAll: false },
+		2: { set: new Set(), hasAll: false },
+	};
+	reserve.value.clear();
+
 	await useGetAvailable(params)
 		.then((response) => {
 			for (const train of response.data.Trains) {
