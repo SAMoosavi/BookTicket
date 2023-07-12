@@ -52,7 +52,10 @@
 
 			<q-separator />
 
-			<q-card-section v-if="hasPropertyInObject(trains)">
+			<q-card-section v-if="finding">
+				<q-spinner-clock />
+			</q-card-section>
+			<q-card-section v-else-if="hasPropertyInObject(trains)">
 				<q-card-section class="items-center justify-center flex text-h6">
 					قطار و بلیط مورد نظر خود را انتخاب نمایید
 				</q-card-section>
@@ -159,6 +162,10 @@
 					{{ err }}
 				</q-banner>
 			</q-card-section>
+			<q-card-section v-else-if="server_error">
+				{{ server_error }}
+				<q-spinner-clock />
+			</q-card-section>
 		</q-card>
 	</q-page>
 </template>
@@ -182,12 +189,17 @@ const params = reactive<GetAvailableParameters>({
 	exclusive: false,
 	availableStatus: 'Both',
 });
+let copy_params = { ...params };
+
+const server_error = ref(false);
 
 const all = ref({
 	0: { set: new Set(), hasAll: false },
 	1: { set: new Set(), hasAll: false },
 	2: { set: new Set(), hasAll: false },
 });
+
+const finding = ref(false);
 
 function hasAllInSet(parent: Set<number>, child: Set<number>) {
 	let findAll = true;
@@ -261,7 +273,7 @@ async function submit() {
 		2: { set: new Set(), hasAll: false },
 	};
 	reserve.value.clear();
-
+	finding.value = true;
 	await useGetAvailable(params)
 		.then((response) => {
 			for (const train of response.data.Trains) {
@@ -304,16 +316,26 @@ async function submit() {
 		})
 		.catch((err) => {
 			console.error(err);
+			if (typeof err.response == 'string')
+				err.response = JSON.parse(err.response);
+			server_error.value = err.response.data.Error;
+		})
+		.finally(() => {
+			finding.value = false;
+			copy_params = { ...params };
 		});
 }
 
 const err = ref('');
+const data = useData();
+
 const router = useRouter();
 
 function send() {
 	if (reserve.value.size == 0) err.value = 'حداقل یک قطار را باید انتخاب کنید';
 	else {
-		useData().setReserve([...reserve.value]);
+		data.setReserve([...reserve.value]);
+		data.setTrain(copy_params);
 		router.push({ name: 'find-train' });
 	}
 }
