@@ -1,16 +1,30 @@
 <template>
 	<q-page class="row items-center justify-evenly">
-		<q-card flat class="bg-transparent">
+		<q-card
+			flat
+			class="bg-transparent items-center justify-evenly q-pa-md"
+			style="width: 500px"
+		>
 			<q-card-section class="items-center justify-center flex text-h6">
 				مشخصات ورود خود را برای مستر بلیط وارد نمایید.
 			</q-card-section>
+
 			<q-card-section>
-				<q-form
-					class="items-center justify-evenly q-pa-md"
-					style="width: 500px"
-					dir="ltr"
-					@submit.prevent="submit"
-				>
+				<q-select
+					class="full-width"
+					filled
+					use-input
+					hide-selected
+					fill-input
+					input-debounce="0"
+					label="select user"
+					:options="users"
+					v-model="userSelected"
+				/>
+			</q-card-section>
+
+			<q-card-section>
+				<q-form dir="ltr" @submit.prevent="submit">
 					<q-input
 						filled
 						color="blue-5"
@@ -57,12 +71,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { useToken } from 'stores/token';
 import { useRouter } from 'vue-router';
 import { useData } from 'stores/data';
 import { LoginParameters } from 'src/functions/MrBilitApiWrapper.d';
 import { useLogin } from 'src/functions/MrBilitApiWrapper';
+import { useRead, useWrite } from 'src/functions/IO';
 
 const router = useRouter();
 
@@ -76,6 +91,34 @@ const err = ref();
 
 const Data = useData();
 const isPwd = ref(true);
+const users = ref<{ value: number; label: string }[]>([]);
+
+const userSelected = ref();
+let beforeUsers: LoginParameters[] = [];
+
+watch(userSelected, (value) => {
+	for (const beforeUsersKey in beforeUsers[value.value]) {
+		// @ts-ignore
+		params[beforeUsersKey] = beforeUsers[value.value][beforeUsersKey];
+	}
+});
+
+onMounted(() => {
+	beforeUsers = useRead('user', []);
+	for (let i = 0; i < beforeUsers.length; i++) {
+		users.value.push({
+			value: i,
+			label: beforeUsers[i].username,
+		});
+	}
+});
+
+function exitUser() {
+	for (const beforeUser of beforeUsers) {
+		if (beforeUser.username == params.username) return true;
+	}
+	return false;
+}
 
 function submit() {
 	err.value = '';
@@ -86,6 +129,11 @@ function submit() {
 			if (response.data.token) {
 				Data.setEmail(response.data.userEmail);
 				Data.setMobile(response.data.userMobile);
+
+				if (!exitUser()) useWrite('user', params, true);
+
+				useWrite('data', Data.getData());
+				useWrite('token', response.data.token);
 
 				router.push({ name: 'get-user' });
 			} else {
