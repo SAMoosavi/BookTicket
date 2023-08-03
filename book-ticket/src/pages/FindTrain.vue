@@ -30,23 +30,23 @@
 </template>
 
 <script setup lang="ts">
-import { useData } from "stores/data";
-import { useUser } from "stores/user";
+import { useData } from 'stores/data';
+import { useUser } from 'stores/user';
 import {
 	useGetAvailable,
 	useGetStatus,
 	usePay,
 	useRegisterInfo,
-	useReserveSeat
-} from "src/functions/MrBilitApiWrapper";
-import { onMounted, ref } from "vue";
-import { useSleep } from "src/functions/promis";
+	useReserveSeat,
+} from 'src/functions/MrBilitApiWrapper';
+import { onMounted, ref } from 'vue';
+import { useSleep } from 'src/functions/promis';
 
 const data = useData();
 const user = useUser();
 
-const err = ref("");
-const message = ref("")
+const err = ref('');
+const message = ref('');
 
 const availableTrains = ref<{ trainId: number; genderCode: number }[]>([]);
 const numberOfTry = ref<number>(0);
@@ -69,7 +69,7 @@ async function checkTrain() {
 								if (class1.Capacity != 0)
 									availableTrains.value.push({
 										trainId: class1.ID,
-										genderCode: price.SellType
+										genderCode: price.SellType,
 									});
 
 					for (const availableTrain of availableTrains.value) {
@@ -98,27 +98,26 @@ async function checkTrain() {
 	});
 }
 
-let mac = "";
+let mac = '';
 
 async function reserveTrain() {
 	await useReserveSeat({
 		trainID: <number>train.value?.trainId,
-		adultCount: "1",
-		childCount: "0",
-		infantCount: "0",
+		adultCount: '1',
+		childCount: '0',
+		infantCount: '0',
 		includeOptionalServices: true,
 		exclusive: false,
 		genderCode: <number>train.value?.genderCode,
-		seatCount: "1"
+		seatCount: '1',
 	}).then(async (response) => {
 		await useRegisterInfo(response.data.BillID);
 
 		await usePay(response.data.BillCode)
 			.then((response) => {
-				const params = new URL(response.request.responseURL)
-					.searchParams;
-				if (params.has("mac")) mac = <string>params.get("mac");
-				else err.value = "موجودی کافی نیست";
+				const params = new URL(response.request.responseURL).searchParams;
+				if (params.has('mac')) mac = <string>params.get('mac');
+				else err.value = 'موجودی کافی نیست';
 			})
 			.catch((error) => {
 				console.error(error);
@@ -129,8 +128,8 @@ async function reserveTrain() {
 			while (true) {
 				await useGetStatus(response.data.BillCode, mac)
 					.then((response) => {
-						isSuccessful = response.data.isSuccessful
-						message.value = response.data.title
+						isSuccessful = response.data.isSuccessful;
+						message.value = response.data.title;
 					})
 					.catch((error) => {
 						console.error(error);

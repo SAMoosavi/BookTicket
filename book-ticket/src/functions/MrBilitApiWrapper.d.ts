@@ -12,16 +12,16 @@ export interface GetAvailableParameters {
 	childCount: 0;
 	infantCount: 0;
 	exclusive: false;
-	availableStatus: "Both";
+	availableStatus: 'Both';
 }
 
 export interface ReserveSeatParameters {
-	trainID: number,
-	adultCount: "1",
-	childCount: "0",
-	infantCount: "0",
-	includeOptionalServices: true,
-	exclusive: false,
-	genderCode: number,
-	seatCount: "1",
+	trainID: number;
+	adultCount: '1';
+	childCount: '0';
+	infantCount: '0';
+	includeOptionalServices: true;
+	exclusive: false;
+	genderCode: number;
+	seatCount: '1';
 }

@@ -69,7 +69,11 @@ function JToG(
 	return [gy, gm, gd];
 }
 
-export function useJalaliToGregorian(date: string, splitterOfOutput='-',splitterOfInput = '/') {
+export function useJalaliToGregorian(
+	date: string,
+	splitterOfOutput = '-',
+	splitterOfInput = '/'
+) {
 	const dateSplit = date.split(splitterOfInput);
 	const jD = JToG(dateSplit[0], dateSplit[1], dateSplit[2]);
 	return jD[0] + splitterOfOutput + jD[1] + splitterOfOutput + jD[2];
