@@ -123,12 +123,10 @@ async function reserveTrain() {
 				console.error(error);
 			});
 
-		let isSuccessful: null | true = null;
 		if (mac)
 			while (true) {
 				await useGetStatus(response.data.BillCode, mac)
 					.then((response) => {
-						isSuccessful = response.data.isSuccessful;
 						message.value = response.data.title;
 					})
 					.catch((error) => {
