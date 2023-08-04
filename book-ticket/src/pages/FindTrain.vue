@@ -13,7 +13,7 @@
 			<q-card-section> تعداد تلاش ها: {{ numberOfTry }}</q-card-section>
 
 			<q-card-section>
-				<span v-if="train === 0"> یافت نشد لظفا صبر کنید...</span>
+				<span v-if="train == undefined"> یافت نشد لظفا صبر کنید...</span>
 				<span v-else>بلیط پیدا شد!!</span>
 			</q-card-section>
 

@@ -1,26 +1,8 @@
 <template>
 	<q-page class="row items-center justify-evenly">
-		<q-card
-			flat
-			class="bg-transparent items-center justify-evenly q-pa-md"
-			style="width: 500px"
-		>
+		<q-card flat class="bg-transparent items-center justify-evenly q-pa-md">
 			<q-card-section class="items-center justify-center flex text-h6">
 				مشخصات ورود خود را برای مستر بلیط وارد نمایید.
-			</q-card-section>
-
-			<q-card-section>
-				<q-select
-					class="full-width"
-					filled
-					use-input
-					hide-selected
-					fill-input
-					input-debounce="0"
-					label="select user"
-					:options="users"
-					v-model="userSelected"
-				/>
 			</q-card-section>
 
 			<q-card-section>
@@ -52,14 +34,18 @@
 						</template>
 					</q-input>
 
-					<q-btn color="blue-5" outline type="submit" class="full-width">
-						ورود
-					</q-btn>
+					<q-btn
+						label="ورود"
+						color="blue-5"
+						outline
+						type="submit"
+						class="full-width"
+					/>
 
 					<q-banner
 						dir="rtl"
 						inline-actions
-						class="text-white q-mb-md"
+						class="text-white q-my-md"
 						:class="{ 'bg-red': !!err, 'bg-transparent': !err }"
 					>
 						{{ err }}
@@ -67,6 +53,39 @@
 				</q-form>
 			</q-card-section>
 		</q-card>
+
+		<q-btn
+			class="absolute-bottom-left q-ma-md"
+			round
+			color="primary"
+			icon="person_search"
+			@click="dialog = true"
+		/>
+		<q-dialog v-model="dialog">
+			<q-card class="bg-amber-1 overflow-hidden" style="width: 300px">
+				<q-card-section class="column">
+					<h3 class="text-h6 text-center">entekhab carbar</h3>
+					<q-input
+						label="serch user"
+						v-model="search"
+						fill-input
+						class="full-width"
+					/>
+					<transition-group mode="in-out" name="list" tag="div" class="column">
+						<q-btn
+							v-for="user in users_copy"
+							:key="user.label"
+							:label="user.label"
+							v-close-popup
+							class="q-mt-md"
+							@click="userSelected = user.value"
+							outline
+							color="primary"
+						/>
+					</transition-group>
+				</q-card-section>
+			</q-card>
+		</q-dialog>
 	</q-page>
 </template>
 
@@ -88,19 +107,31 @@ const params = reactive<LoginParameters>({
 });
 
 const err = ref();
+const dialog = ref(false);
+const search = ref<string>();
 
 const Data = useData();
 const isPwd = ref(true);
 const users = ref<{ value: number; label: string }[]>([]);
+const users_copy = ref<{ value: number; label: string }[]>([]);
 
 const userSelected = ref();
 let beforeUsers: LoginParameters[] = [];
 
 watch(userSelected, (value) => {
-	for (const beforeUsersKey in beforeUsers[value.value]) {
+	for (const beforeUsersKey in beforeUsers[value]) {
 		// @ts-ignore
-		params[beforeUsersKey] = beforeUsers[value.value][beforeUsersKey];
+		params[beforeUsersKey] = beforeUsers[value][beforeUsersKey];
 	}
+});
+
+watch(search, (value) => {
+	if (value) {
+		users_copy.value = [];
+		for (const user of users.value) {
+			if (user.label.indexOf(value) >= 0) users_copy.value.push(user);
+		}
+	} else users_copy.value = users.value;
 });
 
 onMounted(() => {
@@ -111,6 +142,7 @@ onMounted(() => {
 			label: beforeUsers[i].username,
 		});
 	}
+	users_copy.value = users.value;
 });
 
 function exitUser() {

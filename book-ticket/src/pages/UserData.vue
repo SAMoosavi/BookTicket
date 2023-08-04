@@ -10,20 +10,6 @@
 			</q-card-section>
 
 			<q-card-section>
-				<q-select
-					class="full-width"
-					filled
-					use-input
-					hide-selected
-					fill-input
-					input-debounce="0"
-					label="select user"
-					:options="users"
-					v-model="userSelected"
-				/>
-			</q-card-section>
-
-			<q-card-section>
 				<q-form @submit.prevent="submit">
 					<q-input
 						filled
@@ -70,7 +56,6 @@
 										v-model="user.birthDay"
 										calendar="persian"
 										today-btn
-										:options="options"
 									/>
 								</q-popup-proxy>
 							</q-icon>
@@ -106,6 +91,39 @@
 				</q-form>
 			</q-card-section>
 		</q-card>
+
+		<q-btn
+			class="absolute-bottom-left q-ma-md"
+			round
+			color="primary"
+			icon="person_search"
+			@click="dialog = true"
+		/>
+		<q-dialog v-model="dialog">
+			<q-card class="bg-amber-1 overflow-hidden" style="width: 300px">
+				<q-card-section class="column">
+					<h3 class="text-h6 text-center">entekhab carbar</h3>
+					<q-input
+						label="serch user"
+						v-model="search"
+						fill-input
+						class="full-width"
+					/>
+					<transition-group mode="in-out" name="list" tag="div" class="column">
+						<q-btn
+							v-for="user in users_copy"
+							:key="user.label"
+							:label="user.label"
+							v-close-popup
+							class="q-mt-md"
+							@click="userSelected = user.value"
+							outline
+							color="primary"
+						/>
+					</transition-group>
+				</q-card-section>
+			</q-card>
+		</q-dialog>
 	</q-page>
 </template>
 
@@ -127,15 +145,28 @@ const user = reactive<User>({
 });
 
 const users = ref<{ value: number; label: string }[]>([]);
+const users_copy = ref<{ value: number; label: string }[]>([]);
+
+const dialog = ref(false);
+const search = ref<string>();
 
 const userSelected = ref();
 let beforeUsers: User[] = [];
 
 watch(userSelected, (value) => {
-	for (const beforeUsersKey in beforeUsers[value.value]) {
+	for (const beforeUsersKey in beforeUsers[value]) {
 		// @ts-ignore
-		user[beforeUsersKey] = beforeUsers[value.value][beforeUsersKey];
+		user[beforeUsersKey] = beforeUsers[value][beforeUsersKey];
 	}
+});
+
+watch(search, (value) => {
+	if (value) {
+		users_copy.value = [];
+		for (const user of users.value) {
+			if (user.label.indexOf(value) >= 0) users_copy.value.push(user);
+		}
+	} else users_copy.value = users.value;
 });
 
 onMounted(() => {
@@ -147,6 +178,7 @@ onMounted(() => {
 				beforeUsers[i].persianFirstName + ' ' + beforeUsers[i].persianLastName,
 		});
 	}
+	users_copy.value = users.value;
 });
 
 function exitUser() {
@@ -158,16 +190,6 @@ function exitUser() {
 			return true;
 	}
 	return false;
-}
-
-function options(date: string) {
-	let a = new Date().toLocaleDateString('fa-IR-u-nu-latn');
-
-	let as = a.split('/');
-	for (let i = 0; i < as.length; i++)
-		if (as[i].length == 1) as[i] = '0' + as[i];
-
-	return date >= as[0] + '/' + as[1] + '/' + as[2];
 }
 
 function justNumber(val: string) {
