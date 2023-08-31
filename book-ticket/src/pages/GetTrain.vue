@@ -223,10 +223,7 @@ const trains = ref<{
 }>({});
 
 function hasPropertyInObject(ob: { [key: string]: any }) {
-	for (const objectKey in ob) {
-		return true;
-	}
-	return false;
+	return Object.keys(ob).length != 0;
 }
 
 const reserve = ref<Set<number>>(new Set());
