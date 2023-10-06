@@ -11,10 +11,10 @@
 		"test": "echo \"No test specified\" && exit 0",
 		"dev": "quasar dev",
 		"build": "quasar build",
-		"build-electron": "quasar build -m electron",
-		"build-pwa": "quasar build -m pwa",
-		"build-capacitor" : "quasar build -m capacitor -T android",
-		"build-cordova" : "quasar build -m cordova -T android"
+		"build:electron": "quasar build -m electron",
+		"build:pwa": "quasar build -m pwa",
+		"build:capacitor" : "quasar build -m capacitor -T android",
+		"build:cordova" : "quasar build -m cordova -T android"
 	},
 	"dependencies": {
 		"@quasar/extras": "^1.0.0",
