@@ -1,7 +1,7 @@
 <template>
 	<q-page class="row items-center justify-evenly">
 		<q-card
-			style="width:100vw"
+			style="width: 100vw"
 			flat
 			class="bg-transparent items-center justify-evenly q-pa-md"
 		>
@@ -13,7 +13,10 @@
 				مشخصات قطار را وارد نمایید.
 			</q-card-section>
 
-			<q-card-section style="padding: 0" class="items-center justify-center flex">
+			<q-card-section
+				style="padding: 0"
+				class="items-center justify-center flex"
+			>
 				<q-form
 					class="items-center justify-evenly q-pa-md"
 					style="width: 500px"
@@ -59,12 +62,15 @@
 			<q-card-section v-if="finding">
 				<q-spinner-clock />
 			</q-card-section>
-			<q-card-section style="padding: 0;" v-else-if="hasPropertyInObject(trains)">
+			<q-card-section
+				style="padding: 0"
+				v-else-if="hasPropertyInObject(trains)"
+			>
 				<q-card-section class="items-center justify-center flex text-h6">
 					قطار و بلیط مورد نظر خود را انتخاب نمایید
 				</q-card-section>
 
-				<q-card-section style="padding: 0;">
+				<q-card-section style="padding: 0">
 					<q-card-actions class="justify-between row-reverse">
 						<q-btn
 							color="blue-5"
@@ -131,9 +137,9 @@
 											:outline="!val.has"
 											@click="togel_reserve_train(val)"
 										>
-												<span v-if="index == 0"> برادران </span>
-												<span v-else-if="index == 1"> خواهران </span>
-												<span v-else>عادی</span>
+											<span v-if="index == 0"> برادران </span>
+											<span v-else-if="index == 1"> خواهران </span>
+											<span v-else>عادی</span>
 										</q-btn>
 
 										<q-item-label class="q-mt-sm text-caption text-grey">

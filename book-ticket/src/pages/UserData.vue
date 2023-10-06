@@ -1,9 +1,6 @@
 <template>
 	<q-page class="row items-center justify-evenly">
-		<q-card
-			flat
-			class="bg-transparent items-center justify-evenly q-pa-md"
-		>
+		<q-card flat class="bg-transparent items-center justify-evenly q-pa-md">
 			<q-card-section class="items-center justify-center flex text-h6">
 				مشخصات خود را برای ثبت در بلیط وارد نمایید.
 			</q-card-section>

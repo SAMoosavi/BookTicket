@@ -1,10 +1,10 @@
 {
-  "appId": "org.capacitor.quasar.app",
-  "appName": "Book Ticket",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www",
-  "server": {
-    "androidScheme": "https"
-  }
+	"appId": "org.capacitor.quasar.app",
+	"appName": "Book Ticket",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "www",
+	"server": {
+		"androidScheme": "https"
+	}
 }
