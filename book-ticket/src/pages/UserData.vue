@@ -3,7 +3,6 @@
 		<q-card
 			flat
 			class="bg-transparent items-center justify-evenly q-pa-md"
-			style="width: 500px"
 		>
 			<q-card-section class="items-center justify-center flex text-h6">
 				مشخصات خود را برای ثبت در بلیط وارد نمایید.
@@ -13,6 +12,7 @@
 				<q-form @submit.prevent="submit">
 					<q-input
 						filled
+						color="blue-5"
 						label="نام"
 						class="q-mb-md"
 						dir="rtl"

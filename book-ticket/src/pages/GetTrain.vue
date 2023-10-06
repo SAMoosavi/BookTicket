@@ -1,6 +1,10 @@
 <template>
 	<q-page class="row items-center justify-evenly">
-		<q-card flat class="bg-transparent">
+		<q-card
+			style="width:100vw"
+			flat
+			class="bg-transparent items-center justify-evenly q-pa-md"
+		>
 			<q-card-section class="items-center justify-center flex text-h6">
 				<h1 class="text-h4">انتخاب قطار</h1>
 			</q-card-section>
@@ -9,7 +13,7 @@
 				مشخصات قطار را وارد نمایید.
 			</q-card-section>
 
-			<q-card-section class="items-center justify-center flex">
+			<q-card-section style="padding: 0" class="items-center justify-center flex">
 				<q-form
 					class="items-center justify-evenly q-pa-md"
 					style="width: 500px"
@@ -55,12 +59,12 @@
 			<q-card-section v-if="finding">
 				<q-spinner-clock />
 			</q-card-section>
-			<q-card-section v-else-if="hasPropertyInObject(trains)">
+			<q-card-section style="padding: 0;" v-else-if="hasPropertyInObject(trains)">
 				<q-card-section class="items-center justify-center flex text-h6">
 					قطار و بلیط مورد نظر خود را انتخاب نمایید
 				</q-card-section>
 
-				<q-card-section>
+				<q-card-section style="padding: 0;">
 					<q-card-actions class="justify-between row-reverse">
 						<q-btn
 							color="blue-5"
@@ -68,7 +72,7 @@
 							:outline="!all[2].hasAll"
 							@click="togel_reserve_trains(all[2])"
 						>
-							تمام بلیط های عادی
+							عادی
 						</q-btn>
 						<q-btn
 							color="blue-5"
@@ -76,7 +80,7 @@
 							:outline="!all[1].hasAll"
 							@click="togel_reserve_trains(all[1])"
 						>
-							تمام بلیط های خواهران
+							خواهران
 						</q-btn>
 						<q-btn
 							color="blue-5"
@@ -84,7 +88,7 @@
 							:outline="!all[0].hasAll"
 							@click="togel_reserve_trains(all[0])"
 						>
-							تمام بلیط های برادران
+							برادران
 						</q-btn>
 					</q-card-actions>
 				</q-card-section>
@@ -98,7 +102,7 @@
 
 							<q-separator />
 
-							<q-item class="row-reverse">
+							<q-item class="row">
 								<q-item-section>
 									<q-item-label caption> حرکت</q-item-label>
 									<q-item-label>
@@ -121,17 +125,15 @@
 								<template v-for="(val, index) in price.ID" :key="index">
 									<q-separator vertical v-if="index != 0" />
 
-									<q-item class="col-3 column">
+									<q-item class="q-pa-none col-3 column">
 										<q-btn
 											color="blue-5"
 											:outline="!val.has"
 											@click="togel_reserve_train(val)"
 										>
-											<q-card-section class="q-pa-none">
 												<span v-if="index == 0"> برادران </span>
 												<span v-else-if="index == 1"> خواهران </span>
 												<span v-else>عادی</span>
-											</q-card-section>
 										</q-btn>
 
 										<q-item-label class="q-mt-sm text-caption text-grey">
