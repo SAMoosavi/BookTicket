@@ -13,8 +13,8 @@
 		"build": "quasar build",
 		"build-electron": "quasar build -m electron",
 		"build-pwa": "quasar build -m pwa",
-		"build-capacitor" : "quasar dev -m capacitor -T android",
-		"build-cordova" : "quasar dev -m cordova -T android"
+		"build-capacitor" : "quasar build -m capacitor -T android",
+		"build-cordova" : "quasar build -m cordova -T android"
 	},
 	"dependencies": {
 		"@quasar/extras": "^1.0.0",
