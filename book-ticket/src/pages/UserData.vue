@@ -99,9 +99,9 @@
 		<q-dialog v-model="dialog">
 			<q-card class="bg-amber-1 overflow-hidden" style="width: 300px">
 				<q-card-section class="column">
-					<h3 class="text-h6 text-center">entekhab carbar</h3>
+					<h3 class="text-h6 text-center">انتخاب کاربر</h3>
 					<q-input
-						label="serch user"
+						label="جست و جوی کاربر"
 						v-model="search"
 						fill-input
 						class="full-width"
