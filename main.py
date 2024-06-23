@@ -6,49 +6,8 @@ from MrBilitApiWrapper import MrBilitApiWrapper
 from Passenger import Passenger
 from User import User
 
-passenger_json = open('data/Passenger.json', 'r')
-passenger_data = json.loads(passenger_json.read())
-passenger_json.close()
-del passenger_json
-
-
-def set_train(list_of_train, sex, list_train_ID: list[int | str]):
-    for ID in list_train_ID:
-
-        if ID == 0:
-            train = list_of_train[0]
-            for price in train['Prices']:
-                if price['SellType'] == sex:
-                    return price['Classes']
-
-        for train in list_of_train:
-            if str(ID) == str(train['TrainNumber']):
-                for price in train['Prices']:
-                    if price['SellType'] == sex:
-                        return price['Classes']
-    return []
-
-
-def get_class_train_ID(classes_train) -> int | str:
-    for class_train in classes_train:
-        if class_train["Capacity"] > 0:
-            return class_train["ID"]
-
-
-def get_pdf(ticket_files):
-    print("list of blit:")
-    for ticket_file in ticket_files:
-        print(ticket_file["url"])
-
-
-path_json = open("data/Path.json", 'r')
-data = json.loads(path_json.read())
-path_json.close()
-del path_json
-
-login_data = data['login']
-path_data = data['path']
-list_ID = data['listId']
+with open('data/Passenger.json', 'r') as passenger_json:
+    passenger_data = json.load(passenger_json)
 
 passenger = Passenger(
     email=passenger_data['Email'],
@@ -62,38 +21,64 @@ passenger = Passenger(
     train_cars=passenger_data['People'][0]["TrainCars"],
     train_capacity_optional_service=passenger_data['People'][0]["TrainCapacityOptionalService"],
 )
-del passenger_data
+
+
+def set_train(list_of_train, sex: Sex, list_train_ID: list[int | str]):
+    classes = []
+    for ID in list_train_ID:
+        train = next((t for t in list_of_train if (str(ID) == str(t['TrainNumber']) or not ID)), None)
+        if train:
+            for price in train['Prices']:
+                if price['SellType'] == sex:
+                    classes.append(price['Classes'])
+                    break
+    return classes
+
+
+def get_class_train_ID(classes_train) -> int | str:
+    return next((class_train["ID"] for class_train in classes_train[0] if class_train["Capacity"] > 0), None)
+
+
+def get_pdf(ticket_files):
+    urls = [ticket_file["url"] for ticket_file in ticket_files]
+    print("list of blit:", *urls)
+
+
+with open('data/Path.json', 'r') as path_json:
+    data = json.load(path_json)
 
 user = User(
-    username=login_data['username'],
-    password=login_data['password'],
-    mobile=login_data['mobile'],
-    email=login_data['email']
+    **data['login']
 )
+
 mr_bilit = MrBilitApiWrapper(user)
 
+list_ID = data['listId']
+path_data = data['path']
 my_train = {}
 train_ID = ""
 i = 0
 while True:
     i += 1
-    trains = mr_bilit.get_available(path_data['source'], path_data['destination'], path_data['date'], path_data['sex'])
-    if len(trains) != 0:
-        my_train = set_train(trains, path_data['sex'], list_ID)
-        if len(my_train) != 0:
+    print(i, end=" ")
+    trains = \
+        mr_bilit.get_available(path_data['source'], path_data['destination'], path_data['date'], Sex(path_data['sex']))
+    # print("trains", trains)
+    if trains:
+        my_train = set_train(trains, Sex(path_data['sex']), list_ID)
+        if my_train:
             train_ID = get_class_train_ID(my_train)
             print("found")
             break
-    print(i, " not found")
-    time.sleep(20)
+    print("not found")
 
-reserve_data = mr_bilit.reserve_seat(train_ID, Sex(int(path_data['sex'])))
+reserve_data = mr_bilit.reserve_seat(train_ID, Sex(path_data['sex']))
 mr_bilit.register_info(reserve_data['BillID'], passenger)
 mac = mr_bilit.pay(reserve_data['BillCode'])
 tickets = []
 while True:
     tickets = mr_bilit.get_status(reserve_data['BillCode'], mac)
-    if len(tickets) != 0:
+    if tickets:
         get_pdf(tickets)
         break
     time.sleep(3)
