@@ -12,12 +12,12 @@ import { useData } from 'stores/data';
 const token = useToken();
 
 export async function useLogin(params: LoginParameters) {
-	return await useApiGet('https://auth.mrbilit.com/api/login', { params });
+	return await useApiGet('https://auth.mrbilit.ir/api/login', { params });
 }
 
 export async function useGetAvailable(params: GetAvailableParameters) {
 	return await useApiGet(
-		'https://train.atighgasht.com/TrainService/api/GetAvailable/v2',
+		'https://train.atighgasht.ir/TrainService/api/GetAvailable/v2',
 		{
 			params: { ...params, date: useJalaliToGregorian(params.date) },
 		}
@@ -26,7 +26,7 @@ export async function useGetAvailable(params: GetAvailableParameters) {
 
 export async function useReserveSeat(params: ReserveSeatParameters) {
 	return await useApiGet(
-		'https://train.atighgasht.com/TrainService/api/ReserveSeat',
+		'https://train.atighgasht.ir/TrainService/api/ReserveSeat',
 		{
 			params: {
 				trainID: params.trainID,
@@ -51,7 +51,7 @@ export async function useRegisterInfo(bill_ID: number) {
 	const data = Data.getData();
 
 	return await useApiPost(
-		'https://train.atighgasht.com/TrainService/api/RegisterInfo',
+		'https://train.atighgasht.ir/TrainService/api/RegisterInfo',
 		{
 			Email: data.email,
 			Mobile: data.mobile,
@@ -77,7 +77,7 @@ export async function useRegisterInfo(bill_ID: number) {
 
 export async function usePay(bill_code: string) {
 	return await useApiGet(
-		`https://payment.mrbilit.com/api/billpayment/${bill_code}`,
+		`https://payment.mrbilit.ir/api/billpayment/${bill_code}`,
 		{
 			params: {
 				payFromCredit: true,
@@ -90,7 +90,7 @@ export async function usePay(bill_code: string) {
 
 export async function useGetStatus(bill_code: number, mac: string) {
 	return await useApiGet(
-		`https://finalize.mrbilit.com/api/workflow/bill/${bill_code}/status`,
+		`https://finalize.mrbilit.ir/api/workflow/bill/${bill_code}/status`,
 		{
 			params: { mac: mac },
 		}
